@@ -1,7 +1,8 @@
-import { HC_FEATURES, PLATFORM, QLIK_ACCELERATORS, QLIK_BENEFITS, TALEND } from "../data";
+import { HC_FEATURES, PLATFORM, QLIK_BENEFITS, TALEND } from "../data";
 import { go } from "../utils";
 import { I, SectionHead } from "./Icons";
 import CaseStudies from "./CaseStudies";
+import AcceleratorChips from "./Accelerators";
 
 const FeatList = ({ items }) => (
   <ul className="feat-list">
@@ -30,7 +31,7 @@ export function Products() {
             <span className="badge"><i />Home-grown solution</span>
             <h3>Qlik Accelerators</h3>
             <p className="lead">Reusable, Meridanta-built components that speed up Qlik development, standardize implementation patterns, and improve consistency across analytics delivery.</p>
-            <Chips items={QLIK_ACCELERATORS} label="Available accelerators" />
+            <AcceleratorChips />
             <FeatList items={QLIK_BENEFITS} />
           </article>
         </div>

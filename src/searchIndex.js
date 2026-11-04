@@ -1,5 +1,6 @@
 import { HC_FEATURES, INDUSTRIES, NAV, PLATFORM, QLIK_ACCELERATORS, SERVICES, TALEND } from "./data";
 import { QLIK_CAPABILITIES, QLIK_OFFERINGS } from "./qlikData";
+import { accelerators } from "./accelerators";
 
 /**
  * Everything the header search can find. Built from the site data, so new services, industries and
@@ -18,7 +19,7 @@ export const SEARCH_INDEX = [
   ...QLIK_OFFERINGS.map((o) => ({ title: "Qlik " + o.title, group: "Qlik services", path: "/qlik", keywords: o.items.join(" ") })),
   { title: "Case Studies", group: "Products & Solutions", path: "/", hash: "case-studies", keywords: "qlik migration replication modernization upgrade snowflake databricks kafka outcomes results" },
   { title: "HCInsights", group: "Products & Solutions", path: "/", hash: "solutions", keywords: HC_FEATURES.map(([t]) => t).join(" ") + " healthcare insights" },
-  { title: "Qlik Accelerators", group: "Products & Solutions", path: "/", hash: "solutions", keywords: QLIK_ACCELERATORS.join(" ") },
+  { title: "Qlik Accelerators", group: "Products & Solutions", path: "/", hash: "solutions", keywords: accelerators.map((a) => a.tab + " " + a.tagline).join(" ") },
   { title: "Talend Frameworks", group: "Products & Solutions", path: "/", hash: "solutions", keywords: TALEND.join(" ") },
   { title: "Data Platform Solutions", group: "Products & Solutions", path: "/", hash: "solutions", keywords: PLATFORM.join(" ") },
 ];

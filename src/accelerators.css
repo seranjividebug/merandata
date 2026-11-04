@@ -1,0 +1,60 @@
+/* Qlik Accelerators: chip buttons and the detail dialog (dark). Uses tokens from styles.css. */
+.chip-btn{display:inline-flex;align-items:center;gap:8px;font-family:inherit;cursor:pointer;border:1px solid transparent;background:linear-gradient(rgba(255,255,255,.07),rgba(255,255,255,.07)) padding-box,linear-gradient(rgba(255,255,255,.12),rgba(255,255,255,.12)) border-box;transition:background .2s,transform .2s,box-shadow .2s}
+.chip-btn svg{color:var(--rose);flex-shrink:0;transition:transform .2s}
+.chip-btn:hover,.chip-btn:focus-visible{background:linear-gradient(var(--navy-2),var(--navy-2)) padding-box,var(--grad) border-box;box-shadow:0 8px 20px -12px rgba(236,95,174,.7)}
+.chip-btn:hover svg,.chip-btn:focus-visible svg{transform:rotate(90deg)}
+.chip-btn:focus-visible{outline:3px solid var(--focus);outline-offset:3px}
+
+/* Tab bar */
+.ac-tabs{flex:0 0 auto;display:flex;gap:6px;overflow-x:auto;padding:14px 76px 0 32px;border-bottom:1px solid var(--navy-line);scrollbar-width:thin}
+.ac-tab{position:relative;flex:0 0 auto;padding:14px 16px 16px;background:none;border:0;border-radius:8px 8px 0 0;font-size:15px;font-weight:600;color:rgba(255,255,255,.62);cursor:pointer;white-space:nowrap;transition:color .2s}
+.ac-tab:hover{color:#fff}
+.ac-tab::after{content:"";position:absolute;left:12px;right:12px;bottom:-1px;height:3px;border-radius:3px;background:var(--grad);transform:scaleX(0);transition:transform .2s}
+.ac-tab[aria-selected="true"]{color:#fff}
+.ac-tab[aria-selected="true"]::after{transform:scaleX(1)}
+.ac-tab:focus-visible{outline:3px solid var(--focus);outline-offset:-3px}
+
+/* Content */
+.ac-scroll{padding-top:28px}
+.ac-panel{animation:ac-fade .2s ease both}
+@keyframes ac-fade{from{opacity:0}to{opacity:1}}
+.ac-head{display:flex;flex-direction:column;align-items:flex-start;gap:12px}
+.ac-head h2{font-size:clamp(24px,3vw,32px);font-weight:800;line-height:1.2;color:#fff;overflow-wrap:anywhere}
+.ac-tag{color:#F3C9E3;font-size:17px;font-weight:500}
+.ac-row{margin-top:26px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:28px;align-items:start}
+.ac-img{display:block;width:100%;height:auto;aspect-ratio:3/2;object-fit:cover;border-radius:16px;border:1px solid var(--navy-line)}
+.ac-copy{display:grid;gap:22px;min-width:0}
+.ac-copy h3{display:flex;align-items:center;gap:12px;font-size:19px;font-weight:700;color:#fff;margin-bottom:10px}
+.ac-copy p,.ac-copy li{font-size:15.5px;line-height:1.55;color:rgba(255,255,255,.84)}
+.ac-copy ul{margin:0;padding-left:20px;display:grid;gap:8px}
+.ac-copy li::marker{color:var(--rose)}
+.ac-ic{width:34px;height:34px;border-radius:50%;background:var(--grad);color:#fff;display:grid;place-items:center;flex-shrink:0}
+.ac-ic-lg{width:42px;height:42px}
+.ac-sub{margin:30px 0 14px;font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#F3C9E3}
+.ac-features{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.ac-features li{display:flex;align-items:flex-start;gap:14px;padding:18px;border-radius:16px;background:rgba(255,255,255,.05);border:1px solid var(--navy-line);font-size:15px;line-height:1.5;color:rgba(255,255,255,.88);min-width:0}
+.ac-features li>span:last-child{min-width:0;overflow-wrap:anywhere}
+.ac-benefits{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));border:1px solid var(--navy-line);border-radius:16px;overflow:hidden}
+.ac-benefits li{display:flex;flex-direction:column;gap:12px;padding:18px;font-size:14.5px;line-height:1.5;color:rgba(255,255,255,.86);min-width:0;overflow-wrap:anywhere}
+.ac-benefits li+li{border-left:1px solid var(--navy-line)}
+.ac-bic{color:var(--rose)}
+
+@media (max-width:1020px){
+  .ac-row{grid-template-columns:minmax(0,1fr)}
+  .ac-features{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .ac-benefits{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .ac-benefits li:nth-child(4){border-left:0}
+  .ac-benefits li:nth-child(n+4){border-top:1px solid var(--navy-line)}
+}
+@media (max-width:640px){
+  .ac-tabs{padding:12px 64px 0 12px}
+  .ac-scroll{padding-top:20px}
+  .ac-features{grid-template-columns:minmax(0,1fr)}
+  .ac-benefits{grid-template-columns:minmax(0,1fr)}
+  .ac-benefits li,.ac-benefits li+li,.ac-benefits li:nth-child(n+4){flex-direction:row;align-items:flex-start;border-left:0;border-top:0}
+  .ac-benefits li+li,.ac-benefits li:nth-child(n+4){border-top:1px solid var(--navy-line)}
+}
+@media (prefers-reduced-motion:reduce){
+  .ac-panel{animation:none}
+  .chip-btn,.chip-btn svg,.ac-tab,.ac-tab::after{transition:none}
+}

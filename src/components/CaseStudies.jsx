@@ -25,25 +25,6 @@ const setHash = (hash) => {
   window.history.replaceState(window.history.state, "", pathname + search + hash);
 };
 
-/** Lock page scroll and hide the page behind the dialog from assistive tech. */
-function useModalLock(active) {
-  useEffect(() => {
-    if (!active) return undefined;
-    const root = document.getElementById("root");
-    const html = document.documentElement;
-    const gap = window.innerWidth - html.clientWidth;
-    const prev = { overflow: html.style.overflow, pad: document.body.style.paddingRight };
-    html.style.overflow = "hidden";
-    if (gap > 0) document.body.style.paddingRight = gap + "px";
-    root?.setAttribute("inert", "");
-    return () => {
-      html.style.overflow = prev.overflow;
-      document.body.style.paddingRight = prev.pad;
-      root?.removeAttribute("inert");
-    };
-  }, [active]);
-}
-
 /** Case studies: impact strip, category filters, card grid and the detail dialog. */
 export default function CaseStudies({ headingLevel = 2 }) {
   const [filter, setFilter] = useState("All");
@@ -59,7 +40,6 @@ export default function CaseStudies({ headingLevel = 2 }) {
   const shown = showAll ? filtered : filtered.slice(0, FIRST);
   const active = ORDERED.find((s) => s.id === openId) || null;
   const navList = active && filtered.some((s) => s.id === active.id) ? filtered : ORDERED;
-  useModalLock(!!active);
 
   const choose = (name) => { setFilter(name); setShowAll(false); };
 
@@ -75,16 +55,21 @@ export default function CaseStudies({ headingLevel = 2 }) {
     origin.current = { button: null, card: null };
   };
 
+  const refocus = useRef(null);
   const close = useCallback(({ restoreFocus }) => {
-    const id = openId;
+    refocus.current = restoreFocus ? openId : null;
     setOpenId(null);
     setHash("");
-    if (!restoreFocus) return;
-    // Back to the card that opened it (or the card now showing, after Previous / Next).
-    requestAnimationFrame(() => {
-      const el = origin.current.button?.isConnected ? origin.current.button : document.querySelector(`[data-case-id="${id}"] .ck-plus`);
-      (el || document.querySelector(".ck-chip"))?.focus();
-    });
+  }, [openId]);
+
+  // Once the dialog is gone (and the page is no longer inert): back to the card that opened it
+  // (or the card now showing, after Previous / Next).
+  useEffect(() => {
+    if (openId !== null || !refocus.current) return;
+    const id = refocus.current;
+    refocus.current = null;
+    const el = origin.current.button?.isConnected ? origin.current.button : document.querySelector(`[data-case-id="${id}"] .ck-plus`);
+    (el || document.querySelector(".ck-chip"))?.focus();
   }, [openId]);
 
   // Deep link: #case-<id> scrolls to the section and opens that case.
