@@ -33,6 +33,14 @@ export const QLIK_OFFERINGS = [
       "Knowledge sharing sessions"] },
 ];
 
+// Service Journey copy for the four offerings above (same order). Bullets stay in QLIK_OFFERINGS.
+export const QLIK_JOURNEY = [
+  { icon: "compass", description: "Shape the right Qlik architecture and prove value before you scale.", outcome: "A validated roadmap and architecture you can build on." },
+  { icon: "code", description: "Build and roll out Qlik solutions with proven methods and standards.", outcome: "Predictable delivery, on time and to standard." },
+  { icon: "lifebuoy", description: "Keep your Qlik platform healthy, fast and cost-efficient.", outcome: "A stable, optimized platform with fewer incidents." },
+  { icon: "cap", description: "Grow in-house Qlik skills with project-focused programs.", outcome: "Confident teams who can own and extend the platform." },
+];
+
 // One scroll-stacking card per capability on /qlik. `image` is the file name in src/assets/capabilities.
 export const QLIK_CAPABILITIES = [
   {

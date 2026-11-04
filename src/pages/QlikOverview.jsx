@@ -1,11 +1,12 @@
-import { QLIK_OFFERINGS, QLIK_OVERVIEW as O } from "../qlikData";
+import { QLIK_OVERVIEW as O } from "../qlikData";
 import { usePageTitle, useSectionLink } from "../nav";
 import { go } from "../utils";
-import { I, SectionHead } from "../components/Icons";
+import { SectionHead } from "../components/Icons";
 import platformImg from "../assets/qlik-platform.webp";
 import { Breadcrumb, QlikCta, TrademarkLine } from "../components/QlikBits";
 import CapabilityStack from "../components/CapabilityStack";
 import CaseStudies from "../components/CaseStudies";
+import ServiceJourney from "../components/ServiceJourney";
 import AcceleratorsCard from "../components/AcceleratorsCard";
 
 export default function QlikOverview() {
@@ -38,18 +39,10 @@ export default function QlikOverview() {
         </div>
       </section>
 
-      <section className="block alt" aria-labelledby="off-h">
+      <section id="qlik-services" className="block alt" aria-labelledby="off-h">
         <div className="wrap">
           <SectionHead id="off-h" title="Qlik COE Service Offerings" intro="Our Center of Excellence supports you at every stage, from first proof of concept to day-to-day operations and skills." />
-          <div className="services two">
-            {QLIK_OFFERINGS.map((o) => (
-              <article key={o.title} className="svc">
-                <div className="icon">{I[o.icon]}</div>
-                <h3>{o.title}</h3>
-                <ul>{o.items.map((t) => <li key={t}>{t}</li>)}</ul>
-              </article>
-            ))}
-          </div>
+          <ServiceJourney />
         </div>
       </section>
 

@@ -153,11 +153,9 @@ export default function AcceleratorsCard({ seeAll = false, headingId = "acc-h" }
       <div className="ax-body" style={height === null ? undefined : { height }}>
         <div ref={inner}>
           <div key={shown} id="ax-panel" role="tabpanel" aria-labelledby={`ax-tab-${shown}`} className={"ax-panel" + (out ? " is-out" : "")}>
-            <div className="ax-row">
-              <img ref={firstImg} className="ax-img" src={acc.image} width="1200" height="800" alt={acc.imageAlt} decoding="async" onLoad={() => setFirstLoaded(true)} />
-              <div className="ax-main">
-                <h4 className="ax-title">{acc.title}</h4>
-                <p className="ax-tagline">{acc.tagline}</p>
+            <div className="ax-cols">
+              <div className="ax-col">
+                <img ref={firstImg} className="ax-img" src={acc.image} width="1200" height="800" alt={acc.imageAlt} decoding="async" onLoad={() => setFirstLoaded(true)} />
                 <div className="ax-built">
                   <p className="ax-h">Built with</p>
                   <ul>
@@ -166,34 +164,37 @@ export default function AcceleratorsCard({ seeAll = false, headingId = "acc-h" }
                     ))}
                   </ul>
                 </div>
-                <section aria-labelledby="ax-ch">
+                <section className="ax-feats" aria-labelledby="ax-feat">
+                  <p className="ax-h" id="ax-feat">Key features</p>
+                  <ul className="ax-list">
+                    {acc.features.map((t, i) => (
+                      <li key={t}><span className="ax-ic ax-ic-lg"><CIcon name={FEATURE_ICONS[i % FEATURE_ICONS.length]} size={20} /></span><span>{t}</span></li>
+                    ))}
+                  </ul>
+                </section>
+              </div>
+              <div className="ax-col">
+                <div className="ax-head">
+                  <h4 className="ax-title">{acc.title}</h4>
+                  <p className="ax-tagline">{acc.tagline}</p>
+                </div>
+                <section className="ax-challenge" aria-labelledby="ax-ch">
                   <h5 id="ax-ch" className="ax-iconh"><span className="ax-ic"><CIcon name="target" size={18} /></span>Business challenge</h5>
                   <p>{acc.challenge}</p>
                 </section>
-                <section aria-labelledby="ax-so">
+                <section className="ax-solution" aria-labelledby="ax-so">
                   <h5 id="ax-so" className="ax-iconh"><span className="ax-ic"><CIcon name="solution" size={18} /></span>Solution</h5>
                   <ul className="ax-bullets">{acc.solution.map((t) => <li key={t}>{t}</li>)}</ul>
                 </section>
+                <section className="ax-bens" aria-labelledby="ax-ben">
+                  <p className="ax-h" id="ax-ben">Benefits</p>
+                  <ul className="ax-list ax-ben">
+                    {acc.benefits.map((t, i) => (
+                      <li key={t}><span className="ax-bic"><CIcon name={BENEFIT_ICONS[i % BENEFIT_ICONS.length]} size={22} /></span><span>{t}</span></li>
+                    ))}
+                  </ul>
+                </section>
               </div>
-            </div>
-
-            <div className="ax-row ax-row2">
-              <section aria-labelledby="ax-feat">
-                <p className="ax-h" id="ax-feat">Key features</p>
-                <ul className="ax-list">
-                  {acc.features.map((t, i) => (
-                    <li key={t}><span className="ax-ic ax-ic-lg"><CIcon name={FEATURE_ICONS[i % FEATURE_ICONS.length]} size={20} /></span><span>{t}</span></li>
-                  ))}
-                </ul>
-              </section>
-              <section aria-labelledby="ax-ben">
-                <p className="ax-h" id="ax-ben">Benefits</p>
-                <ul className="ax-list ax-ben">
-                  {acc.benefits.map((t, i) => (
-                    <li key={t}><span className="ax-bic"><CIcon name={BENEFIT_ICONS[i % BENEFIT_ICONS.length]} size={22} /></span><span>{t}</span></li>
-                  ))}
-                </ul>
-              </section>
             </div>
 
             <div className="ax-foot">
