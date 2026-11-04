@@ -17,7 +17,7 @@ export const SEARCH_INDEX = [
   { title: "Qlik Center of Excellence", group: "Qlik", path: "/qlik", keywords: "qlik sense talend data integration analytics ai platform" },
   ...QLIK_CAPABILITIES.map((c) => ({ title: c.title, group: "Qlik capabilities", path: "/qlik", hash: "capabilities", keywords: [c.intro, ...c.bullets].join(" ") })),
   ...QLIK_OFFERINGS.map((o) => ({ title: "Qlik " + o.title, group: "Qlik services", path: "/qlik", keywords: o.items.join(" ") })),
-  { title: "Case Studies", group: "Products & Solutions", path: "/", hash: "case-studies", keywords: "qlik migration replication modernization upgrade snowflake databricks kafka outcomes results" },
+  { title: "Case Studies", group: "Qlik", path: "/qlik", hash: "case-studies", keywords: "qlik migration replication modernization upgrade snowflake databricks kafka outcomes results" },
   { title: "HCInsights", group: "Products & Solutions", path: "/", hash: "solutions", keywords: HC_FEATURES.map(([t]) => t).join(" ") + " healthcare insights" },
   { title: "Qlik Accelerators", group: "Products & Solutions", path: "/", hash: "solutions", keywords: accelerators.map((a) => a.tab + " " + a.tagline).join(" ") },
   { title: "Talend Frameworks", group: "Products & Solutions", path: "/", hash: "solutions", keywords: TALEND.join(" ") },

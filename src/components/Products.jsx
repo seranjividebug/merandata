@@ -1,7 +1,6 @@
 import { HC_FEATURES, PLATFORM, QLIK_BENEFITS, TALEND } from "../data";
 import { go } from "../utils";
 import { I, SectionHead } from "./Icons";
-import CaseStudies from "./CaseStudies";
 import AcceleratorChips from "./Accelerators";
 
 const FeatList = ({ items }) => (
@@ -34,9 +33,6 @@ export function Products() {
             <AcceleratorChips />
             <FeatList items={QLIK_BENEFITS} />
           </article>
-        </div>
-        <div className="prods-cases"><CaseStudies headingLevel={3} /></div>
-        <div className="prods">
           <article className="prod wide">
             <div>
               <span className="badge"><i />Platforms & implementation</span>

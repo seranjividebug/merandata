@@ -477,4 +477,3 @@ section.alt{background:var(--mist)}
 .fab-top:hover{border-color:var(--plum)}
 @media (max-width:640px){.fab{right:max(14px,env(safe-area-inset-right,0px));bottom:max(14px,env(safe-area-inset-bottom,0px))}.fab-talk{min-height:44px;padding:0 18px;font-size:15px}.fab-top{width:42px;height:42px}}
 @media (prefers-reduced-motion:reduce){.fab-talk,.fab-top{transition:none}}
-.prods-cases{margin:56px 0}
