@@ -146,8 +146,8 @@ export default function CaseStudies({ headingLevel = 2 }) {
     <div id="case-studies" className="cases" ref={root} onKeyDown={onKeyDown}>
       <div className="cases-head">
         <p className="cases-eyebrow">OUR EXPERTISE</p>
-        <H id="case-studies-h">Case Studies</H>
-        <p className="cases-intro">Real outcomes from Qlik migrations, real-time replication and data modernization projects.</p>
+        <H id="case-studies-h">Proven Outcomes</H>
+        <p className="cases-intro">Real results from Qlik migrations, real-time replication and data modernization.</p>
       </div>
       <p className="sr" aria-live="polite">{announce}</p>
 
