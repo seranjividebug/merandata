@@ -21,7 +21,7 @@ const IMAGES = {
 };
 const warnMissing = (name) => console.warn(`CapabilityStack: image "${name}.webp" failed to load from src/assets/capabilities/`);
 
-const STACK_MQ = "(min-width: 1024px) and (min-height: 560px) and (prefers-reduced-motion: no-preference)";
+const STACK_MQ = "(min-width: 1024px) and (min-height: 440px) and (prefers-reduced-motion: no-preference)";
 const DECKS = [
   { group: "Data Integration", eyebrow: "DATA INTEGRATION" },
   { group: "Analytics", eyebrow: "ANALYTICS" },

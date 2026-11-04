@@ -444,7 +444,7 @@ section.alt{background:var(--mist)}
   .cs-row.is-flip .cs-img{order:0}
   .cs-img{height:auto;aspect-ratio:3/2}
 }
-@media (min-width:1024px) and (min-height:560px) and (prefers-reduced-motion:no-preference){
+@media (min-width:1024px) and (min-height:440px) and (prefers-reduced-motion:no-preference){
   .cs-deck{padding-bottom:80px}
   /* margin grows by 44px per remaining card so the strips keep their offsets while the deck scrolls away */
   .cs-card{position:sticky;top:calc(var(--header-h) + var(--subnav-h, 0px) + 24px + var(--i) * 44px);z-index:calc(var(--i) + 1);height:400px;margin-bottom:calc(48px + var(--r) * 44px);transform:scale(calc(1 - .04 * var(--k)));filter:brightness(calc(1 - .08 * var(--k)))}
