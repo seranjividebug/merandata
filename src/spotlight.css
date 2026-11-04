@@ -1,0 +1,57 @@
+/* Home: compact spotlight cards. Pink only as a tiny highlight in the hover ring. */
+@property --ang{syntax:"<angle>";inherits:false;initial-value:0deg}
+.spot-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;margin-bottom:48px}
+.spot{position:relative;isolation:isolate;display:flex;flex-direction:column;min-height:420px;border-radius:24px;overflow:hidden;background:var(--navy);color:#fff;text-decoration:none;transform:perspective(900px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));transition:transform .15s ease-out,box-shadow .3s ease;will-change:transform}
+.spot:focus-visible{outline:2px solid var(--focus);outline-offset:3px;border-radius:24px}
+.spot:hover,.spot:focus-visible{box-shadow:0 26px 50px -28px rgba(12,18,48,.75)}
+
+/* animated border ring (mask technique, 1.5px) */
+.spot::before{content:"";position:absolute;inset:0;z-index:4;border-radius:inherit;padding:1.5px;pointer-events:none;opacity:0;transition:opacity .3s ease;background:conic-gradient(from var(--ang),#1E2A6B 0%,#5A2390 28%,#EC5FAE 36%,#5A2390 44%,#1E2A6B 70%,#1E2A6B 100%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0);mask-composite:exclude;animation:spot-spin 6s linear infinite;animation-play-state:paused}
+.spot:hover::before,.spot:focus-visible::before{opacity:1;animation-play-state:running}
+@keyframes spot-spin{to{--ang:360deg}}
+
+/* preview */
+.spot-vis{position:relative;flex:0 0 170px;height:170px;overflow:hidden;background:var(--navy-2)}
+.spot-vis::after{content:"";position:absolute;inset:auto 0 0;height:70px;z-index:2;background:linear-gradient(to bottom,transparent,var(--navy));pointer-events:none}
+.spot-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .6s ease}
+.spot-blur{filter:blur(10px) saturate(.9);transform:scale(1.15)}
+.spot:hover .spot-img,.spot:focus-visible .spot-img{transform:scale(1.05)}
+.spot:hover .spot-blur,.spot:focus-visible .spot-blur{transform:scale(1.2)}
+.spot-tint{position:absolute;inset:0;background:linear-gradient(120deg,rgba(12,18,48,.72),rgba(42,20,88,.5))}
+.spot-tiles{position:absolute;inset:0 0 28px;z-index:1;display:flex;align-items:center;justify-content:center;gap:14px;padding:0 20px}
+.spot-tile{display:grid;place-items:center;flex:none;border-radius:50%;background:#fff;color:var(--plum-2);box-shadow:0 10px 22px -10px rgba(0,0,0,.6);animation:spot-float 3s ease-in-out infinite;animation-delay:calc(var(--i) * .3s)}
+@keyframes spot-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+.spot-beat{position:absolute;left:0;right:0;bottom:34px;z-index:1;width:100%;height:56px}
+.spot-beat path{fill:none;stroke:var(--on-dark);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1;stroke-dashoffset:1;animation:spot-beat 2.6s ease-in-out infinite;filter:drop-shadow(0 0 6px rgba(201,179,234,.6))}
+@keyframes spot-beat{0%{stroke-dashoffset:1}60%,100%{stroke-dashoffset:0}}
+
+/* body */
+.spot-body{position:relative;z-index:1;flex:1;display:flex;flex-direction:column;padding:6px 28px 26px}
+.spot-body .badge{align-self:flex-start}
+.spot h3{margin:14px 0 0;font-size:24px;font-weight:800;line-height:1.2;letter-spacing:-.02em;color:#fff}
+.spot-line{margin:8px 0 0;font-size:15.5px;line-height:1.5;color:rgba(255,255,255,.8)}
+.spot-chips{list-style:none;margin:16px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
+.spot-chips li{padding:5px 11px;border-radius:999px;font-size:12.5px;font-weight:600;background:rgba(255,255,255,.08);border:1px solid var(--navy-line);color:#fff}
+.spot-cta{margin-top:auto;padding-top:20px;display:inline-flex;align-items:center;gap:8px;font-weight:700;font-size:15px;color:#fff}
+.spot-cta svg{flex:none}
+.spot:hover .spot-cta svg,.spot:focus-visible .spot-cta svg{animation:spot-arrow 1s ease-in-out infinite}
+@keyframes spot-arrow{0%,100%{transform:translateX(0)}50%{transform:translateX(4px)}}
+
+@media (max-width:900px){
+  .spot-grid{grid-template-columns:minmax(0,1fr)}
+}
+@media (max-width:480px){
+  .spot-tiles{gap:8px;padding:0 12px}
+  .spot-tile{width:44px!important;height:44px!important}
+}
+@media (hover:none){
+  .spot{transform:none}
+}
+@media (prefers-reduced-motion:reduce){
+  .spot{transform:none;transition:none}
+  .spot-tile,.spot-beat path,.spot:hover .spot-cta svg,.spot:focus-visible .spot-cta svg{animation:none}
+  .spot-beat path{stroke-dashoffset:0}
+  .spot::before{animation:none}
+  .spot-img,.spot:hover .spot-img,.spot:focus-visible .spot-img,.spot:hover .spot-blur,.spot:focus-visible .spot-blur{transition:none;transform:none}
+  .spot-blur{transform:scale(1.15)!important}
+}

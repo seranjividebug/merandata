@@ -2,6 +2,7 @@ import { useRef, useState } from "react";
 import { INTERESTS } from "../data";
 import { I, SectionHead } from "./Icons";
 import AnimatedButton from "./AnimatedButton";
+import locImg from "../assets/loc-qlik.webp";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 const EMPTY = { name: "", email: "", company: "", interest: "", message: "", website: "" };
@@ -127,23 +128,8 @@ export default function Contact({ onPrivacy }) {
             )}
           </div>
 
-          <aside className="loc" aria-labelledby="loc-h">
-            <h3 id="loc-h">United States and India</h3>
-            <p>Our teams work across both regions, giving customers coverage across time zones.</p>
-            <svg viewBox="0 0 360 230" role="img" aria-label="Arc connecting the United States and India" style={{ maxWidth: "420px", alignSelf: "center" }}>
-              <defs><linearGradient id="lg" x1="0" x2="1"><stop offset="0" stopColor="#C9B3EA" /><stop offset="1" stopColor="#9B7BD0" /></linearGradient></defs>
-              {[0, 1, 2, 3, 4, 5, 6].map((r) => <line key={"h" + r} x1="0" x2="360" y1={40 + r * 25} y2={40 + r * 25} stroke="rgba(255,255,255,.07)" />)}
-              {[0, 1, 2, 3, 4, 5, 6, 7, 8].map((c) => <line key={"v" + c} y1="20" y2="210" x1={20 + c * 40} x2={20 + c * 40} stroke="rgba(255,255,255,.07)" />)}
-              <path d="M70 150 Q 180 10 290 150" fill="none" stroke="url(#lg)" strokeWidth="2.5" strokeLinecap="round" />
-              <path d="M70 150 Q 180 10 290 150" fill="none" stroke="#fff" strokeWidth="3" strokeLinecap="round" pathLength="600" className="flow" />
-              {[[70, "United States"], [290, "India"]].map(([x, t]) => (
-                <g key={t}>
-                  <circle cx={x} cy="150" r="16" fill="rgba(201,179,234,.2)" />
-                  <circle cx={x} cy="150" r="7" fill="#fff" />
-                  <text x={x} y="186" textAnchor="middle" fill="#fff" fontSize="13" fontWeight="600" fontFamily="inherit">{t}</text>
-                </g>
-              ))}
-            </svg>
+          <aside className="loc" aria-label="Qlik Analytics and Integration">
+            <img className="loc-img" src={locImg} width="971" height="1188" alt="Qlik Analytics and Integration: end-to-end data integration, analytics, and operational insights with Qlik, shown as a dashboard with data sources, insights found and replication health" loading="lazy" decoding="async" />
           </aside>
         </div>
       </div>

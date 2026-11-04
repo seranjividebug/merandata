@@ -47,7 +47,7 @@ export default function QlikOverview() {
         </div>
       </section>
 
-      <section className="block" aria-labelledby="acc-h">
+      <section id="accelerators" className="block" aria-labelledby="acc-h">
         <div className="wrap">
           <AcceleratorsCard seeAll />
         </div>

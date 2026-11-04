@@ -126,7 +126,7 @@ export default function AcceleratorsCard({ seeAll = false, headingId = "acc-h" }
   };
 
   return (
-    <article className="prod feature acc-card" id="accelerators" ref={card}>
+    <article className="prod feature acc-card" ref={card}>
       <span className="badge"><i />Home-grown solution</span>
       <h3 id={headingId}>Qlik Accelerators</h3>
       <p className="lead">Reusable, Meridanta-built components that speed up Qlik development, standardize implementation patterns, and improve consistency across analytics delivery.</p>
