@@ -1,7 +1,7 @@
-import { HC_FEATURES, PLATFORM, QLIK_BENEFITS, TALEND } from "../data";
+import { HC_FEATURES, PLATFORM, TALEND } from "../data";
 import { go } from "../utils";
 import { I, SectionHead } from "./Icons";
-import AcceleratorChips from "./Accelerators";
+import AcceleratorsCard from "./AcceleratorsCard";
 
 const FeatList = ({ items }) => (
   <ul className="feat-list">
@@ -20,19 +20,15 @@ export function Products() {
       <div className="wrap">
         <SectionHead id="prod-h" title="Products & Solutions" intro="Explore Meridanta’s solutions for turning complex data into useful insight and accelerating the delivery of business intelligence." />
         <div className="prods">
-          <article className="prod feature">
-            <span className="badge"><i />Home-grown solution</span>
-            <h3>HCInsights</h3>
-            <p className="lead">A turnkey healthcare insights solution that brings fragmented clinical, operational, and financial data together for data-informed decisions.</p>
+          <article className="prod feature hc">
+            <div>
+              <span className="badge"><i />Home-grown solution</span>
+              <h3>HCInsights</h3>
+              <p className="lead">A turnkey healthcare insights solution that brings fragmented clinical, operational, and financial data together for data-informed decisions.</p>
+            </div>
             <FeatList items={HC_FEATURES} />
           </article>
-          <article className="prod feature">
-            <span className="badge"><i />Home-grown solution</span>
-            <h3>Qlik Accelerators</h3>
-            <p className="lead">Reusable, Meridanta-built components that speed up Qlik development, standardize implementation patterns, and improve consistency across analytics delivery.</p>
-            <AcceleratorChips />
-            <FeatList items={QLIK_BENEFITS} />
-          </article>
+          <AcceleratorsCard />
           <article className="prod wide">
             <div>
               <span className="badge"><i />Platforms & implementation</span>

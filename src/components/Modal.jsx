@@ -45,7 +45,7 @@ function useModalLock() {
  * - `origin` is the element the dialog grows from.
  * - `onArrow(-1 | 1)` handles the left / right arrow keys.
  */
-export default function Modal({ labelledBy, closeLabel, origin, dark, onClose, onArrow, children }) {
+export default function Modal({ labelledBy, closeLabel, origin, onClose, onArrow, children }) {
   const dialog = useRef(null);
   const backdrop = useRef(null);
   const closing = useRef(false);
@@ -101,7 +101,7 @@ export default function Modal({ labelledBy, closeLabel, origin, dark, onClose, o
       onClick={(e) => { if (e.target === e.currentTarget && downOnBackdrop.current) close(); }}
     >
       <div className="cm-backdrop" ref={backdrop} aria-hidden="true" />
-      <div className={"cm-dialog" + (dark ? " cm-dark" : "")} ref={dialog} role="dialog" aria-modal="true" aria-labelledby={labelledBy}>
+      <div className="cm-dialog" ref={dialog} role="dialog" aria-modal="true" aria-labelledby={labelledBy}>
         <button type="button" className="cm-x" aria-label={closeLabel || "Close"} onClick={() => close()}><CIcon name="close" size={22} strokeWidth={2.2} /></button>
         {typeof children === "function" ? children({ close }) : children}
       </div>

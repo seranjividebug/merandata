@@ -1,4 +1,3 @@
-import { QLIK_BENEFITS } from "../data";
 import { QLIK_OFFERINGS, QLIK_OVERVIEW as O } from "../qlikData";
 import { usePageTitle, useSectionLink } from "../nav";
 import { go } from "../utils";
@@ -7,7 +6,7 @@ import platformImg from "../assets/qlik-platform.webp";
 import { Breadcrumb, QlikCta, TrademarkLine } from "../components/QlikBits";
 import CapabilityStack from "../components/CapabilityStack";
 import CaseStudies from "../components/CaseStudies";
-import AcceleratorChips from "../components/Accelerators";
+import AcceleratorsCard from "../components/AcceleratorsCard";
 
 export default function QlikOverview() {
   usePageTitle(O.title, O.description);
@@ -56,16 +55,7 @@ export default function QlikOverview() {
 
       <section className="block" aria-labelledby="acc-h">
         <div className="wrap">
-          <article className="prod feature">
-            <span className="badge"><i />Home-grown solution</span>
-            <h3 id="acc-h">Qlik Accelerators</h3>
-            <p className="lead">Reusable, Meridanta-built components that speed up Qlik development, standardize implementation patterns, and improve consistency across analytics delivery.</p>
-            <AcceleratorChips />
-            <ul className="feat-list">
-              {QLIK_BENEFITS.map(([t, d]) => <li key={t}>{I.check}<span><strong>{t}</strong>{d}</span></li>)}
-            </ul>
-            <a className="qlink" {...link("solutions")}>See all products and solutions {I.go}</a>
-          </article>
+          <AcceleratorsCard seeAll />
         </div>
       </section>
 

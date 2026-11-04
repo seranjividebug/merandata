@@ -1,4 +1,4 @@
-import { siApachekafka, siDatabricks, siMysql, siPostgresql, siQlik, siSap, siSnowflake, siTalend } from "simple-icons";
+import { siApachekafka, siDatabricks, siGrafana, siMysql, siPostgresql, siPrometheus, siQlik, siSap, siSnowflake, siTalend } from "simple-icons";
 
 /**
  * Technology logos for the case study diagram.
@@ -25,6 +25,8 @@ const fileFor = (key) => {
 
 const ICONS = {
   qlik: siQlik,
+  prometheus: siPrometheus,
+  grafana: siGrafana,
   sap: siSap,
   snowflake: siSnowflake,
   postgresql: siPostgresql,
@@ -57,6 +59,8 @@ export const LOGOS = {
   eventhubs: { name: "Azure Event Hubs", short: "Event Hubs", match: /event\s?hubs?/i, kind: "server" },
   talend: { name: "Talend", match: /talend/i, kind: "server" },
   powerbi: { name: "Power BI", match: /power\s?bi/i, kind: "server" },
+  prometheus: { name: "Prometheus", match: /prometheus/i, kind: "server" },
+  grafana: { name: "Grafana", match: /grafana/i, kind: "server" },
   bedrock: { name: "Amazon Bedrock", short: "Bedrock", match: /bedrock/i, kind: "cloud" },
 };
 
