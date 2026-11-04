@@ -3,6 +3,7 @@ import logo from "../assets/logo.png";
 import { NAV } from "../data";
 import { useSectionLink } from "../nav";
 import { I } from "./Icons";
+import Search from "./Search";
 
 export default function Header({ active }) {
   const [open, setOpen] = useState(false);
@@ -36,6 +37,7 @@ export default function Header({ active }) {
           <span className="brand-name">Meridanta</span>
         </a>
         <nav className="nav" aria-label="Main">{links}</nav>
+        <Search onOpen={close} />
         <a className="btn btn-dark cta-head" {...link("contact", close)}>Get in Touch</a>
         <button className="menu-btn" aria-expanded={open} aria-controls="mnav" aria-label={open ? "Close menu" : "Open menu"} onClick={() => setOpen(!open)}>
           {open ? I.close : I.menu}

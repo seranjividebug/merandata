@@ -6,6 +6,7 @@ import { I, SectionHead } from "../components/Icons";
 import platformImg from "../assets/qlik-platform.webp";
 import { Breadcrumb, QlikCta, TrademarkLine } from "../components/QlikBits";
 import CapabilityStack from "../components/CapabilityStack";
+import CaseStudies from "../components/CaseStudies";
 
 export default function QlikOverview() {
   usePageTitle(O.title, O.description);
@@ -65,6 +66,10 @@ export default function QlikOverview() {
             <a className="qlink" {...link("solutions")}>See all products and solutions {I.go}</a>
           </article>
         </div>
+      </section>
+
+      <section className="block alt" aria-labelledby="case-studies-h">
+        <div className="wrap"><CaseStudies /></div>
       </section>
 
       <QlikCta />

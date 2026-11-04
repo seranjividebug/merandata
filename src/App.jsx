@@ -5,6 +5,7 @@ import { go } from "./utils";
 import { ScrollManager } from "./nav";
 import Header from "./components/Header";
 import { Footer, PrivacyDialog } from "./components/Footer";
+import FloatingActions from "./components/FloatingActions";
 import Home from "./pages/Home";
 import QlikOverview from "./pages/QlikOverview";
 import IndustryPage from "./pages/IndustryPage";
@@ -44,6 +45,7 @@ export default function App() {
         </Routes>
       </main>
       <Footer onPrivacy={openPrivacy} />
+      <FloatingActions />
       {privacy && <PrivacyDialog onClose={closePrivacy} />}
     </>
   );
