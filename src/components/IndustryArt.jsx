@@ -2,16 +2,16 @@ import { useId } from "react";
 
 const BARS = [34, 48, 40, 62, 52, 74, 66];
 
-/** Pink vertical light streaks that sit behind each dashboard mock-up. */
+/** Soft plum vertical light streaks that sit behind each dashboard mock-up. */
 function Streaks({ id }) {
   const rects = [[18, 26, 120], [78, 14, 160], [292, 34, 150], [338, 14, 110], [236, 12, 90]];
   return (
     <g aria-hidden="true">
       <defs>
         <linearGradient id={id + "s"} x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stopColor="#EC5FAE" stopOpacity="0" />
-          <stop offset=".55" stopColor="#EC5FAE" stopOpacity=".34" />
-          <stop offset="1" stopColor="#EC5FAE" stopOpacity="0" />
+          <stop offset="0" stopColor="#5A2390" stopOpacity="0" />
+          <stop offset=".55" stopColor="#5A2390" stopOpacity=".17" />
+          <stop offset="1" stopColor="#5A2390" stopOpacity="0" />
         </linearGradient>
       </defs>
       {rects.map(([x, w, h], i) => (
@@ -25,13 +25,13 @@ function Frame({ id, label, children }) {
   return (
     <svg viewBox="0 0 360 210" role="img" aria-label={label} preserveAspectRatio="xMidYMid meet">
       <defs>
-        <linearGradient id={id + "g"} x1="0" x2="1"><stop offset="0" stopColor="#42116F" /><stop offset="1" stopColor="#EC5FAE" /></linearGradient>
-        <linearGradient id={id + "a"} x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#9B4DA8" stopOpacity=".35" /><stop offset="1" stopColor="#9B4DA8" stopOpacity="0" /></linearGradient>
+        <linearGradient id={id + "g"} x1="0" x2="1"><stop offset="0" stopColor="#42116F" /><stop offset="1" stopColor="#7A3A9E" /></linearGradient>
+        <linearGradient id={id + "a"} x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#5A2390" stopOpacity=".25" /><stop offset="1" stopColor="#5A2390" stopOpacity="0" /></linearGradient>
       </defs>
       <Streaks id={id} />
       <rect x="46" y="30" width="276" height="170" rx="14" fill="#42116F" opacity=".12" />
       <rect x="40" y="22" width="276" height="170" rx="14" fill="var(--paper)" stroke="var(--line)" />
-      <circle cx="56" cy="38" r="3.2" fill="#EC5FAE" /><circle cx="67" cy="38" r="3.2" fill="#C78BDA" /><circle cx="78" cy="38" r="3.2" fill="#9B4DA8" />
+      <circle cx="56" cy="38" r="3.2" fill="#7A3A9E" /><circle cx="67" cy="38" r="3.2" fill="#C9B3EA" /><circle cx="78" cy="38" r="3.2" fill="#5A2390" />
       <rect x="226" y="34" width="74" height="8" rx="4" fill="var(--mist)" />
       {children}
     </svg>
@@ -78,7 +78,7 @@ export function CmeArt() {
       <Label x="64" y="68">Viewership</Label>
       <path d={`${trend} L228 172 L62 172 Z`} fill={`url(#${id}a)`} />
       <path d={trend} fill="none" stroke={`url(#${id}g)`} strokeWidth="3" strokeLinecap="round" />
-      <circle cx="176" cy="112" r="4" fill="var(--paper)" stroke="#EC5FAE" strokeWidth="2" />
+      <circle cx="176" cy="112" r="4" fill="var(--paper)" stroke="#5A2390" strokeWidth="2" />
       <rect x="214" y="52" width="92" height="62" rx="9" fill="var(--mist)" />
       <circle cx="260" cy="83" r="17" fill="none" stroke="var(--line)" strokeWidth="8" />
       <circle cx="260" cy="83" r="17" fill="none" stroke={`url(#${id}g)`} strokeWidth="8" strokeDasharray="70 107" strokeLinecap="round" transform="rotate(-90 260 83)" />

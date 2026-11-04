@@ -106,8 +106,8 @@ export default function ServiceJourney() {
             <defs>
               <linearGradient id="sj-grad" gradientUnits="userSpaceOnUse" x1={CX - R} y1={CY + R} x2={CX + R} y2={CY - R}>
                 <stop offset="0" stopColor="#42116F" />
-                <stop offset=".55" stopColor="#9B4DA8" />
-                <stop offset="1" stopColor="#EC5FAE" />
+                <stop offset=".55" stopColor="#5A2390" />
+                <stop offset="1" stopColor="#7A3A9E" />
               </linearGradient>
             </defs>
             <circle className="sj-ring-base" cx={CX} cy={CY} r={R} />

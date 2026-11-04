@@ -10,10 +10,10 @@ const HASH_PREFIX = "case-";
 const PUBLISHED = caseStudies.filter((c) => c.published);
 const CATEGORY_ORDER = ["Real-Time Replication", "Modernization", "Migration & Upgrade", "Architecture & Performance"];
 const CATEGORY_DOT = {
-  "Real-Time Replication": "#EC5FAE",
-  Modernization: "#9B4DA8",
-  "Migration & Upgrade": "#42116F",
-  "Architecture & Performance": "#E8A33D",
+  "Real-Time Replication": "#5A2390",
+  Modernization: "#7A3A9E",
+  "Migration & Upgrade": "#1E2A6B",
+  "Architecture & Performance": "#1F8A8A",
 };
 const rank = (c) => { const i = CATEGORY_ORDER.indexOf(c.category); return i < 0 ? CATEGORY_ORDER.length : i; };
 
@@ -162,7 +162,7 @@ export default function CaseStudies({ headingLevel = 2 }) {
         >
           {LIST.map((s, i) => (
             <button key={s.id} type="button" className="ck-pill" aria-current={i === index ? "true" : undefined} onClick={() => goTo(i)}>
-              <i style={{ background: CATEGORY_DOT[s.category] || "#9B4DA8" }} aria-hidden="true" />
+              <i style={{ background: CATEGORY_DOT[s.category] || "#7A3A9E" }} aria-hidden="true" />
               <span>{s.title}</span>
               <b>{s.highlight.value}</b>
             </button>

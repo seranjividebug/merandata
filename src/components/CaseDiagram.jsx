@@ -121,7 +121,7 @@ function Dots({ d, glow, offset = 0 }) {
   if (REDUCED) return null;
   return [0, 1].map((i) => (
     <g key={i} filter={`url(#${glow})`}>
-      <circle r="9" fill="#EC5FAE" opacity=".45" />
+      <circle r="9" fill="#9B7BD0" opacity=".4" />
       <circle r="3.6" fill="#fff" />
       <animateMotion path={d} dur="3s" begin={`${-(offset + i * 1.5)}s`} repeatCount="indefinite" />
     </g>
@@ -217,18 +217,18 @@ export default function CaseDiagram({ diagram, title, vertical = false }) {
         <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label={`${title}: ${summary}`}>
           <defs>
             <linearGradient id={`g${uid}`} x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0" stopColor="#42116F" />
-              <stop offset=".55" stopColor="#9B4DA8" />
-              <stop offset="1" stopColor="#EC5FAE" />
+              <stop offset="0" stopColor="#2A1458" />
+              <stop offset=".55" stopColor="#4A1F86" />
+              <stop offset="1" stopColor="#7A3A9E" />
             </linearGradient>
             <radialGradient id={`h${uid}`}>
-              <stop offset="0" stopColor="#EC5FAE" stopOpacity=".55" />
-              <stop offset="1" stopColor="#EC5FAE" stopOpacity="0" />
+              <stop offset="0" stopColor="#5A2390" stopOpacity=".3" />
+              <stop offset="1" stopColor="#5A2390" stopOpacity="0" />
             </radialGradient>
             <clipPath id={`c${uid}`}><rect x={ex0} y={ey} width={ENGINE} height={ENGINE} rx="24" /></clipPath>
             <filter id={`f${uid}`} x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="3" /></filter>
             <marker id={`a${uid}`} viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto">
-              <path d="M1 1.5 8.5 5 1 8.5Z" fill="#F3C9E3" />
+              <path d="M1 1.5 8.5 5 1 8.5Z" fill="#C9B3EA" />
             </marker>
           </defs>
 

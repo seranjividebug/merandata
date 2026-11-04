@@ -5,7 +5,7 @@
 .sj-bar-track{position:absolute;left:26px;right:26px;top:50%;height:3px;margin-top:-1.5px;border-radius:3px;background:var(--line);z-index:-1;overflow:hidden}
 .sj-bar-track span{display:block;height:100%;transform-origin:left;background:var(--grad);transition:transform .2s linear}
 .sj-bar-dot{width:44px;height:44px;border-radius:50%;border:2px solid var(--line);background:#fff;color:var(--plum);display:grid;place-items:center;cursor:pointer;transition:background-color .2s,color .2s,border-color .2s,transform .2s}
-.sj-bar-dot.is-done{border-color:var(--orchid)}
+.sj-bar-dot.is-done{border-color:var(--plum-2)}
 .sj-bar-dot.is-active{background:var(--grad);border-color:transparent;color:#fff;transform:scale(1.08)}
 .sj-bar-dot:focus-visible,.sj-btn:focus-visible{outline:3px solid var(--focus);outline-offset:3px}
 
@@ -20,7 +20,7 @@
 .sj-checks{list-style:none;margin:22px 0 0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 24px}
 .sj-checks li{display:grid;grid-template-columns:20px 1fr;gap:10px;font-size:15px;line-height:1.5;min-width:0}
 .sj-checks li span{overflow-wrap:anywhere}
-.sj-checks svg{margin-top:2px;color:var(--rose)}
+.sj-checks svg{margin-top:2px;color:var(--plum-2)}
 .sj-outcome{margin-top:24px;padding:16px 18px;border-radius:14px;background:var(--plum-tint);font-size:15.5px;color:var(--ink)}
 .sj-outcome strong{display:block;margin-bottom:2px;font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--plum)}
 .sj-cta{padding:8px 0 0}
@@ -50,7 +50,7 @@
   .sj-btn{position:relative;width:100%;height:100%;border-radius:50%;border:2px solid var(--line);background:#fff;color:var(--plum);display:grid;place-items:center;cursor:pointer;transition:transform .3s ease,background-color .3s,color .3s,border-color .3s,box-shadow .3s}
   .sj-btn svg{width:1.6em;height:1.6em}
   .sj-btn.is-done{border:2px solid transparent;background:linear-gradient(#fff,#fff) padding-box,var(--grad) border-box}
-  .sj-btn.is-active{background:var(--grad);border-color:transparent;color:#fff;transform:scale(1.1);box-shadow:0 0 0 0 rgba(236,95,174,.55);animation:sj-pulse 2.4s ease-out infinite}
+  .sj-btn.is-active{background:var(--grad);border-color:transparent;color:#fff;transform:scale(1.1);box-shadow:0 0 0 0 rgba(90,35,144,.45);animation:sj-pulse 2.4s ease-out infinite}
   .sj-check{position:absolute;right:-.15em;top:-.15em;width:1.5em;height:1.5em;border-radius:50%;background:var(--grad);color:#fff;display:grid;place-items:center;border:2px solid var(--mist)}
   .sj-check svg{width:.85em;height:.85em}
   .sj-label{position:absolute;font-size:.82em;font-weight:600;line-height:1.25;color:var(--ink);white-space:nowrap}
@@ -62,15 +62,15 @@
   .sj-disc{position:absolute;left:50%;top:50%;width:13.5em;height:13.5em;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(90% 90% at 70% 15%,#26204F,transparent 70%),var(--navy);box-shadow:0 20px 40px -20px rgba(12,18,48,.6);display:grid;place-items:center;text-align:center;padding:1.3em}
   .sj-disc-in{display:grid;gap:.25em;justify-items:center;animation:sj-fade .25s ease both;transition:opacity .12s ease}
   .sj-disc-in.is-out{opacity:0}
-  .sj-num{font-size:3em;font-weight:800;line-height:1;letter-spacing:-.03em;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;padding:0 .05em}
+  .sj-num{font-size:3em;font-weight:800;line-height:1;letter-spacing:-.03em;background:linear-gradient(100deg,#C9B3EA 0%,#9B7BD0 100%);-webkit-background-clip:text;background-clip:text;color:transparent;padding:0 .05em}
   .sj-disc strong{font-size:1.05em;font-weight:700;color:#fff;line-height:1.2}
   .sj-disc .sj-desc{font-size:.76em;line-height:1.35;color:rgba(255,255,255,.78)}
 }
-@keyframes sj-pulse{0%{box-shadow:0 0 0 0 rgba(236,95,174,.55)}70%,100%{box-shadow:0 0 0 1.1em rgba(236,95,174,0)}}
+@keyframes sj-pulse{0%{box-shadow:0 0 0 0 rgba(90,35,144,.45)}70%,100%{box-shadow:0 0 0 1.1em rgba(90,35,144,0)}}
 @keyframes sj-fade{from{opacity:0}to{opacity:1}}
 
 @media (prefers-reduced-motion:reduce){
-  .sj-btn.is-active{animation:none;box-shadow:0 0 0 .35em rgba(236,95,174,.25)}
+  .sj-btn.is-active{animation:none;box-shadow:0 0 0 .35em rgba(90,35,144,.25)}
   .sj-disc-in{animation:none;transition:none}
   .sj-bar-track span,.sj-bar-dot,.sj-panel,.sj-accent,.sj-btn{transition:none}
 }

@@ -1,5 +1,5 @@
 /* Case studies: section, cards and detail dialog. Uses the tokens from styles.css. */
-.cases{--grad-dark:linear-gradient(100deg,#C58BEA 0%,#EC5FAE 100%);scroll-margin-top:var(--header-h)}
+.cases{scroll-margin-top:var(--header-h)}
 .cases-head{max-width:720px;margin-bottom:32px}
 .cases-eyebrow{font-size:13px;font-weight:700;letter-spacing:.14em;color:var(--plum);margin-bottom:12px}
 .cases-head h2,.cases-head h3{font-size:clamp(26px,2.5vw,34px);font-weight:700;letter-spacing:-.02em}
@@ -18,7 +18,7 @@
 /* Stat tiles */
 .ck-stats{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;flex:0 0 auto}
 .ck-stats li{padding:12px 14px;border-radius:14px;background:var(--mist);border:1px solid var(--line);display:flex;flex-direction:column;gap:2px;min-width:0}
-.ck-stats strong{font-size:clamp(20px,1.9vw,26px);font-weight:800;line-height:1.1;letter-spacing:-.02em;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;overflow-wrap:anywhere}
+.ck-stats strong{font-size:clamp(20px,1.9vw,26px);font-weight:800;line-height:1.1;letter-spacing:-.02em;background:var(--grad-text);-webkit-background-clip:text;background-clip:text;color:transparent;overflow-wrap:anywhere}
 .ck-stats span{font-size:12.5px;color:var(--muted);line-height:1.3}
 
 /* Story column */
@@ -39,7 +39,7 @@
 .ck-n{min-width:30px;height:22px;padding:0 8px;border-radius:999px;background:var(--navy);color:#fff;font-size:11.5px;font-weight:700;display:grid;place-items:center}
 .is-hl .ck-n{background:var(--grad)}
 .ck-block ul{margin:0;padding-left:18px;display:grid;gap:6px;color:var(--muted);font-size:13.5px;line-height:1.45;overflow-wrap:anywhere}
-.ck-block li::marker{color:var(--rose)}
+.ck-block li::marker{color:var(--plum-2)}
 .ck-discuss{align-self:flex-start;margin-top:auto}
 .ck-blocks{margin-bottom:20px}
 
@@ -77,18 +77,18 @@
 .cd text{font-family:var(--font);fill:#fff}
 .cd .cd-label{font-size:17px;font-weight:600}
 .cd.is-vertical .cd-label{font-size:15px}
-.cd .cd-capt{font-size:13px;font-weight:500;fill:rgba(243,201,227,.8)}
+.cd .cd-capt{font-size:13px;font-weight:500;fill:rgba(201,179,234,.9)}
 .cd-tile{fill:#fff;filter:drop-shadow(0 8px 16px rgba(0,0,0,.35))}
 .cd .cd-badge{fill:none;stroke:var(--navy);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
 .cd .cd-badge text{fill:var(--navy);stroke:none;font-weight:700}
 .cd-check circle{fill:#1E9E63;stroke:var(--navy);stroke-width:3}
 .cd-check path{fill:none;stroke:#fff;stroke-width:3.2;stroke-linecap:round;stroke-linejoin:round}
 .cd-rail{fill:none;stroke:rgba(255,255,255,.1);stroke-width:2}
-.cd-flow{fill:none;stroke:rgba(236,95,174,.7);stroke-width:1.6;stroke-linecap:round;stroke-dasharray:5 9;animation:cd-dash 1.4s linear infinite}
+.cd-flow{fill:none;stroke:rgba(201,179,234,.75);stroke-width:1.6;stroke-linecap:round;stroke-dasharray:5 9;animation:cd-dash 1.4s linear infinite}
 @keyframes cd-dash{to{stroke-dashoffset:-14}}
 .cd-ring{fill:none;stroke:rgba(243,201,227,.55);stroke-width:2;stroke-dasharray:3 11;stroke-linecap:round;transform-box:fill-box;transform-origin:center;animation:cd-spin 40s linear infinite}
 @keyframes cd-spin{to{transform:rotate(360deg)}}
-.cd-engine{filter:drop-shadow(0 14px 26px rgba(236,95,174,.45))}
+.cd-engine{filter:drop-shadow(0 14px 26px rgba(90,35,144,.5))}
 .cd .cd-engine-t{font-size:16px;font-weight:700}
 
 
