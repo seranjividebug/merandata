@@ -1,6 +1,6 @@
 {
   // Cloudflare Workers static assets: serve index.html for unknown paths so /qlik/... works on refresh.
-  "name": "still-math-0620",
+  "name": "merandatav3",
   "compatibility_date": "2025-01-01",
   "assets": {
     "directory": "./dist",
