@@ -4,6 +4,7 @@ import { NAV } from "../data";
 import { useSectionLink } from "../nav";
 import { I } from "./Icons";
 import Search from "./Search";
+import AnimatedButton from "./AnimatedButton";
 
 export default function Header({ active }) {
   const [open, setOpen] = useState(false);
@@ -38,7 +39,7 @@ export default function Header({ active }) {
         </a>
         <nav className="nav" aria-label="Main">{links}</nav>
         <Search onOpen={close} />
-        <a className="btn btn-dark cta-head" {...link("contact", close)}>Get in Touch</a>
+        <AnimatedButton variant="dark" className="cta-head" {...link("contact", close)}>Get in Touch</AnimatedButton>
         <button className="menu-btn" aria-expanded={open} aria-controls="mnav" aria-label={open ? "Close menu" : "Open menu"} onClick={() => setOpen(!open)}>
           {open ? I.close : I.menu}
         </button>

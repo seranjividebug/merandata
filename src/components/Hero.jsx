@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
 import { HERO_SLIDES } from "../data";
 import { useSectionLink } from "../nav";
 import { REDUCED } from "../utils";
@@ -7,6 +6,7 @@ import qlikImg from "../assets/hero/hero-qlik.webp";
 import aiImg from "../assets/hero/hero-ai.webp";
 import healthcareImg from "../assets/hero/hero-healthcare.webp";
 import QlikLogo from "./QlikLogo";
+import AnimatedButton from "./AnimatedButton";
 
 const IMAGES = { qlik: qlikImg, ai: aiImg, healthcare: healthcareImg };
 const INTERVAL = 6000;
@@ -21,12 +21,6 @@ if (typeof document !== "undefined" && !document.querySelector("link[data-hero-p
   link.dataset.heroPreload = "";
   document.head.appendChild(link);
 }
-
-const ARROW = (
-  <svg className="hs-go" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M5 12h14M13 6l6 6-6 6" />
-  </svg>
-);
 
 const Arrow = ({ dir }) => (
   <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
@@ -83,7 +77,7 @@ export default function Hero() {
           const active = i === index;
           const Title = i === 0 ? "h1" : "h2";
           const link = s.to ? null : sectionLink(s.section);
-          const label = <>Explore More<span className="sr">: {s.title}</span>{ARROW}</>;
+          const label = <>Explore More<span className="sr">: {s.title}</span></>;
           return (
             <div
               key={s.key}
@@ -116,8 +110,8 @@ export default function Hero() {
                 <div className="hs-r">
                   <p className="hs-desc">{s.desc}</p>
                   {s.to
-                    ? <Link className="hs-btn" to={s.to} tabIndex={active ? 0 : -1}>{label}</Link>
-                    : <a className="hs-btn" {...link} tabIndex={active ? 0 : -1}>{label}</a>}
+                    ? <AnimatedButton shine className="hs-btn" to={s.to} tabIndex={active ? 0 : -1}>{label}</AnimatedButton>
+                    : <AnimatedButton shine className="hs-btn" {...link} tabIndex={active ? 0 : -1}>{label}</AnimatedButton>}
                 </div>
               </div>
             </div>

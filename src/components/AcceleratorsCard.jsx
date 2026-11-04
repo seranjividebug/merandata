@@ -6,6 +6,7 @@ import { QLIK_BENEFITS } from "../data";
 import { logoSource } from "../logoMap";
 import { useSectionLink } from "../nav";
 import { REDUCED } from "../utils";
+import AnimatedButton from "./AnimatedButton";
 import { CIcon } from "./caseIcons";
 import { I } from "./Icons";
 import "../accelerators.css";
@@ -198,7 +199,7 @@ export default function AcceleratorsCard({ seeAll = false, headingId = "acc-h" }
             </div>
 
             <div className="ax-foot">
-              <a className="btn btn-grad" {...link("contact")}>Talk to us about this accelerator</a>
+              <AnimatedButton {...link("contact")}>Talk to us about this accelerator</AnimatedButton>
               <div className="ax-step">
                 <button type="button" aria-label="Previous accelerator" onClick={() => select(accelerators[(index - 1 + total) % total].id)}><CIcon name="prev" size={18} strokeWidth={2.2} /></button>
                 <span aria-live="polite">{index + 1} / {total}</span>

@@ -1,0 +1,48 @@
+/* Animated CTA button. Only transform and opacity are animated (plus colour on the text). */
+.abtn{position:relative;overflow:hidden;isolation:isolate;display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:48px;padding:0 24px;font-size:16px;border-radius:999px;border:1.5px solid transparent;font-family:inherit;font-weight:600;text-decoration:none;cursor:pointer;white-space:nowrap;-webkit-tap-highlight-color:transparent;transition:transform .25s cubic-bezier(.22,1,.36,1),box-shadow .3s ease,color .3s ease;--fill:linear-gradient(110deg,#0C1230,#42116F);--shine:rgba(90,35,144,.24)}
+.abtn-light{background:#fff;color:var(--navy)}
+.abtn-dark{background:var(--navy);color:#fff;--fill:linear-gradient(110deg,#42116F,#5A2390);--shine:rgba(255,255,255,.32)}
+.abtn:disabled{opacity:.7;cursor:not-allowed}
+
+/* hover fill */
+.abtn::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--fill);transform:scaleX(0);transform-origin:left;transition:transform .4s cubic-bezier(.22,1,.36,1)}
+.abtn-label,.abtn-arrow{position:relative;z-index:1}
+
+/* arrow: two stacked copies, one leaves right while the other enters from the left */
+.abtn-arrow{display:inline-block;position:relative;width:18px;height:18px;flex:none;overflow:hidden}
+.abtn-arrow span{position:absolute;inset:0;display:grid;place-items:center;transition:transform .35s cubic-bezier(.22,1,.36,1),opacity .35s ease}
+.abtn-a2{transform:translateX(-120%);opacity:0}
+
+/* idle shine (hero buttons only) */
+.abtn-shine::after{content:"";position:absolute;top:0;bottom:0;left:0;width:40%;z-index:0;background:linear-gradient(90deg,transparent,var(--shine),transparent);transform:translateX(-160%) skewX(-20deg);opacity:0;pointer-events:none;animation:abtn-shine 5s ease-in-out infinite}
+@keyframes abtn-shine{0%{transform:translateX(-160%) skewX(-20deg);opacity:1}22%{transform:translateX(380%) skewX(-20deg);opacity:1}22.1%,100%{transform:translateX(380%) skewX(-20deg);opacity:0}}
+
+/* hover (real pointers only) and keyboard focus */
+@media (hover:hover){
+  .abtn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 10px 30px -12px rgba(12,18,48,.6),0 0 0 1px rgba(255,255,255,.2)}
+  .abtn:hover:not(:disabled)::before{transform:scaleX(1)}
+  .abtn-light:hover:not(:disabled){color:#fff}
+  .abtn:hover:not(:disabled) .abtn-a1{transform:translateX(120%);opacity:0}
+  .abtn:hover:not(:disabled) .abtn-a2{transform:none;opacity:1}
+  .abtn-shine:hover::after{animation-play-state:paused;opacity:0}
+}
+.abtn:focus-visible{outline:2px solid var(--rose);outline-offset:3px}
+.abtn:focus-visible:not(:disabled){transform:translateY(-2px);box-shadow:0 10px 30px -12px rgba(12,18,48,.6),0 0 0 1px rgba(255,255,255,.2)}
+.abtn:focus-visible:not(:disabled)::before{transform:scaleX(1)}
+.abtn-light:focus-visible:not(:disabled){color:#fff}
+.abtn:focus-visible:not(:disabled) .abtn-a1{transform:translateX(120%);opacity:0}
+.abtn:focus-visible:not(:disabled) .abtn-a2{transform:none;opacity:1}
+.abtn-shine:focus-visible::after{animation-play-state:paused;opacity:0}
+
+/* press */
+.abtn:active:not(:disabled){transform:scale(.97);transition-duration:.12s}
+
+/* reduced motion: no shine, no arrow loop, no lift; the colour change is instant */
+@media (prefers-reduced-motion:reduce){
+  .abtn,.abtn::before,.abtn-arrow span{transition:none}
+  .abtn-shine::after{display:none}
+  .abtn:hover:not(:disabled),.abtn:focus-visible:not(:disabled){transform:none}
+  .abtn:hover:not(:disabled) .abtn-a1,.abtn:focus-visible:not(:disabled) .abtn-a1{transform:none;opacity:1}
+  .abtn:hover:not(:disabled) .abtn-a2,.abtn:focus-visible:not(:disabled) .abtn-a2{transform:translateX(-120%);opacity:0}
+  .abtn:active:not(:disabled){transform:none}
+}

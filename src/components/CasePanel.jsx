@@ -1,4 +1,5 @@
 import { useSectionLink } from "../nav";
+import AnimatedButton from "./AnimatedButton";
 import CaseDiagram from "./CaseDiagram";
 import { CIcon } from "./caseIcons";
 
@@ -48,7 +49,7 @@ export default function CasePanel({ study, vertical }) {
           ))}
         </div>
 
-        <a className="btn btn-grad ck-discuss" {...link("contact")}>Discuss a similar project</a>
+        <AnimatedButton variant="dark" className="ck-discuss" {...link("contact")}>Discuss a similar project</AnimatedButton>
       </div>
     </div>
   );

@@ -75,7 +75,7 @@
 }
 @media (max-width:640px){
   .ax-strip{grid-template-columns:minmax(0,1fr)}
-  .ax-foot .btn{flex:1 1 100%;white-space:normal;text-align:center;padding:12px 20px}
+  .ax-foot .abtn{flex:1 1 100%;white-space:normal;text-align:center;padding:12px 20px}
   .ax-step{width:100%;justify-content:space-between}
   .ax-tabs{margin-right:-4px}
 }

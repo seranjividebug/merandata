@@ -3,11 +3,12 @@ import { usePageTitle, useSectionLink } from "../nav";
 import { go } from "../utils";
 import { SectionHead } from "../components/Icons";
 import platformImg from "../assets/qlik-platform.webp";
-import { Breadcrumb, QlikCta, TrademarkLine } from "../components/QlikBits";
+import { Breadcrumb, TrademarkLine } from "../components/QlikBits";
 import CapabilityStack from "../components/CapabilityStack";
 import CaseStudies from "../components/CaseStudies";
 import ServiceJourney from "../components/ServiceJourney";
 import AcceleratorsCard from "../components/AcceleratorsCard";
+import AnimatedButton from "../components/AnimatedButton";
 
 export default function QlikOverview() {
   usePageTitle(O.title, O.description);
@@ -23,7 +24,7 @@ export default function QlikOverview() {
               <h1 id="qlik-h1">{O.h1}</h1>
               <p className="lede">{O.intro}</p>
               <div className="qhero-ctas">
-                <a className="btn btn-grad" {...link("contact")}>Talk to a Qlik Expert</a>
+                <AnimatedButton {...link("contact")}>Talk to a Qlik Expert</AnimatedButton>
                 <a className="btn btn-ghost-light" href="#capabilities" onClick={(e) => go("capabilities", e)}>Explore Capabilities</a>
               </div>
             </div>
@@ -56,7 +57,6 @@ export default function QlikOverview() {
         <div className="wrap"><CaseStudies /></div>
       </section>
 
-      <QlikCta />
       <TrademarkLine />
     </>
   );

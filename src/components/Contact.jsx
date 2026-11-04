@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
 import { INTERESTS } from "../data";
 import { I, SectionHead } from "./Icons";
+import AnimatedButton from "./AnimatedButton";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 const EMPTY = { name: "", email: "", company: "", interest: "", message: "", website: "" };
@@ -119,7 +120,7 @@ export default function Contact({ onPrivacy }) {
                   <button type="button" className="linkbtn" onClick={onPrivacy}>privacy policy</button>.
                 </p>
                 <div className="form-foot">
-                  <button className="btn btn-dark" type="submit" disabled={status === "sending"}>{status === "sending" ? "Sending…" : "Send inquiry"}</button>
+                  <AnimatedButton variant="dark" type="submit" disabled={status === "sending"}>{status === "sending" ? "Sending…" : "Send inquiry"}</AnimatedButton>
                   <span className="note">Preview build: messages will be routed to the company inbox before launch.</span>
                 </div>
               </form>
