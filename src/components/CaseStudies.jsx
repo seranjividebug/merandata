@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { caseImpact, caseStudies, CASE_CATEGORIES } from "../caseStudies";
+import { caseImpact, caseStudies, CASE_CATEGORIES, FEATURED_CASE_IDS } from "../caseStudies";
 import { REDUCED } from "../utils";
 import CaseCard from "./CaseCard";
 import CaseModal from "./CaseModal";
@@ -9,6 +9,16 @@ import "../caseStudies.css";
 const FIRST = 6;
 const HASH_PREFIX = "case-";
 const PUBLISHED = caseStudies.filter((c) => c.published);
+const CATEGORY_ORDER = ["Real-Time Replication", "Modernization", "Migration & Upgrade", "Architecture & Performance"];
+const rank = (c) => { const i = CATEGORY_ORDER.indexOf(c.category); return i < 0 ? CATEGORY_ORDER.length : i; };
+
+/** Featured cases first (in their listed order), then the rest grouped by category in data order. */
+const FEATURED = FEATURED_CASE_IDS.map((id) => PUBLISHED.find((c) => c.id === id)).filter(Boolean);
+const REST = PUBLISHED.filter((c) => !FEATURED.includes(c))
+  .map((c, i) => ({ c, i }))
+  .sort((x, y) => rank(x.c) - rank(y.c) || x.i - y.i)
+  .map((x) => x.c);
+const ORDERED = [...FEATURED, ...REST];
 
 const setHash = (hash) => {
   const { pathname, search } = window.location;
@@ -45,10 +55,10 @@ export default function CaseStudies({ headingLevel = 2 }) {
   const H = `h${headingLevel}`;
 
   const counts = useMemo(() => Object.fromEntries(CASE_CATEGORIES.map((c) => [c, PUBLISHED.filter((s) => s.category === c).length])), []);
-  const filtered = useMemo(() => (filter === "All" ? PUBLISHED : PUBLISHED.filter((s) => s.category === filter)), [filter]);
+  const filtered = useMemo(() => (filter === "All" ? ORDERED : ORDERED.filter((s) => s.category === filter)), [filter]);
   const shown = showAll ? filtered : filtered.slice(0, FIRST);
-  const active = PUBLISHED.find((s) => s.id === openId) || null;
-  const navList = active && filtered.some((s) => s.id === active.id) ? filtered : PUBLISHED;
+  const active = ORDERED.find((s) => s.id === openId) || null;
+  const navList = active && filtered.some((s) => s.id === active.id) ? filtered : ORDERED;
   useModalLock(!!active);
 
   const choose = (name) => { setFilter(name); setShowAll(false); };

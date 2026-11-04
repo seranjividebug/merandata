@@ -528,3 +528,13 @@ export const caseImpact = [
   { value: "< 5s", label: "replication latency" },
   { value: "40 hrs", label: "typical Qlik migration" },
 ];
+
+// Shown first (in this order) when the list is on "All". Unpublished ids are skipped.
+export const FEATURED_CASE_IDS = [
+  "sqlserver-synapse",
+  "multi-source-databricks",
+  "airline-modernization",
+  "qlikview-to-qlik-cloud",
+  "qlik-server-upgrade",
+  "architecture-review",
+];
