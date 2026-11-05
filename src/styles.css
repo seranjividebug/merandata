@@ -426,7 +426,7 @@ section.alt{background:var(--mist)}
   .qhero-scroll:hover{color:#fff}
   .qhero-scroll:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
 }
-@keyframes qhero-bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(5px)}}
+@keyframes qhero-bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(4px)}}
 @media (prefers-reduced-motion:reduce){.qhero-scroll{display:none!important}}
 .services.two{grid-template-columns:repeat(2,1fr)}
 .three{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
