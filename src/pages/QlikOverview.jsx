@@ -56,7 +56,7 @@ export default function QlikOverview() {
         </div>
       </section>
 
-      <section className="block alt cases-sec" data-hide-fab aria-labelledby="case-studies-h">
+      <section className="block alt" aria-labelledby="case-studies-h">
         <div className="wrap"><CaseStudies /></div>
       </section>
 
