@@ -5,20 +5,26 @@ import { iconPaths } from "./caseIcons";
 
 // Drawing grids. The picture scales with its container.
 // Horizontal: sources left, engine centre, targets right. Vertical (phones): sources top, targets bottom.
-const H_W = 700;
-const H_SRC_X = 104;
-const V_W = 360;
-const V_CELL_MAX = 160;
-const V_GAP = 64; // space for the connectors between the rows and the engine ring
-const TILE_H = 72;
-const SLOT_W = 60;
-const GAP = 16;
-const ENGINE = 140;
-const ENGINE_TOP = 82; // height of the white logo area; the rest is the gradient name band
-const RING = 108;
-const PAD = 14;
-const LABEL_AT = 22;
-const LABEL_LH = 18;
+// `FULL` is the roomy version; `COMPACT` fits the showcase panel's fixed-height diagram box.
+const FULL = {
+  H_W: 700, H_SRC_X: 104, V_W: 360, V_CELL_MAX: 160,
+  V_GAP: 64, // space for the connectors between the rows and the engine ring
+  TILE_H: 72, SLOT_W: 60, GAP: 16, LOGO_H: 40,
+  ENGINE: 140, ENGINE_TOP: 82, // height of the white logo area; the rest is the gradient name band
+  RING: 108, PAD: 14, LABEL_AT: 22, LABEL_LH: 18, CAPT: 24, CAPT_GAP: 18, WRAP: 24,
+  ENAME_1: 34, ENAME_2: 24, ENAME_DY: 18, ELOGO_W: 96, ELOGO_H: 46, ELOGO_S: 1.3,
+};
+const COMPACT = {
+  H_W: 560, H_SRC_X: 80, V_W: 360, V_CELL_MAX: 130,
+  V_GAP: 48,
+  TILE_H: 56, SLOT_W: 46, GAP: 8, LOGO_H: 30,
+  ENGINE: 112, ENGINE_TOP: 64,
+  RING: 80, PAD: 8, LABEL_AT: 16, LABEL_LH: 14, CAPT: 14, CAPT_GAP: 13, WRAP: 20,
+  ENAME_1: 31, ENAME_2: 21, ENAME_DY: 14, ELOGO_W: 72, ELOGO_H: 34, ELOGO_S: 1,
+};
+
+// Phones: the vertical flow in a 240px box, so the engine and the gaps shrink a little more.
+const COMPACT_V = { ...COMPACT, V_GAP: 34, RING: 66, ENGINE: 96, ENGINE_TOP: 54, ENAME_1: 27, ENAME_2: 18, ELOGO_W: 60, ELOGO_H: 28 };
 
 const CAPTIONS = {
   oneWay: ["Source", "Target"],
@@ -72,29 +78,29 @@ const keysFor = (label) => {
 };
 
 /** Measure a node: logo keys, tile width, label lines and block height. `cellW` caps the width (vertical layout). */
-function measure(label, cellW) {
+function measure(label, cellW, g) {
   const keys = keysFor(label);
-  const lines = wrapLabel(label, cellW ? Math.max(9, Math.floor(cellW / 8.4)) : 21, cellW ? 3 : 2);
-  const w = Math.min(Math.max(72, keys.length * SLOT_W + 16), cellW || Infinity);
-  const area = LABEL_AT + (lines.length - 1) * LABEL_LH + 24; // label and caption
-  return { label, keys, lines, w, area, h: TILE_H + area };
+  const lines = wrapLabel(label, cellW ? Math.max(9, Math.floor(cellW / (g.TILE_H < 60 ? 6.6 : 8.4))) : g.TILE_H < 60 ? g.WRAP : 21, cellW ? 3 : 2);
+  const w = Math.min(Math.max(g.TILE_H, keys.length * g.SLOT_W + 16), cellW || Infinity);
+  const area = g.LABEL_AT + (lines.length - 1) * g.LABEL_LH + g.CAPT; // label and caption
+  return { label, keys, lines, w, area, h: g.TILE_H + area };
 }
 
 /** `flip` puts the label and caption above the tile (vertical sources, so the tile faces the engine). */
-function Node({ n, flip, caption, badge }) {
+function Node({ n, flip, caption, badge, g }) {
   const x = n.cx - n.w / 2;
-  const cy = n.tileTop + TILE_H / 2;
+  const cy = n.tileTop + g.TILE_H / 2;
   const slot = n.w / n.keys.length;
-  const labelY = flip ? n.top + 14 + LABEL_LH + 2 : n.tileTop + TILE_H + LABEL_AT;
-  const captionY = flip ? n.top + 14 : labelY + (n.lines.length - 1) * LABEL_LH + 18;
+  const labelY = flip ? n.top + 14 + g.LABEL_LH + 2 : n.tileTop + g.TILE_H + g.LABEL_AT;
+  const captionY = flip ? n.top + 14 : labelY + (n.lines.length - 1) * g.LABEL_LH + g.CAPT_GAP;
   return (
     <g className="cd-node">
-      <rect className="cd-tile" x={x} y={n.tileTop} width={n.w} height={TILE_H} rx="18" />
+      <rect className="cd-tile" x={x} y={n.tileTop} width={n.w} height={g.TILE_H} rx="18" />
       {n.keys.map((k, i) => (
-        <Logo key={(k || "x") + i} keyName={k} label={n.label} cx={x + slot * (i + 0.5)} cy={cy} boxW={slot - 12} boxH={40} />
+        <Logo key={(k || "x") + i} keyName={k} label={n.label} cx={x + slot * (i + 0.5)} cy={cy} boxW={slot - 12} boxH={g.LOGO_H} />
       ))}
       <text className="cd-label" x={n.cx} y={labelY} textAnchor="middle">
-        {n.lines.map((t, i) => <tspan key={t + i} x={n.cx} dy={i === 0 ? 0 : LABEL_LH}>{t}</tspan>)}
+        {n.lines.map((t, i) => <tspan key={t + i} x={n.cx} dy={i === 0 ? 0 : g.LABEL_LH}>{t}</tspan>)}
       </text>
       <text className="cd-capt" x={n.cx} y={captionY} textAnchor="middle">{caption}</text>
       {badge && (
@@ -129,7 +135,7 @@ function Dots({ d, glow, offset = 0 }) {
 }
 
 /** Lay out the nodes, engine and connector paths for either orientation. */
-function layout({ sources, targets, mode, vertical }) {
+function layout({ sources, targets, mode, vertical, g }) {
   const both = mode === "bidirectional";
   const off = both ? 9 : 0;
   const flows = [];
@@ -140,79 +146,80 @@ function layout({ sources, targets, mode, vertical }) {
   };
 
   if (!vertical) {
-    const left = sources.map((l) => measure(l));
-    const right = targets.map((l) => measure(l));
-    const colH = (c) => c.reduce((n, d) => n + d.h, 0) + GAP * (c.length - 1);
-    const body = Math.max(colH(left), colH(right), RING * 2 + 24);
-    const H = body + PAD * 2;
+    const left = sources.map((l) => measure(l, undefined, g));
+    const right = targets.map((l) => measure(l, undefined, g));
+    const colH = (c) => c.reduce((n, d) => n + d.h, 0) + g.GAP * (c.length - 1);
+    const body = Math.max(colH(left), colH(right), g.RING * 2 + 24);
+    const H = body + g.PAD * 2;
     const cy = H / 2;
-    const mid = H_W / 2;
+    const mid = g.H_W / 2;
     const place = (col, cx) => {
       let y = cy - colH(col) / 2;
-      return col.map((d) => { const top = y; y += d.h + GAP; return { ...d, cx, top, tileTop: top }; });
+      return col.map((d) => { const top = y; y += d.h + g.GAP; return { ...d, cx, top, tileTop: top }; });
     };
-    const L = place(left, H_SRC_X);
-    const R = place(right, H_W - H_SRC_X);
-    const ringL = mid - RING - 2;
-    const ringR = mid + RING + 2;
+    const L = place(left, g.H_SRC_X);
+    const R = place(right, g.H_W - g.H_SRC_X);
+    const ringL = mid - g.RING - 2;
+    const ringR = mid + g.RING + 2;
     L.forEach((n) => {
-      const y = n.tileTop + TILE_H / 2;
+      const y = n.tileTop + g.TILE_H / 2;
       const x = n.cx + n.w / 2 + 4;
       add([x, y - off, ringL, cy - off], [ringL, cy + off, x, y + off], both);
     });
     R.forEach((n) => {
-      const y = n.tileTop + TILE_H / 2;
+      const y = n.tileTop + g.TILE_H / 2;
       const x = n.cx - n.w / 2 - 4;
       add([ringR, cy - off, x, y - off], [x, y + off, ringR, cy + off], both);
     });
-    return { W: H_W, H, L, R, ex: mid, cy, flows };
+    return { W: g.H_W, H, L, R, ex: mid, cy, flows };
   }
 
   // Vertical: a row of sources on top, the engine in the middle, a row of targets below.
   const row = (labels) => {
-    const cell = Math.min(V_CELL_MAX, Math.floor((V_W - 16) / labels.length));
-    const nodes = labels.map((l) => measure(l, cell - 8));
-    const x0 = (V_W - cell * labels.length) / 2;
+    const cell = Math.min(g.V_CELL_MAX, Math.floor((g.V_W - 16) / labels.length));
+    const nodes = labels.map((l) => measure(l, cell - 8, g));
+    const x0 = (g.V_W - cell * labels.length) / 2;
     return { nodes: nodes.map((d, i) => ({ ...d, cx: x0 + cell * (i + 0.5) })), h: Math.max(...nodes.map((d) => d.h)) };
   };
   const top = row(sources);
   const bottom = row(targets);
-  const mid = V_W / 2;
-  const ringTop = PAD + top.h + V_GAP;
-  const cy = ringTop + RING + 2;
-  const ringBottom = cy + RING + 2;
-  const bottomTop = ringBottom + V_GAP;
-  const H = bottomTop + bottom.h + PAD;
-  const L = top.nodes.map((d) => { const t = PAD + (top.h - d.h); return { ...d, top: t, tileTop: t + d.area }; });
+  const mid = g.V_W / 2;
+  const ringTop = g.PAD + top.h + g.V_GAP;
+  const cy = ringTop + g.RING + 2;
+  const ringBottom = cy + g.RING + 2;
+  const bottomTop = ringBottom + g.V_GAP;
+  const H = bottomTop + bottom.h + g.PAD;
+  const L = top.nodes.map((d) => { const t = g.PAD + (top.h - d.h); return { ...d, top: t, tileTop: t + d.area }; });
   const R = bottom.nodes.map((d) => ({ ...d, top: bottomTop, tileTop: bottomTop }));
   L.forEach((n) => {
-    const y = n.tileTop + TILE_H + 4;
+    const y = n.tileTop + g.TILE_H + 4;
     add([n.cx - off, y, mid - off, ringTop - 2], [mid + off, ringTop - 2, n.cx + off, y], both);
   });
   R.forEach((n) => {
     const y = n.tileTop - 4;
     add([mid - off, ringBottom, n.cx - off, y], [n.cx + off, y, mid + off, ringBottom], both);
   });
-  return { W: V_W, H, L, R, ex: mid, cy, flows };
+  return { W: g.V_W, H, L, R, ex: mid, cy, flows };
 }
 
 /** Brand-style flow picture generated from `case.diagram`. `vertical` stacks it top to bottom for phones. */
-export default function CaseDiagram({ diagram, title, vertical = false }) {
+export default function CaseDiagram({ diagram, title, vertical = false, compact = false }) {
+  const g = compact ? (vertical ? COMPACT_V : COMPACT) : FULL;
   const uid = useId().replace(/[^a-zA-Z0-9]/g, "");
   const { sources, targets, engine, mode } = diagram;
   const both = mode === "bidirectional";
   const [capL, capR] = CAPTIONS[mode] || CAPTIONS.oneWay;
-  const { W, H, L, R, ex, cy, flows } = layout({ sources, targets, mode, vertical });
+  const { W, H, L, R, ex, cy, flows } = layout({ sources, targets, mode, vertical, g });
 
   const engineName = engine.replace(/^Qlik\s+/i, "");
   const engineLogo = logosFor(engine)[0] || "qlik";
   const nameLines = wrapLabel(engineName, 15, 2);
-  const ex0 = ex - ENGINE / 2;
-  const ey = cy - ENGINE / 2;
+  const ex0 = ex - g.ENGINE / 2;
+  const ey = cy - g.ENGINE / 2;
   const summary = `${sources.join(", ")} ${both ? "synchronised both ways with" : "to"} ${targets.join(", ")} using ${engine}`;
 
   return (
-    <figure className={"cd" + (vertical ? " is-vertical" : "")}>
+    <figure className={"cd" + (vertical ? " is-vertical" : "") + (compact ? " is-compact" : "")}>
       <div className="cd-scroll">
         <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label={`${title}: ${summary}`}>
           <defs>
@@ -225,7 +232,7 @@ export default function CaseDiagram({ diagram, title, vertical = false }) {
               <stop offset="0" stopColor="#5A2390" stopOpacity=".3" />
               <stop offset="1" stopColor="#5A2390" stopOpacity="0" />
             </radialGradient>
-            <clipPath id={`c${uid}`}><rect x={ex0} y={ey} width={ENGINE} height={ENGINE} rx="24" /></clipPath>
+            <clipPath id={`c${uid}`}><rect x={ex0} y={ey} width={g.ENGINE} height={g.ENGINE} rx="24" /></clipPath>
             <filter id={`f${uid}`} x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="3" /></filter>
             <marker id={`a${uid}`} viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto">
               <path d="M1 1.5 8.5 5 1 8.5Z" fill="#C9B3EA" />
@@ -240,20 +247,20 @@ export default function CaseDiagram({ diagram, title, vertical = false }) {
             </g>
           ))}
 
-          <circle cx={ex} cy={cy} r={RING + 30} fill={`url(#h${uid})`} />
-          <circle className="cd-ring" cx={ex} cy={cy} r={RING - 4} />
+          <circle cx={ex} cy={cy} r={g.RING + 30} fill={`url(#h${uid})`} />
+          <circle className="cd-ring" cx={ex} cy={cy} r={g.RING - 4} />
 
-          {L.map((n, i) => <Node key={n.label + i} n={n} flip={vertical} caption={capL} />)}
-          {R.map((n, i) => <Node key={n.label + i} n={n} caption={capR} badge={mode === "migration"} />)}
+          {L.map((n, i) => <Node key={n.label + i} n={n} flip={vertical} caption={capL} g={g} />)}
+          {R.map((n, i) => <Node key={n.label + i} n={n} caption={capR} badge={mode === "migration"} g={g} />)}
 
           <g>
-            <rect className="cd-engine" x={ex0} y={ey} width={ENGINE} height={ENGINE} rx="24" fill={`url(#g${uid})`} />
+            <rect className="cd-engine" x={ex0} y={ey} width={g.ENGINE} height={g.ENGINE} rx="24" fill={`url(#g${uid})`} />
             <g clipPath={`url(#c${uid})`}>
-              <rect x={ex0} y={ey} width={ENGINE} height={ENGINE_TOP} fill="#fff" />
+              <rect x={ex0} y={ey} width={g.ENGINE} height={g.ENGINE_TOP} fill="#fff" />
             </g>
-            <Logo keyName={engineLogo} label={engine} cx={ex} cy={ey + ENGINE_TOP / 2} boxW={96} boxH={46} scale={1.3} />
-            <text className="cd-engine-t" x={ex} y={ey + ENGINE_TOP + (nameLines.length > 1 ? 24 : 34)} textAnchor="middle">
-              {nameLines.map((t, i) => <tspan key={t + i} x={ex} dy={i === 0 ? 0 : 18}>{t}</tspan>)}
+            <Logo keyName={engineLogo} label={engine} cx={ex} cy={ey + g.ENGINE_TOP / 2} boxW={g.ELOGO_W} boxH={g.ELOGO_H} scale={g.ELOGO_S} />
+            <text className="cd-engine-t" x={ex} y={ey + g.ENGINE_TOP + (nameLines.length > 1 ? g.ENAME_2 : g.ENAME_1)} textAnchor="middle">
+              {nameLines.map((t, i) => <tspan key={t + i} x={ex} dy={i === 0 ? 0 : g.ENAME_DY}>{t}</tspan>)}
             </text>
           </g>
         </svg>

@@ -31,13 +31,17 @@ export default function FloatingActions() {
     return () => io.disconnect();
   }, [pathname]);
 
-  // The hero already has its own buttons: keep the floating one out of the way until it scrolls past.
+  // Sections with their own CTA (the page hero, Proven Outcomes): keep the floating button out of the way.
   useEffect(() => {
     setAtHero(false);
-    const el = document.querySelector("[data-hero]");
-    if (!el) return undefined;
-    const io = new IntersectionObserver(([en]) => setAtHero(en.isIntersecting));
-    io.observe(el);
+    const els = [...document.querySelectorAll("[data-hero], [data-hide-fab]")];
+    if (!els.length) return undefined;
+    const seen = new Set();
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((en) => (en.isIntersecting ? seen.add(en.target) : seen.delete(en.target)));
+      setAtHero(seen.size > 0);
+    });
+    els.forEach((el) => io.observe(el));
     return () => io.disconnect();
   }, [pathname]);
   const hidden = atContact || atHero;

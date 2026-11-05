@@ -27,6 +27,9 @@ const LIST = [...FEATURED, ...REST];
 const OUT_MS = 150;
 const SWIPE_PX = 50;
 
+/** Pill titles are cut at about 26 characters; the full title stays in the accessible name. */
+const short = (t) => (t.length > 26 ? t.slice(0, 25).trimEnd() + "…" : t);
+
 const setHash = (id) => {
   const { pathname, search } = window.location;
   window.history.replaceState(window.history.state, "", `${pathname}${search}#${HASH_PREFIX}${id}`);
@@ -52,7 +55,6 @@ export default function CaseStudies({ headingLevel = 2 }) {
   const [out, setOut] = useState(false);
   const [dx, setDx] = useState(1);
   const [announce, setAnnounce] = useState("");
-  const [height, setHeight] = useState(null);
   const [edge, setEdge] = useState({ left: false, right: false });
   const root = useRef(null);
   const strip = useRef(null);
@@ -97,14 +99,6 @@ export default function CaseStudies({ headingLevel = 2 }) {
     root.current?.scrollIntoView({ behavior: REDUCED ? "auto" : "smooth", block: "start" });
   }, [hash, key]);
 
-  // Animate the panel height as the case changes.
-  useLayoutEffect(() => {
-    if (!slide.current || typeof ResizeObserver === "undefined") return undefined;
-    const ro = new ResizeObserver(([e]) => setHeight(Math.round(e.target.getBoundingClientRect().height)));
-    ro.observe(slide.current);
-    return () => ro.disconnect();
-  }, [shownId]);
-
   // Strip: which edges can still scroll, and keep the active pill centred.
   const measure = useCallback(() => {
     const s = strip.current;
@@ -144,10 +138,22 @@ export default function CaseStudies({ headingLevel = 2 }) {
 
   return (
     <div id="case-studies" className="cases" ref={root} onKeyDown={onKeyDown}>
-      <div className="cases-head">
-        <p className="cases-eyebrow">OUR EXPERTISE</p>
-        <H id="case-studies-h">Proven Outcomes</H>
-        <p className="cases-intro">Real results from Qlik migrations, real-time replication and data modernization.</p>
+      <div className="cases-top">
+        <div className="cases-head">
+          <p className="cases-eyebrow">OUR EXPERTISE</p>
+          <H id="case-studies-h">Proven Outcomes</H>
+          <p className="cases-intro">Real results from Qlik migrations, real-time replication and data modernization.</p>
+        </div>
+        <div className="ck-controls">
+          <div className="ck-pn">
+            <button type="button" className="ck-arrow" aria-label="Previous case study" onClick={() => step(-1)}><CIcon name="prev" size={18} strokeWidth={2.2} /></button>
+            <span className="ck-count">{index + 1} / {LIST.length}</span>
+            <button type="button" className="ck-arrow" aria-label="Next case study" onClick={() => step(1)}><CIcon name="next" size={18} strokeWidth={2.2} /></button>
+          </div>
+          <div className="ck-progress" role="progressbar" aria-label="Position in the case studies" aria-valuemin={1} aria-valuemax={LIST.length} aria-valuenow={index + 1}>
+            <span style={{ width: `${((index + 1) / LIST.length) * 100}%` }} />
+          </div>
+        </div>
       </div>
       <p className="sr" aria-live="polite">{announce}</p>
 
@@ -161,9 +167,9 @@ export default function CaseStudies({ headingLevel = 2 }) {
           style={{ "--fl": edge.left ? "56px" : "0px", "--fr": edge.right ? "56px" : "0px" }}
         >
           {LIST.map((s, i) => (
-            <button key={s.id} type="button" className="ck-pill" aria-current={i === index ? "true" : undefined} onClick={() => goTo(i)}>
+            <button key={s.id} type="button" className="ck-pill" title={s.title} aria-label={`${s.title}, ${s.highlight.value}`} aria-current={i === index ? "true" : undefined} onClick={() => goTo(i)}>
               <i style={{ background: CATEGORY_DOT[s.category] || "#7A3A9E" }} aria-hidden="true" />
-              <span>{s.title}</span>
+              <span>{short(s.title)}</span>
               <b>{s.highlight.value}</b>
             </button>
           ))}
@@ -171,20 +177,9 @@ export default function CaseStudies({ headingLevel = 2 }) {
         {edge.right && <button type="button" className="ck-sbtn ck-sbtn-r" aria-label="Scroll case studies right" onClick={() => scrollStrip(1)}><CIcon name="next" size={18} strokeWidth={2.4} /></button>}
       </div>
 
-      <div className="ck-panel" style={height === null ? undefined : { height }} onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
+      <div className="ck-panel" onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
         <div key={study.id} ref={slide} className={"ck-slide" + (out ? " is-out" : "")} style={{ "--dx": dx }}>
           <CasePanel study={study} vertical={vertical} />
-        </div>
-      </div>
-
-      <div className="ck-nav">
-        <div className="ck-pn">
-          <button type="button" className="ck-arrow" aria-label="Previous case study" onClick={() => step(-1)}><CIcon name="prev" size={20} strokeWidth={2.2} /></button>
-          <span className="ck-count">{index + 1} / {LIST.length}</span>
-          <button type="button" className="ck-arrow" aria-label="Next case study" onClick={() => step(1)}><CIcon name="next" size={20} strokeWidth={2.2} /></button>
-        </div>
-        <div className="ck-progress" role="progressbar" aria-label="Position in the case studies" aria-valuemin={1} aria-valuemax={LIST.length} aria-valuenow={index + 1}>
-          <span style={{ width: `${((index + 1) / LIST.length) * 100}%` }} />
         </div>
       </div>
     </div>
