@@ -31,6 +31,9 @@ export default function QlikOverview() {
             <div className="qhero-img"><img src={platformImg} width="1672" height="941" alt="Qlik trusted intelligence layer: agentic architecture, analytics engine and trusted data foundation across platform, analytics and data capabilities, running on AWS, Databricks, Google, Iceberg, Microsoft and Snowflake" decoding="async" /></div>
           </div>
         </div>
+        <button type="button" className="qhero-scroll" aria-label="Scroll to Qlik Capabilities" onClick={() => go("capabilities")}>
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
+        </button>
       </section>
 
       <section id="capabilities" className="block" aria-labelledby="cap-h">
