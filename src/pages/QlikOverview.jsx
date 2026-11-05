@@ -15,7 +15,7 @@ export default function QlikOverview() {
   const link = useSectionLink();
   return (
     <>
-      <section className="qhero" aria-labelledby="qlik-h1">
+      <section className="qhero" data-hero aria-labelledby="qlik-h1">
         <div className="wrap">
           <Breadcrumb trail={[{ label: "Qlik" }]} />
           <div className="qhero-in qhero-in--wide">
@@ -24,8 +24,8 @@ export default function QlikOverview() {
               <h1 id="qlik-h1">{O.h1}</h1>
               <p className="lede">{O.intro}</p>
               <div className="qhero-ctas">
-                <AnimatedButton {...link("contact")}>Talk to a Qlik Expert</AnimatedButton>
-                <a className="btn btn-ghost-light" href="#capabilities" onClick={(e) => go("capabilities", e)}>Explore Capabilities</a>
+                <AnimatedButton shine className="hero-btn" {...link("contact")}>Talk to a Qlik Expert</AnimatedButton>
+                <AnimatedButton variant="ghost" className="hero-btn" href="#capabilities" onClick={(e) => go("capabilities", e)}>Explore Capabilities</AnimatedButton>
               </div>
             </div>
             <div className="qhero-img"><img src={platformImg} width="1672" height="941" alt="Qlik trusted intelligence layer: agentic architecture, analytics engine and trusted data foundation across platform, analytics and data capabilities, running on AWS, Databricks, Google, Iceberg, Microsoft and Snowflake" decoding="async" /></div>

@@ -12,6 +12,7 @@ export default function FloatingActions() {
   const { pathname } = useLocation();
   const [scrolled, setScrolled] = useState(false);
   const [atContact, setAtContact] = useState(false);
+  const [atHero, setAtHero] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > SHOW_TOP_AFTER);
@@ -30,6 +31,17 @@ export default function FloatingActions() {
     return () => io.disconnect();
   }, [pathname]);
 
+  // The hero already has its own buttons: keep the floating one out of the way until it scrolls past.
+  useEffect(() => {
+    setAtHero(false);
+    const el = document.querySelector("[data-hero]");
+    if (!el) return undefined;
+    const io = new IntersectionObserver(([en]) => setAtHero(en.isIntersecting));
+    io.observe(el);
+    return () => io.disconnect();
+  }, [pathname]);
+  const hidden = atContact || atHero;
+
   const toTop = (e) => {
     window.scrollTo({ top: 0, behavior: REDUCED ? "auto" : "smooth" });
     e.currentTarget.blur();
@@ -40,7 +52,7 @@ export default function FloatingActions() {
       <button type="button" className={"fab-top" + (scrolled ? " is-on" : "")} aria-label="Back to top" tabIndex={scrolled ? 0 : -1} aria-hidden={scrolled ? undefined : "true"} onClick={toTop}>
         <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7" /></svg>
       </button>
-      <AnimatedButton variant="dark" className={"fab-talk" + (atContact ? " is-off" : "")} {...link("contact")} tabIndex={atContact ? -1 : 0}>Talk to a Qlik Expert</AnimatedButton>
+      <AnimatedButton variant="dark" className={"fab-talk" + (hidden ? " is-off" : "")} {...link("contact")} tabIndex={hidden ? -1 : 0}>Talk to a Qlik Expert</AnimatedButton>
     </div>
   );
 }

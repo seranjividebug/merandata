@@ -13,11 +13,12 @@ const ARROW = (
  * All other props (aria-*, onClick, tabIndex, type, disabled…) pass straight through.
  *
  * - variant "light": white pill, navy text (for dark backgrounds). "dark": navy pill, white text.
+ *   "ghost": transparent with a white outline (secondary, on dark); fills white on hover.
  * - shine: slow diagonal glint across the button (hero buttons only).
  * - arrow: show the arrow on the right (default true).
  */
 export default function AnimatedButton({ variant = "light", shine = false, arrow = true, className = "", children, to, href, ...rest }) {
-  const cls = ["abtn", variant === "dark" ? "abtn-dark" : "abtn-light", shine ? "abtn-shine" : "", className].filter(Boolean).join(" ");
+  const cls = ["abtn", "abtn-" + variant, shine ? "abtn-shine" : "", className].filter(Boolean).join(" ");
   const inner = (
     <>
       <span className="abtn-label">{children}</span>

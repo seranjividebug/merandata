@@ -1,5 +1,4 @@
 import { PLATFORM, TALEND } from "../data";
-import { go } from "../utils";
 import { I, SectionHead } from "./Icons";
 import SpotlightCard, { LogoTile } from "./SpotlightCard";
 import acceleratorsImg from "../assets/accelerators/acc-prometheus.webp";
@@ -72,20 +71,6 @@ export function Products() {
           </article>
         </div>
         <p className="tm">Qlik, Talend, and Power BI are trademarks of their respective owners. Meridanta accelerators are independently developed and do not imply endorsement.</p>
-      </div>
-    </section>
-  );
-}
-
-export function Cta() {
-  return (
-    <section className="cta-band" aria-labelledby="cta-h">
-      <div className="wrap cta-in">
-        <div>
-          <h2 id="cta-h">Let’s Solve Your Next Technology Challenge.</h2>
-          <p>Whether you are advancing your analytics capabilities, modernizing technology platforms, or exploring practical applications of AI, Meridanta can help you identify the right next step.</p>
-        </div>
-        <a className="btn btn-grad" href="#contact" onClick={(e) => go("contact", e)}>Talk to Our Team</a>
       </div>
     </section>
   );
