@@ -144,10 +144,17 @@ export default function CaseStudies({ headingLevel = 2 }) {
 
   return (
     <div id="case-studies" className="cases" ref={root} onKeyDown={onKeyDown}>
-      <div className="cases-head">
-        <p className="cases-eyebrow">OUR EXPERTISE</p>
-        <H id="case-studies-h">Proven Outcomes</H>
-        <p className="cases-intro">Real results from Qlik migrations, real-time replication and data modernization.</p>
+      <div className="cases-top">
+        <div className="head">
+          <div className="rule" />
+          <H id="case-studies-h">Proven Outcomes</H>
+          <p>Real results from Qlik migrations, real-time replication and data modernization.</p>
+        </div>
+        <div className="ck-pn">
+          <button type="button" className="ck-arrow" aria-label="Previous case study" onClick={() => step(-1)}><CIcon name="prev" size={20} strokeWidth={2.2} /></button>
+          <span className="ck-count">{index + 1} / {LIST.length}</span>
+          <button type="button" className="ck-arrow" aria-label="Next case study" onClick={() => step(1)}><CIcon name="next" size={20} strokeWidth={2.2} /></button>
+        </div>
       </div>
       <p className="sr" aria-live="polite">{announce}</p>
 
@@ -174,17 +181,6 @@ export default function CaseStudies({ headingLevel = 2 }) {
       <div className="ck-panel" style={height === null ? undefined : { height }} onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
         <div key={study.id} ref={slide} className={"ck-slide" + (out ? " is-out" : "")} style={{ "--dx": dx }}>
           <CasePanel study={study} vertical={vertical} />
-        </div>
-      </div>
-
-      <div className="ck-nav">
-        <div className="ck-pn">
-          <button type="button" className="ck-arrow" aria-label="Previous case study" onClick={() => step(-1)}><CIcon name="prev" size={20} strokeWidth={2.2} /></button>
-          <span className="ck-count">{index + 1} / {LIST.length}</span>
-          <button type="button" className="ck-arrow" aria-label="Next case study" onClick={() => step(1)}><CIcon name="next" size={20} strokeWidth={2.2} /></button>
-        </div>
-        <div className="ck-progress" role="progressbar" aria-label="Position in the case studies" aria-valuemin={1} aria-valuemax={LIST.length} aria-valuenow={index + 1}>
-          <span style={{ width: `${((index + 1) / LIST.length) * 100}%` }} />
         </div>
       </div>
     </div>

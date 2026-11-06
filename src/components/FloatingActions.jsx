@@ -13,6 +13,7 @@ export default function FloatingActions() {
   const [scrolled, setScrolled] = useState(false);
   const [atContact, setAtContact] = useState(false);
   const [atHero, setAtHero] = useState(false);
+  const [atCases, setAtCases] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > SHOW_TOP_AFTER);
@@ -40,7 +41,16 @@ export default function FloatingActions() {
     io.observe(el);
     return () => io.disconnect();
   }, [pathname]);
-  const hidden = atContact || atHero;
+  // Keep the button off the Proven Outcomes panel while that section is on screen.
+  useEffect(() => {
+    setAtCases(false);
+    const el = document.getElementById("case-studies");
+    if (!el) return undefined;
+    const io = new IntersectionObserver(([en]) => setAtCases(en.isIntersecting));
+    io.observe(el);
+    return () => io.disconnect();
+  }, [pathname]);
+  const hidden = atContact || atHero || atCases;
   const label = /^\/qlik(\/|$)/.test(pathname) ? "Talk to a Qlik Expert" : "Talk to an Expert";
 
   const toTop = (e) => {
