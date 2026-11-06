@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import logoWhite from "../assets/logo-white.png";
 import { NAV } from "../data";
 import { useSectionLink } from "../nav";
+import { SocialIcons } from "./SocialIcons";
 
 export function Footer({ onPrivacy }) {
   const link = useSectionLink();
@@ -12,6 +13,7 @@ export function Footer({ onPrivacy }) {
           <div>
             <div className="foot-brand"><img src={logoWhite} alt="" width="59" height="40" />Meridanta</div>
             <p>Outcome-driven AI, Data & Cloud solutions, combining technology expertise, business understanding, and engineering execution.</p>
+            <SocialIcons />
           </div>
           <div>
             <h4>Explore</h4>
