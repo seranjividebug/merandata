@@ -1,4 +1,5 @@
 import { usePageTitle } from "../nav";
+import Hero from "../components/Hero";
 import { Services } from "../components/Services";
 import Industries from "../components/Industries";
 import { Products } from "../components/Products";
@@ -12,6 +13,7 @@ export default function Home({ onPrivacy }) {
   usePageTitle(TITLE, DESCRIPTION);
   return (
     <>
+      <Hero />
       <Services />
       <Industries />
       <Products />

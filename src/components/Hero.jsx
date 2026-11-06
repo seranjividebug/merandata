@@ -61,6 +61,7 @@ export default function Hero() {
   return (
     <section
       id="home"
+      data-hero
       className="hs"
       aria-roledescription="carousel"
       aria-label="Featured highlights"
