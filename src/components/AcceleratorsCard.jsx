@@ -145,7 +145,7 @@ export default function AcceleratorsCard({ seeAll = false, headingId = "acc-h" }
             tabIndex={a.id === active ? 0 : -1}
             onClick={() => select(a.id)}
           >
-            <Tile item={ACCELERATOR_STACK[a.id][0]} size={26} />
+            <Tile item={ACCELERATOR_STACK[a.id][0]} size={24} />
             {a.tab}
           </button>
         ))}
