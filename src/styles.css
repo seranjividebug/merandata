@@ -477,10 +477,23 @@ section.alt{background:var(--mist)}
   .cs-row.is-flip .cs-img{order:0}
   .cs-img{height:auto;aspect-ratio:3/2}
 }
-@media (min-width:1024px) and (min-height:440px) and (prefers-reduced-motion:no-preference){
+/* Stacked deck (all widths): each card sticks lower than the one before and the next card slides over it.
+   Below 1024px the cards are one equal height (--cs-h, measured in CapabilityStack) so a card fully hides the one under it. */
+@media (min-height:440px) and (prefers-reduced-motion:no-preference){
   .cs-deck{padding-bottom:80px}
   /* margin grows by 44px per remaining card so the strips keep their offsets while the deck scrolls away */
-  .cs-card{position:sticky;top:calc(var(--header-h) + var(--subnav-h, 0px) + 24px + var(--i) * 44px);z-index:calc(var(--i) + 1);height:400px;margin-bottom:calc(48px + var(--r) * 44px);transform:scale(calc(1 - .04 * var(--k)));filter:brightness(calc(1 - .08 * var(--k)))}
+  .cs-card{position:sticky;top:calc(var(--header-h) + var(--subnav-h, 0px) + 24px + var(--i) * 44px);z-index:calc(var(--i) + 1);height:var(--cs-h,auto);margin-bottom:calc(48px + var(--r) * 44px);transform:scale(calc(1 - .04 * var(--k)));filter:brightness(calc(1 - .08 * var(--k)))}
+}
+@media (min-width:1024px) and (min-height:440px) and (prefers-reduced-motion:no-preference){
+  .cs-card{height:400px}
+}
+@media (max-width:767px) and (min-height:440px) and (prefers-reduced-motion:no-preference){
+  .cs-deck{padding-bottom:56px}
+  .cs-card{top:calc(var(--header-h) + var(--subnav-h, 0px) + 12px + var(--i) * 44px);margin-bottom:calc(32px + var(--r) * 44px)}
+  .cs-img{aspect-ratio:16/9}
+  .cs-intro{margin-bottom:10px;font-size:16px}
+  .cs-bullets{gap:8px}
+  .cs-bullets li{font-size:14px}
 }
 @media (prefers-reduced-motion:reduce){.cs-card{transition:none}}
 

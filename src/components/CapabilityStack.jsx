@@ -21,7 +21,8 @@ const IMAGES = {
 };
 const warnMissing = (name) => console.warn(`CapabilityStack: image "${name}.webp" failed to load from src/assets/capabilities/`);
 
-const STACK_MQ = "(min-width: 1024px) and (min-height: 440px) and (prefers-reduced-motion: no-preference)";
+const STACK_MQ = "(min-height: 440px) and (prefers-reduced-motion: no-preference)";
+const DESKTOP_MQ = "(min-width: 1024px)"; // desktop cards have a fixed height in CSS
 const DECKS = [
   { group: "Data Integration", eyebrow: "DATA INTEGRATION" },
   { group: "Analytics", eyebrow: "ANALYTICS" },
@@ -47,13 +48,32 @@ function useDeckDepth(deckRef) {
       });
     };
     const schedule = () => { if (!frame) frame = requestAnimationFrame(update); };
-    const sync = () => { if (mq.matches) update(); else reset(); };
+
+    // Below desktop, make every card as tall as the tallest so each one fully covers the card under it.
+    const desktop = window.matchMedia(DESKTOP_MQ);
+    let lastWidth = 0;
+    const equalize = () => {
+      deck.style.removeProperty("--cs-h");
+      if (!mq.matches || desktop.matches) return;
+      const tallest = Math.max(...cards.map((c) => c.offsetHeight));
+      deck.style.setProperty("--cs-h", `${tallest}px`);
+    };
+    const sync = () => { equalize(); if (mq.matches) update(); else reset(); };
+    const ro = typeof ResizeObserver === "undefined" ? null : new ResizeObserver(([e]) => {
+      const w = Math.round(e.contentRect.width);
+      if (w !== lastWidth) { lastWidth = w; sync(); } // width only: setting the height must not retrigger this
+    });
+    ro?.observe(deck);
 
     sync();
+    document.fonts?.ready.then(sync);
     window.addEventListener("scroll", schedule, { passive: true });
     window.addEventListener("resize", schedule);
     mq.addEventListener("change", sync);
+    desktop.addEventListener("change", sync);
     return () => {
+      ro?.disconnect();
+      desktop.removeEventListener("change", sync);
       if (frame) cancelAnimationFrame(frame);
       window.removeEventListener("scroll", schedule);
       window.removeEventListener("resize", schedule);
