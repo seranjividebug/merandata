@@ -13,7 +13,7 @@ export default function IndustryPage({ industry: d }) {
   const Art = INDUSTRY_ART[d.key];
   return (
     <>
-      <PageMeta title={`${d.tab} | Meridanta`} description={d.cardDesc} />
+      <PageMeta path={`/industries/${d.slug}/`} />
       <section className="qhero" aria-labelledby="ind-h1">
         <div className="wrap">
           <Breadcrumb trail={[{ label: "Industries", to: "/#industries" }, { label: d.tab }]} />

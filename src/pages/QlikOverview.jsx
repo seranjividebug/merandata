@@ -15,7 +15,7 @@ export default function QlikOverview() {
   const link = useSectionLink();
   return (
     <>
-      <PageMeta title={O.title} description={O.description} />
+      <PageMeta path="/qlik/" />
       <section className="qhero" data-hero aria-labelledby="qlik-h1">
         <div className="wrap">
           <Breadcrumb trail={[{ label: "Qlik" }]} />

@@ -7,14 +7,11 @@ import { Products } from "../components/Products";
 import About from "../components/About";
 import Contact from "../components/Contact";
 
-const TITLE = "Meridanta | Outcome-driven AI, Data & Cloud Solutions";
-const DESCRIPTION = "Meridanta helps organizations solve practical business problems with AI, data and analytics, cloud, and Qlik expertise, delivered with an AI-first, outcome-driven approach.";
-
 export default function Home() {
   const { onPrivacy } = useOutletContext();
   return (
     <>
-      <PageMeta title={TITLE} description={DESCRIPTION} />
+      <PageMeta path="/" />
       <Hero />
       <Services />
       <Industries />

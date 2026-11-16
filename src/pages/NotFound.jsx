@@ -4,7 +4,7 @@ import PageMeta from "../components/PageMeta";
 export default function NotFound() {
   return (
     <>
-    <PageMeta title="Page not found | Meridanta" description="The page you are looking for could not be found." noindex />
+    <PageMeta notFound />
     <section className="block" aria-labelledby="nf-h">
       <div className="wrap nf">
         <div className="head">
