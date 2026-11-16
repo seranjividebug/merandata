@@ -3,13 +3,18 @@ import { HERO_SLIDES } from "../data";
 import { useSectionLink } from "../nav";
 import { Head } from "vite-react-ssg";
 import { REDUCED, useReducedMotion } from "../utils";
-import qlikImg from "../assets/hero/hero-qlik.webp";
-import aiImg from "../assets/hero/hero-ai.webp";
-import healthcareImg from "../assets/hero/hero-healthcare.webp";
+import { responsiveImage } from "../images";
+import Picture from "./Picture";
 import QlikLogo from "./QlikLogo";
 import AnimatedButton from "./AnimatedButton";
 
-const IMAGES = { qlik: qlikImg, ai: aiImg, healthcare: healthcareImg };
+const IMAGES = {
+  qlik: responsiveImage("hero/hero-qlik", [1024], 1920),
+  ai: responsiveImage("hero/hero-ai", [1024], 1920),
+  healthcare: responsiveImage("hero/hero-healthcare", [1024], 1920),
+};
+// The image covers a box at least ~850 px wide (more on phones, where the hero is taller than it is wide).
+const HERO_SIZES = "(max-width: 700px) 1200px, max(100vw, 853px)";
 const INTERVAL = 6000;
 const SWIPE_PX = 50;
 
@@ -52,7 +57,7 @@ export default function Hero() {
 
   return (
     <>
-      <Head><link rel="preload" as="image" href={IMAGES.qlik} /></Head>
+      <Head><link rel="preload" as="image" type="image/avif" imageSrcSet={IMAGES.qlik.avif} imageSizes={HERO_SIZES} fetchpriority="high" /></Head>
     <section
       id="home"
       data-hero
@@ -83,9 +88,10 @@ export default function Hero() {
               aria-hidden={!active}
               inert={active ? undefined : ""}
             >
-              <img
+              <Picture
                 className="hs-img"
-                src={IMAGES[s.key]}
+                image={IMAGES[s.key]}
+                sizes={HERO_SIZES}
                 alt={s.alt}
                 width="1920"
                 height="900"

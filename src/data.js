@@ -76,4 +76,13 @@ export const PILLARS = [
   ["target", "Outcome-oriented execution", "Delivery measured by results, not by recommendations alone."],
 ];
 
+/** Short keys used in links (/?interest=qlik#contact) mapped to the options of INTERESTS below. */
+export const INTEREST_KEYS = {
+  ai: "AI Solutions & Services",
+  data: "Data Engineering & Analytics",
+  qlik: "Qlik Solutions & Accelerators",
+  healthcare: "Healthcare Insights",
+  cloud: "Cloud & Modernisation",
+  consulting: "Consulting & Delivery",
+};
 export const INTERESTS = ["AI Solutions & Services", "Data Engineering & Analytics", "Qlik Solutions & Accelerators", "Healthcare Insights", "Cloud & Modernisation", "Consulting & Delivery", "Other"];

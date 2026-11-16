@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import logo from "../assets/logo.png";
+import logo from "../assets/logo-112.webp";
 import { NAV } from "../data";
 import { useSectionLink } from "../nav";
 import { I } from "./Icons";

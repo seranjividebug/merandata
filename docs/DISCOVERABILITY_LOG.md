@@ -156,3 +156,21 @@ Cloudflare dashboard setting names change over time; look for these features und
 - Qlik / Talend partner status, certification wording, and the "Qlik Center of Excellence" name.
 - Company facts, social URLs, the public "Preview build" note on the contact form.
 - The unused impact data says "40 hrs typical Qlik migration" while a published case says a QlikView to Qlik Cloud migration took "2 months": confirm which is true.
+
+## Phase 6: performance and conversion (2026-11-16)
+
+**Done** (details and the before/after table are in `docs/PERFORMANCE.md`)
+- Lighthouse mobile, median of 3: **performance 98-100, accessibility 100, best practices 100, SEO 100 on all four routes** (before: 70-84, 96-100, 100, 92-100). LCP 5.1 / 5.5 / 3.5 / 3.5 s to 2.2 / 1.8 / 1.3 / 1.3 s, CLS 0.002 / 0.025 to 0, TBT 0-95 ms. Page weight 991 to 399 KB (home) and 905 to 363 KB (`/qlik/`).
+- Self-hosted font with preload; responsive AVIF/WebP images with a preloaded LCP image; smaller logos; lazy below-the-fold images; route-level code splitting; inlined critical CSS; hydration after first paint; `content-visibility` on the Capabilities section; one-year immutable caching for `/assets/*`.
+- Conversion: contact links from the Qlik and Healthcare pages pre-select the service of interest in the form; `npm run check:html` fails if any call-to-action does not lead to the contact form.
+- `docs/CONTACT_FORM.md`: three real-delivery options (Worker + Resend, Microsoft Graph, Power Automate) with Turnstile, honeypot, server-side validation, cost, setup steps and acceptance tests.
+
+**[DECISION] pending: contact form delivery.** Not implemented. Choose A, B or C in `docs/CONTACT_FORM.md` and say whether meridanta.com stays on Hostinger. The form still only simulates sending and still shows the public "Preview build" note.
+
+**Files changed**
+`vite.config.js`, `index.html`, `package.json`, `package-lock.json`, `src/main.jsx`, `src/Layout.jsx`, `src/routes.jsx`, `src/nav.js`, `src/data.js`, `src/styles.css`, `src/fonts.css` (new), `src/images.js` (new), `src/components/Picture.jsx` (new), `src/pages/IndustryRoute.jsx` (new), `src/components/{Hero,Header,Footer,Contact,AcceleratorsCard,SpotlightCard,Industries}.jsx`, `src/pages/QlikOverview.jsx`, `scripts/make-responsive-images.py` (new), `scripts/check-html.mjs`, `public/_headers` (new), `public/.htaccess`, new image files in `src/assets`, `docs/PERFORMANCE.md`, `docs/CONTACT_FORM.md`.
+
+**Open TODOs**
+- Check the `.htaccess` caching rule on Hostinger after upload (`curl -I https://meridanta.com/assets/<file>.js` should show the one-year `Cache-Control`).
+- INP needs field data after launch.
+- Deferred hydration means JavaScript-only controls wake up about a second after load. If that is not acceptable, remove `deferHydration` in `vite.config.js` (the home LCP goes back to about 3 s on this test).

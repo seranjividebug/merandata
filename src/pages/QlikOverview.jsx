@@ -1,10 +1,12 @@
 import { QLIK_OVERVIEW as O } from "../qlikData";
 import { useSectionLink } from "../nav";
+import { Head } from "vite-react-ssg";
 import PageMeta from "../components/PageMeta";
 import { seoFor } from "../seo";
 import { go } from "../utils";
 import { SectionHead } from "../components/Icons";
-import platformImg from "../assets/qlik-platform.webp";
+import { responsiveImage } from "../images";
+import Picture from "../components/Picture";
 import { Breadcrumb, TrademarkLine } from "../components/QlikBits";
 import CapabilityStack from "../components/CapabilityStack";
 import CaseStudies from "../components/CaseStudies";
@@ -12,11 +14,15 @@ import ServiceJourney from "../components/ServiceJourney";
 import AcceleratorsCard from "../components/AcceleratorsCard";
 import AnimatedButton from "../components/AnimatedButton";
 
+const PLATFORM_IMG = responsiveImage("qlik-platform", [640, 1024], 1672);
+const PLATFORM_SIZES = "(max-width: 900px) calc(100vw - 56px), 600px";
+
 export default function QlikOverview() {
   const link = useSectionLink();
   return (
     <>
       <PageMeta path="/qlik/" />
+      <Head><link rel="preload" as="image" type="image/avif" imageSrcSet={PLATFORM_IMG.avif} imageSizes={PLATFORM_SIZES} fetchpriority="high" /></Head>
       <section className="qhero" data-hero aria-labelledby="qlik-h1">
         <div className="wrap">
           <Breadcrumb trail={seoFor("/qlik/").trail} />
@@ -30,7 +36,7 @@ export default function QlikOverview() {
                 <AnimatedButton variant="ghost" className="hero-btn" href="#capabilities" onClick={(e) => go("capabilities", e)}>Explore Capabilities</AnimatedButton>
               </div>
             </div>
-            <div className="qhero-img"><img src={platformImg} width="1672" height="941" alt="Qlik trusted intelligence layer: agentic architecture, analytics engine and trusted data foundation across platform, analytics and data capabilities, running on AWS, Databricks, Google, Iceberg, Microsoft and Snowflake" decoding="async" /></div>
+            <div className="qhero-img"><Picture image={PLATFORM_IMG} sizes={PLATFORM_SIZES} width="1672" height="941" fetchpriority="high" alt="Qlik trusted intelligence layer: agentic architecture, analytics engine and trusted data foundation across platform, analytics and data capabilities, running on AWS, Databricks, Google, Iceberg, Microsoft and Snowflake" decoding="async" /></div>
           </div>
         </div>
         <button type="button" className="qhero-scroll" aria-label="Scroll to Qlik Capabilities" onClick={() => go("capabilities")}>
@@ -38,7 +44,7 @@ export default function QlikOverview() {
         </button>
       </section>
 
-      <section id="capabilities" className="block" aria-labelledby="cap-h">
+      <section id="capabilities" className="block cv" aria-labelledby="cap-h">
         <div className="wrap">
           <SectionHead id="cap-h" title="Qlik Capabilities" intro="From moving and trusting data to exploring it and acting on it, here is how we help across the Qlik platform." />
           <CapabilityStack />

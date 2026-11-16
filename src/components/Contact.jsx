@@ -1,5 +1,6 @@
-import { useRef, useState } from "react";
-import { INTERESTS } from "../data";
+import { useEffect, useRef, useState } from "react";
+import { useLocation } from "react-router-dom";
+import { INTEREST_KEYS, INTERESTS } from "../data";
 import { I, SectionHead } from "./Icons";
 import AnimatedButton from "./AnimatedButton";
 import ContactDetails from "./ContactDetails";
@@ -30,6 +31,12 @@ function validate(d) {
 
 export default function Contact({ onPrivacy }) {
   const [v, setV] = useState(EMPTY);
+  const { search } = useLocation();
+  // /?interest=qlik#contact pre-selects the service, unless the visitor already chose one.
+  useEffect(() => {
+    const chosen = INTEREST_KEYS[new URLSearchParams(search).get("interest")];
+    if (chosen) setV((cur) => (cur.interest ? cur : { ...cur, interest: chosen }));
+  }, [search]);
   const [errs, setErrs] = useState({});
   const [touched, setTouched] = useState(false);
   const [status, setStatus] = useState("idle"); // idle | sending | sent | error

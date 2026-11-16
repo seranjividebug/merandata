@@ -118,6 +118,12 @@ for (const [url, page] of pages) {
   }
 }
 
+// ---------- calls to action ----------
+const CTA = /^(get in touch|talk to|discuss|start with a free consultation|contact)/i;
+for (const l of links) {
+  if (CTA.test(l.label) && !/#contact$/.test(l.href)) { l.status = "CTA"; err(l.page, `call to action "${l.label}" does not lead to the contact form (${l.href})`); }
+}
+
 // ---------- head tags and JSON-LD ----------
 const REQUIRED_TYPES = { "/": ["Organization", "WebSite", "WebPage", "Service"], "/qlik/": ["Organization", "WebPage", "BreadcrumbList", "ItemList", "Service"] };
 const ldReport = new Map();

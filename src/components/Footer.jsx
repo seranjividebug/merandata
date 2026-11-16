@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import logoWhite from "../assets/logo-white.png";
+import logoWhite from "../assets/logo-white-118.webp";
 import { NAV } from "../data";
 import { useSectionLink } from "../nav";
 import { SocialIcons } from "./SocialIcons";

@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { Outlet, useLocation } from "react-router-dom";
+import { Head } from "vite-react-ssg";
+import fontLatin from "@fontsource-variable/plus-jakarta-sans/files/plus-jakarta-sans-latin-wght-normal.woff2?url";
 import { NAV } from "./data";
 import { go } from "./utils";
 import { ScrollManager } from "./nav";
@@ -29,6 +31,7 @@ export default function Layout() {
 
   return (
     <>
+      <Head><link rel="preload" as="font" type="font/woff2" href={fontLatin} crossOrigin="anonymous" /></Head>
       <ScrollManager />
       <a className="skip" href="#main" onClick={(e) => go("main", e)}>Skip to content</a>
       <Header active={active} />

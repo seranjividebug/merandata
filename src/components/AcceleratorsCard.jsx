@@ -52,7 +52,8 @@ function AcceleratorPanel({ acc, first, shown, out, index, total, onStep, link, 
             height="800"
             alt={acc.imageAlt}
             decoding="async"
-            {...(first ? { onLoad: onFirstLoad } : { loading: "lazy" })}
+            loading="lazy"
+            {...(first ? { onLoad: onFirstLoad } : {})}
           />
           <div className="ax-built">
             <p className="ax-h">Built with</p>

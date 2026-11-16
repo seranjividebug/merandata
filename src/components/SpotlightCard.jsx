@@ -42,7 +42,7 @@ export default function SpotlightCard({ to, title, line, chips, cta, visual, lab
   };
 
   return (
-    <Link ref={ref} to={to} className="spot" aria-label={label} onPointerMove={onMove} onPointerLeave={onLeave}>
+    <Link ref={ref} to={to} className="spot" onPointerMove={onMove} onPointerLeave={onLeave}>
       <div className="spot-vis" aria-hidden="true">{visual}</div>
       <div className="spot-body">
         <span className="badge"><i />Home-grown solution</span>
