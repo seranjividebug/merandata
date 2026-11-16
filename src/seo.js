@@ -69,10 +69,11 @@ const industryFallback = (d) => ({
  */
 export const PAGES = [
   { path: "/", ...HOME, sources: ["src/pages/Home.jsx", "src/data.js", "src/components"] },
-  { path: "/qlik/", ...QLIK, sources: ["src/pages/QlikOverview.jsx", "src/qlikData.js", "src/accelerators.js", "src/caseStudies.js"] },
+  { path: "/qlik/", ...QLIK, trail: [{ label: "Qlik" }], sources: ["src/pages/QlikOverview.jsx", "src/qlikData.js", "src/accelerators.js", "src/caseStudies.js"] },
   ...INDUSTRIES.map((d) => ({
     path: `/industries/${d.slug}/`,
     ...(INDUSTRY_SEO[d.slug] ?? industryFallback(d)),
+    trail: [{ label: "Industries", to: "/#industries" }, { label: d.tab }],
     sources: ["src/pages/IndustryPage.jsx", "src/data.js"],
   })),
 ];

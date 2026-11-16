@@ -1,4 +1,5 @@
 import { PILLARS } from "../data";
+import { ABOUT, COMPANY } from "../company";
 import { I } from "./Icons";
 
 export default function About() {
@@ -12,12 +13,11 @@ export default function About() {
               <h2 id="about-h">About Meridanta</h2>
             </div>
             <p className="about-big" style={{ marginTop: "28px" }}>
-              Technology Expertise. <span>Business Outcomes.</span>
+              {COMPANY.slogan.split(". ")[0]}. <span>{COMPANY.slogan.split(". ")[1]}</span>
             </p>
           </div>
           <div className="about-copy">
-            <p>Meridanta focuses on AI, Data & Analytics, and Cloud solutions that help organizations address business challenges through practical technology and disciplined delivery.</p>
-            <p>Our approach brings together business understanding, engineering expertise, and outcome-oriented execution to help customers turn technology opportunities into meaningful results.</p>
+            {ABOUT.map((t) => <p key={t}>{t}</p>)}
             <div className="pillars">
               {PILLARS.map(([ic, t, d]) => (
                 <div key={t} className="pillar">

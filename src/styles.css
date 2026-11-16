@@ -368,7 +368,12 @@ section.alt{background:var(--mist)}
 .foot-brand{display:flex;align-items:center;gap:12px;color:#fff;font-weight:700;font-size:28px;letter-spacing:-.02em}
 .foot-brand img{height:48px;width:auto}
 .footer p{margin-top:18px;font-size:15px;max-width:40ch;line-height:1.65}
-.footer h4{color:#fff;font-size:15px;margin-bottom:14px}
+.footer h4,.footer .foot-h{color:#fff;font-size:15px;margin-bottom:14px}
+.contact-details{display:grid;gap:6px;margin-top:16px;font-style:normal;font-size:15px}
+.footer .contact-details span{color:rgba(255,255,255,.75)}
+.contact-details a{text-decoration:none;font-weight:500}
+.contact-details.on-light{margin:-8px 0 28px;color:var(--muted)}
+.contact-details.on-light a{color:var(--plum)}
 .footer ul{list-style:none;margin:0;padding:0;display:grid;gap:10px}
 .footer a,.footer .linkbtn{color:rgba(255,255,255,.75);text-decoration:none;font-weight:500;font-size:15px}
 .footer a:hover,.footer .linkbtn:hover{color:#fff}

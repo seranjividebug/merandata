@@ -2,6 +2,7 @@ import { useRef, useState } from "react";
 import { INTERESTS } from "../data";
 import { I, SectionHead } from "./Icons";
 import AnimatedButton from "./AnimatedButton";
+import ContactDetails from "./ContactDetails";
 import locImg from "../assets/loc-qlik.webp";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
@@ -65,6 +66,7 @@ export default function Contact({ onPrivacy }) {
     <section id="contact" className="block alt" aria-labelledby="contact-h">
       <div className="wrap">
         <SectionHead id="contact-h" title="Let’s Discuss Your Next Opportunity" intro="Tell us about your business challenge or technology initiative. Our team will review your inquiry and determine how we can help." />
+        <ContactDetails className="on-light" />
         <div className="contact">
           <div className="form-card">
             {status === "sent" ? (

@@ -101,3 +101,32 @@ Cloudflare dashboard setting names change over time; look for these features und
 4. **Bot Fight Mode / Super Bot Fight Mode / WAF rules:** confirm they do not challenge or block Googlebot, Bingbot and the AI crawlers.
 5. **After deploying:** open `https://meridanta.com/robots.txt` in a private window and confirm it matches the generated file (no extra `Disallow` or `Content-Signal` lines you did not choose).
 6. **Verify** with `curl -A "GPTBot" -I https://meridanta.com/`, `curl -A "ClaudeBot" -I https://meridanta.com/` and `curl -A "PerplexityBot" -I https://meridanta.com/`: each should return `200`, not `403`.
+
+## Phase 4: structured data and semantics (2026-11-16)
+
+**Done**
+- `src/company.js` (new): single source of truth for company facts **[SRI]**: name, legal name, URL, logo, description, slogan, email, phone, address, founding date, `areaServed` (United States, India), `knowsAbout` (built from the services, Qlik capabilities, industries and product names in the site content) and `sameAs` (only real social URLs). Unconfirmed fields are empty strings, are not shown on the page and are left out of the JSON-LD. It is reused by the footer (legal name in the copyright line, contact details), the contact section, the About section copy, the JSON-LD (`src/schema.js`) and `llms.txt` / `llms-full.txt`.
+- `src/schema.js` (new): JSON-LD built from `company.js`, `seo.js` and the content data, written into each prerendered page by `PageMeta` (one `@graph` per page, `<` escaped for safety):
+  - **Organization + WebSite + WebPage** on every page.
+  - **Service** (provider = Organization): the 4 services on `/` and the 4 Qlik COE offerings on `/qlik/`.
+  - **BreadcrumbList** on `/qlik/` and both industry pages. The same trail data (`PAGES[].trail` in `src/seo.js`) drives the visible breadcrumb, so the two cannot differ.
+  - **ItemList** of the 20 published case studies on `/qlik/` (same order as the page, featured first), each linking to `/qlik/#case-<id>`.
+  - **FAQPage**: the generator exists (`faqPage()`, used when a page lists `faqs`), but no page has visible FAQs, so none is emitted. The checker fails the build if a FAQPage appears without a visible `[data-faq]` block.
+- Semantics fixes: footer column titles are now `<h2>` (they were `<h4>`, which skipped levels); the hidden case-study text blocks no longer use unnamed `<section>` elements; the home hero `<h1>` now contains the word "Qlik" as text (the logo image is decorative and hidden from assistive tech, so there is no duplicate announcement).
+- `scripts/check-html.mjs` (new, `npm run check:html`; `npm run check:html:write` also writes the inventories): reads the built HTML without running JavaScript and checks one `<h1>` per page, heading order, landmarks (`header`, `nav`, `main`, `footer`), section names, duplicate ids, `lang`, image alt text, every link (page exists, `#anchor` exists, `#case-*` / `#accelerator-*` deep links resolve, `rel="noopener noreferrer"` on external links), canonical, title/description length, and JSON-LD (valid JSON, required fields, `@id` references resolve, no empty values). Exits 1 on errors.
+
+**Files changed**
+`src/company.js`, `src/schema.js`, `src/components/ContactDetails.jsx` (new), `src/components/{PageMeta,Footer,Contact,About,Hero,QlikLogo,CasePanel}.jsx`, `src/pages/{QlikOverview,IndustryPage}.jsx`, `src/seo.js`, `src/llmsText.js`, `src/styles.css`, `scripts/check-html.mjs`, `package.json` (scripts, `jsdom` dev dependency), `docs/IMAGE_ALT.md`, `docs/LINK_INVENTORY.md`, `docs/JSONLD_EXAMPLES.md`.
+
+**Evidence**
+- `docs/JSONLD_EXAMPLES.md`: full JSON-LD for `/` (Organization, WebSite, WebPage, 4 Services) and `/qlik/` (adds BreadcrumbList, 4 Services, ItemList of 20 cases).
+- `docs/IMAGE_ALT.md`: all 36 images and meaningful inline SVG graphics with their alt text (24 with descriptive alt, 12 decorative with `alt=""`, 0 missing).
+- `docs/LINK_INVENTORY.md`: all 163 links across 5 pages. Result: **0 errors**; every internal page, anchor and deep link resolves; the only warnings are the 5 social links that still point to `#` on each page (25 in total).
+- `npm run check:html`: 0 errors, 25 warnings (all the placeholder social links). Zero hydration or console errors on all routes at 1440px and 390px.
+
+**Open TODOs**
+- **Social links:** `src/social.js` still points to `#`. They are not published in `sameAs`. Add the real profile URLs before launch (or hide the icons until then).
+- Fill in `src/company.js`: legal name, email, phone, address, founding date **[SRI]**. They then appear in the footer and contact section, in the JSON-LD, and in `llms.txt`.
+- The checker warns on `href="#"`. It is expected to report 0 warnings once the social URLs are real.
+- No external links exist yet besides the social placeholders, so the `rel` rule is verified only on the social icons (they have `rel="noopener noreferrer"`).
+- FAQs: none exist. Phase 5 suggests candidate questions for Sri; if approved, add `faqs` to the page in `src/seo.js` and render them with `data-faq`.

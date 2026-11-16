@@ -1,9 +1,10 @@
 import { Head } from "vite-react-ssg";
 import { NOT_FOUND_SEO, SITE, absoluteUrl, canonicalUrl, seoFor } from "../seo";
+import { schemaJson } from "../schema";
 
 /**
  * Head tags for a page, written into the prerendered HTML at build time:
- * title, description, canonical, Open Graph and Twitter Card. The values come from src/seo.js.
+ * title, description, canonical, Open Graph, Twitter Card and JSON-LD. Values come from src/seo.js and src/schema.js.
  * Pass `path` (e.g. "/qlik/") for an indexable page, or `notFound` for the 404 page.
  */
 export default function PageMeta({ path, notFound = false }) {
@@ -31,6 +32,7 @@ export default function PageMeta({ path, notFound = false }) {
       <meta name="twitter:description" content={page.description} />
       <meta name="twitter:image" content={image} />
       <meta name="twitter:image:alt" content={SITE.ogImageAlt} />
+      {!notFound && <script type="application/ld+json">{schemaJson(path)}</script>}
     </Head>
   );
 }

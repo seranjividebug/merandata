@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useSectionLink } from "../nav";
 import PageMeta from "../components/PageMeta";
+import { seoFor } from "../seo";
 import { I, SectionHead } from "../components/Icons";
 import { INDUSTRY_ART } from "../components/IndustryArt";
 import { Breadcrumb, QlikCta } from "../components/QlikBits";
@@ -16,7 +17,7 @@ export default function IndustryPage({ industry: d }) {
       <PageMeta path={`/industries/${d.slug}/`} />
       <section className="qhero" aria-labelledby="ind-h1">
         <div className="wrap">
-          <Breadcrumb trail={[{ label: "Industries", to: "/#industries" }, { label: d.tab }]} />
+          <Breadcrumb trail={seoFor(`/industries/${d.slug}/`).trail} />
           <div className="qhero-in">
             <div>
               <div className="qeyebrow">{d.eyebrow}</div>

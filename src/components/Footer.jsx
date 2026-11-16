@@ -3,6 +3,8 @@ import logoWhite from "../assets/logo-white.png";
 import { NAV } from "../data";
 import { useSectionLink } from "../nav";
 import { SocialIcons } from "./SocialIcons";
+import ContactDetails from "./ContactDetails";
+import { COMPANY } from "../company";
 
 export function Footer({ onPrivacy }) {
   const link = useSectionLink();
@@ -16,20 +18,21 @@ export function Footer({ onPrivacy }) {
             <SocialIcons />
           </div>
           <div>
-            <h4>Explore</h4>
+            <h2 className="foot-h">Explore</h2>
             <ul>{NAV.map((n) => <li key={n.id}><a {...link(n.id)}>{n.label}</a></li>)}</ul>
           </div>
           <div>
-            <h4>Company</h4>
+            <h2 className="foot-h">Company</h2>
             <ul>
               <li><a {...link("contact")}>Get in Touch</a></li>
               <li><button className="linkbtn" style={{ textDecoration: "none" }} onClick={onPrivacy}>Privacy Policy</button></li>
             </ul>
+            <ContactDetails />
           </div>
         </div>
-        {/* TODO: confirm registered legal entity name and business email before launch */}
+        {/* Legal name, email, phone and address come from src/company.js (empty until confirmed). */}
         <div className="foot-bottom">
-          <span>© {__BUILD_YEAR__} Meridanta. All rights reserved.</span>
+          <span>© {__BUILD_YEAR__} {COMPANY.legalName || COMPANY.name}. All rights reserved.</span>
           <span>AI, Data & Analytics, and Cloud Solutions</span>
         </div>
       </div>

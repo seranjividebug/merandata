@@ -1,6 +1,7 @@
 import { QLIK_OVERVIEW as O } from "../qlikData";
 import { useSectionLink } from "../nav";
 import PageMeta from "../components/PageMeta";
+import { seoFor } from "../seo";
 import { go } from "../utils";
 import { SectionHead } from "../components/Icons";
 import platformImg from "../assets/qlik-platform.webp";
@@ -18,7 +19,7 @@ export default function QlikOverview() {
       <PageMeta path="/qlik/" />
       <section className="qhero" data-hero aria-labelledby="qlik-h1">
         <div className="wrap">
-          <Breadcrumb trail={[{ label: "Qlik" }]} />
+          <Breadcrumb trail={seoFor("/qlik/").trail} />
           <div className="qhero-in qhero-in--wide">
             <div>
               <div className="qeyebrow">{O.eyebrow}</div>

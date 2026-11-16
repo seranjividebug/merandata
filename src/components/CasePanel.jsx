@@ -94,10 +94,10 @@ export function CaseText({ study }) {
         {study.stats.map((s) => <li key={s.label}>{s.value} {s.label}</li>)}
       </ul>
       {BLOCKS.map((b) => (
-        <section key={b.key}>
+        <div key={b.key}>
           <h4>{b.title}</h4>
           <ul>{study[b.key].map((t) => <li key={t}>{t}</li>)}</ul>
-        </section>
+        </div>
       ))}
     </article>
   );

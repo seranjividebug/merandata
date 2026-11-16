@@ -6,20 +6,23 @@ import { accelerators } from "./accelerators";
 import { ACCELERATOR_STACK } from "./acceleratorStack";
 import { caseStudies, FEATURED_CASE_IDS } from "./caseStudies";
 import { QLIK_CAPABILITIES, QLIK_JOURNEY, QLIK_OFFERINGS, QLIK_OVERVIEW, QLIK_TM } from "./qlikData";
+import { ABOUT, COMPANY, addressLine } from "./company";
 import { SITE, absoluteUrl } from "./seo";
 
-// Copy shown in the About section (src/components/About.jsx). Keep the two in step.
-const ABOUT = [
-  "Meridanta focuses on AI, Data & Analytics, and Cloud solutions that help organizations address business challenges through practical technology and disciplined delivery.",
-  "Our approach brings together business understanding, engineering expertise, and outcome-oriented execution to help customers turn technology opportunities into meaningful results.",
-];
-const TAGLINE = "Technology Expertise. Business Outcomes.";
+const TAGLINE = COMPANY.slogan;
 const PUBLISHED = caseStudies.filter((c) => c.published);
 
 const bullets = (items) => items.map((t) => `- ${t}`).join("\n");
 const link = (label, path, note) => `- [${label}](${absoluteUrl(path)})${note ? `: ${note}` : ""}`;
 const caseUrl = (c) => `/qlik/#case-${c.id}`;
 const stack = (id) => (ACCELERATOR_STACK[id] ?? []).map((s) => s.label).join(", ");
+
+/** Email, phone and address, only the ones that are confirmed in src/company.js. */
+const contactLines = () => [
+  COMPANY.email && `- Email: ${COMPANY.email}`,
+  COMPANY.phone && `- Phone: ${COMPANY.phone}`,
+  addressLine() && `- Address: ${addressLine()}`,
+].filter(Boolean);
 
 /** Concise overview with links (https://llmstxt.org format). */
 export function buildLlmsTxt() {
@@ -48,6 +51,7 @@ export function buildLlmsTxt() {
     "",
     "## Contact",
     link("Contact form and consultation requests", "/#contact", "Tell us about your business challenge or technology initiative."),
+    ...contactLines(),
     "",
     "## Optional",
     link("Full site text for AI systems", "/llms-full.txt"),
@@ -109,7 +113,7 @@ export function buildLlmsFullTxt() {
     section("Qlik Accelerators", acceleratorsText()),
     section("Data Platforms & Cloud Solutions", platform),
     section(`Case studies (${PUBLISHED.length})`, casesText()),
-    section("Contact", `Use the contact form at ${absoluteUrl("/#contact")} to describe your business challenge or technology initiative.`),
+    section("Contact", `Use the contact form at ${absoluteUrl("/#contact")} to describe your business challenge or technology initiative.${contactLines().length ? "\n\n" + contactLines().join("\n") : ""}`),
     section("Trademarks", QLIK_TM),
   ].join("\n").replace(/\n{3,}/g, "\n\n").trimEnd() + "\n";
 }
