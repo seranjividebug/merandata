@@ -1,5 +1,6 @@
 import { QLIK_OVERVIEW as O } from "../qlikData";
-import { usePageTitle, useSectionLink } from "../nav";
+import { useSectionLink } from "../nav";
+import PageMeta from "../components/PageMeta";
 import { go } from "../utils";
 import { SectionHead } from "../components/Icons";
 import platformImg from "../assets/qlik-platform.webp";
@@ -11,10 +12,10 @@ import AcceleratorsCard from "../components/AcceleratorsCard";
 import AnimatedButton from "../components/AnimatedButton";
 
 export default function QlikOverview() {
-  usePageTitle(O.title, O.description);
   const link = useSectionLink();
   return (
     <>
+      <PageMeta title={O.title} description={O.description} />
       <section className="qhero" data-hero aria-labelledby="qlik-h1">
         <div className="wrap">
           <Breadcrumb trail={[{ label: "Qlik" }]} />

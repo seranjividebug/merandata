@@ -29,7 +29,7 @@ export function Footer({ onPrivacy }) {
         </div>
         {/* TODO: confirm registered legal entity name and business email before launch */}
         <div className="foot-bottom">
-          <span>© {new Date().getFullYear()} Meridanta. All rights reserved.</span>
+          <span>© {__BUILD_YEAR__} Meridanta. All rights reserved.</span>
           <span>AI, Data & Analytics, and Cloud Solutions</span>
         </div>
       </div>

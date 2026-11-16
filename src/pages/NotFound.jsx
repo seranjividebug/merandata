@@ -1,9 +1,10 @@
 import { Link } from "react-router-dom";
-import { usePageTitle } from "../nav";
+import PageMeta from "../components/PageMeta";
 
 export default function NotFound() {
-  usePageTitle("Page not found | Meridanta", "The page you are looking for could not be found.");
   return (
+    <>
+    <PageMeta title="Page not found | Meridanta" description="The page you are looking for could not be found." noindex />
     <section className="block" aria-labelledby="nf-h">
       <div className="wrap nf">
         <div className="head">
@@ -17,5 +18,6 @@ export default function NotFound() {
         </div>
       </div>
     </section>
+    </>
   );
 }

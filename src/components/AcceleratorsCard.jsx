@@ -1,11 +1,11 @@
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { accelerators } from "../accelerators";
 import { ACCELERATOR_STACK } from "../acceleratorStack";
 import { QLIK_BENEFITS } from "../data";
 import { logoSource } from "../logoMap";
 import { useSectionLink } from "../nav";
-import { REDUCED } from "../utils";
+import { REDUCED, useIsoLayoutEffect } from "../utils";
 import AnimatedButton from "./AnimatedButton";
 import { CIcon } from "./caseIcons";
 import { I } from "./Icons";
@@ -34,6 +34,79 @@ function Tile({ item, size }) {
   );
 }
 
+/**
+ * One accelerator's full detail. Every accelerator is rendered; only the selected one is visible
+ * (the others are hidden with the `hidden` attribute but stay in the HTML for search engines and AI crawlers).
+ */
+function AcceleratorPanel({ acc, first, shown, out, index, total, onStep, link, firstImg, onFirstLoad }) {
+  const id = acc.id;
+  return (
+    <div id={`ax-panel-${id}`} role="tabpanel" aria-labelledby={`ax-tab-${id}`} className={"ax-panel" + (out ? " is-out" : "")} hidden={!shown}>
+      <div className="ax-cols">
+        <div className="ax-col">
+          <img
+            ref={first ? firstImg : undefined}
+            className="ax-img"
+            src={acc.image}
+            width="1200"
+            height="800"
+            alt={acc.imageAlt}
+            decoding="async"
+            {...(first ? { onLoad: onFirstLoad } : { loading: "lazy" })}
+          />
+          <div className="ax-built">
+            <p className="ax-h">Built with</p>
+            <ul>
+              {ACCELERATOR_STACK[id].map((s) => (
+                <li key={s.label}><Tile item={s} size={40} /><span>{s.label}</span></li>
+              ))}
+            </ul>
+          </div>
+          <section className="ax-feats" aria-labelledby={`ax-feat-${id}`}>
+            <p className="ax-h" id={`ax-feat-${id}`}>Key features</p>
+            <ul className="ax-list">
+              {acc.features.map((t, i) => (
+                <li key={t}><span className="ax-ic ax-ic-lg"><CIcon name={FEATURE_ICONS[i % FEATURE_ICONS.length]} size={20} /></span><span>{t}</span></li>
+              ))}
+            </ul>
+          </section>
+        </div>
+        <div className="ax-col">
+          <div className="ax-head">
+            <h4 className="ax-title">{acc.title}</h4>
+            <p className="ax-tagline">{acc.tagline}</p>
+          </div>
+          <section className="ax-challenge" aria-labelledby={`ax-ch-${id}`}>
+            <h5 id={`ax-ch-${id}`} className="ax-iconh"><span className="ax-ic"><CIcon name="target" size={18} /></span>Business challenge</h5>
+            <p>{acc.challenge}</p>
+          </section>
+          <section className="ax-solution" aria-labelledby={`ax-so-${id}`}>
+            <h5 id={`ax-so-${id}`} className="ax-iconh"><span className="ax-ic"><CIcon name="solution" size={18} /></span>Solution</h5>
+            <ul className="ax-bullets">{acc.solution.map((t) => <li key={t}>{t}</li>)}</ul>
+          </section>
+          <section className="ax-bens" aria-labelledby={`ax-ben-${id}`}>
+            <p className="ax-h" id={`ax-ben-${id}`}>Benefits</p>
+            <ul className="ax-list ax-ben">
+              {acc.benefits.map((t, i) => (
+                <li key={t}><span className="ax-bic"><CIcon name={BENEFIT_ICONS[i % BENEFIT_ICONS.length]} size={22} /></span><span>{t}</span></li>
+              ))}
+            </ul>
+          </section>
+        </div>
+      </div>
+
+      <div className="ax-foot">
+        <AnimatedButton {...link("contact")}>Talk to us about this accelerator</AnimatedButton>
+        <div className="ax-step">
+          <button type="button" aria-label="Previous accelerator" onClick={() => onStep(index - 1)}><CIcon name="prev" size={18} strokeWidth={2.2} /></button>
+          <span aria-live="polite">{index + 1} / {total}</span>
+          <button type="button" aria-label="Next accelerator" onClick={() => onStep(index + 1)}><CIcon name="next" size={18} strokeWidth={2.2} /></button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 /** Qlik Accelerators card: header, tabs and the active accelerator's panel, all in place. */
 export default function AcceleratorsCard({ seeAll = false, headingId = "acc-h" }) {
   const link = useSectionLink();
@@ -52,7 +125,6 @@ export default function AcceleratorsCard({ seeAll = false, headingId = "acc-h" }
   const [firstLoaded, setFirstLoaded] = useState(false);
 
   const index = accelerators.findIndex((a) => a.id === active);
-  const acc = accelerators.find((a) => a.id === shown);
   const total = accelerators.length;
 
   const select = useCallback((id, { focus = false } = {}) => {
@@ -89,7 +161,7 @@ export default function AcceleratorsCard({ seeAll = false, headingId = "acc-h" }
     setInd({ x: t.offsetLeft, y: t.offsetTop, w: t.offsetWidth, h: t.offsetHeight });
     if (b.scrollWidth > b.clientWidth) b.scrollTo({ left: t.offsetLeft - (b.clientWidth - t.offsetWidth) / 2, behavior: REDUCED ? "auto" : "smooth" });
   }, [active]);
-  useLayoutEffect(measure, [measure]);
+  useIsoLayoutEffect(measure, [measure]);
   useEffect(() => {
     if (!bar.current || typeof ResizeObserver === "undefined") return undefined;
     const ro = new ResizeObserver(measure);
@@ -98,7 +170,7 @@ export default function AcceleratorsCard({ seeAll = false, headingId = "acc-h" }
   }, [measure]);
 
   // Animate the panel height as the content changes.
-  useLayoutEffect(() => {
+  useIsoLayoutEffect(() => {
     if (!inner.current || typeof ResizeObserver === "undefined") return undefined;
     const ro = new ResizeObserver(([e]) => setHeight(Math.round(e.target.getBoundingClientRect().height)));
     ro.observe(inner.current);
@@ -141,7 +213,7 @@ export default function AcceleratorsCard({ seeAll = false, headingId = "acc-h" }
             role="tab"
             className="ax-tab"
             aria-selected={a.id === active}
-            aria-controls="ax-panel"
+            aria-controls={`ax-panel-${a.id}`}
             tabIndex={a.id === active ? 0 : -1}
             onClick={() => select(a.id)}
           >
@@ -153,60 +225,21 @@ export default function AcceleratorsCard({ seeAll = false, headingId = "acc-h" }
 
       <div className="ax-body" style={height === null ? undefined : { height }}>
         <div ref={inner}>
-          <div key={shown} id="ax-panel" role="tabpanel" aria-labelledby={`ax-tab-${shown}`} className={"ax-panel" + (out ? " is-out" : "")}>
-            <div className="ax-cols">
-              <div className="ax-col">
-                <img ref={firstImg} className="ax-img" src={acc.image} width="1200" height="800" alt={acc.imageAlt} decoding="async" onLoad={() => setFirstLoaded(true)} />
-                <div className="ax-built">
-                  <p className="ax-h">Built with</p>
-                  <ul>
-                    {ACCELERATOR_STACK[acc.id].map((s) => (
-                      <li key={s.label}><Tile item={s} size={40} /><span>{s.label}</span></li>
-                    ))}
-                  </ul>
-                </div>
-                <section className="ax-feats" aria-labelledby="ax-feat">
-                  <p className="ax-h" id="ax-feat">Key features</p>
-                  <ul className="ax-list">
-                    {acc.features.map((t, i) => (
-                      <li key={t}><span className="ax-ic ax-ic-lg"><CIcon name={FEATURE_ICONS[i % FEATURE_ICONS.length]} size={20} /></span><span>{t}</span></li>
-                    ))}
-                  </ul>
-                </section>
-              </div>
-              <div className="ax-col">
-                <div className="ax-head">
-                  <h4 className="ax-title">{acc.title}</h4>
-                  <p className="ax-tagline">{acc.tagline}</p>
-                </div>
-                <section className="ax-challenge" aria-labelledby="ax-ch">
-                  <h5 id="ax-ch" className="ax-iconh"><span className="ax-ic"><CIcon name="target" size={18} /></span>Business challenge</h5>
-                  <p>{acc.challenge}</p>
-                </section>
-                <section className="ax-solution" aria-labelledby="ax-so">
-                  <h5 id="ax-so" className="ax-iconh"><span className="ax-ic"><CIcon name="solution" size={18} /></span>Solution</h5>
-                  <ul className="ax-bullets">{acc.solution.map((t) => <li key={t}>{t}</li>)}</ul>
-                </section>
-                <section className="ax-bens" aria-labelledby="ax-ben">
-                  <p className="ax-h" id="ax-ben">Benefits</p>
-                  <ul className="ax-list ax-ben">
-                    {acc.benefits.map((t, i) => (
-                      <li key={t}><span className="ax-bic"><CIcon name={BENEFIT_ICONS[i % BENEFIT_ICONS.length]} size={22} /></span><span>{t}</span></li>
-                    ))}
-                  </ul>
-                </section>
-              </div>
-            </div>
-
-            <div className="ax-foot">
-              <AnimatedButton {...link("contact")}>Talk to us about this accelerator</AnimatedButton>
-              <div className="ax-step">
-                <button type="button" aria-label="Previous accelerator" onClick={() => select(accelerators[(index - 1 + total) % total].id)}><CIcon name="prev" size={18} strokeWidth={2.2} /></button>
-                <span aria-live="polite">{index + 1} / {total}</span>
-                <button type="button" aria-label="Next accelerator" onClick={() => select(accelerators[(index + 1) % total].id)}><CIcon name="next" size={18} strokeWidth={2.2} /></button>
-              </div>
-            </div>
-          </div>
+          {accelerators.map((a, n) => (
+            <AcceleratorPanel
+              key={a.id}
+              acc={a}
+              first={n === 0}
+              shown={a.id === shown}
+              out={out && a.id === shown}
+              index={n}
+              total={total}
+              onStep={(i) => select(accelerators[(i + total) % total].id)}
+              link={link}
+              firstImg={firstImg}
+              onFirstLoad={() => setFirstLoaded(true)}
+            />
+          ))}
         </div>
       </div>
 

@@ -1,6 +1,6 @@
 import { useId } from "react";
 import { logoSource, logosFor } from "../logoMap";
-import { REDUCED } from "../utils";
+import { useReducedMotion } from "../utils";
 import { iconPaths } from "./caseIcons";
 
 // Drawing grids. The picture scales with its container.
@@ -118,7 +118,8 @@ const curveV = (x1, y1, x2, y2) => {
 
 /** Two glowing dots travelling along a path. Skipped for reduced motion. */
 function Dots({ d, glow, offset = 0 }) {
-  if (REDUCED) return null;
+  const reduced = useReducedMotion();
+  if (reduced) return null;
   return [0, 1].map((i) => (
     <g key={i} filter={`url(#${glow})`}>
       <circle r="9" fill="#9B7BD0" opacity=".4" />

@@ -1,14 +1,17 @@
-# Single-page app routing for Apache / LiteSpeed (Hostinger).
-# Real files and folders are served as they are; every other URL falls back to index.html,
-# so direct visits and refreshes of /qlik, /industries/<name>, etc. load the React app.
-# Query strings are kept. This is not a redirect to the home page.
+# Static site on Apache / LiteSpeed (Hostinger). Every public page is a real file (/qlik/index.html, ...),
+# so there is no single-page-app fallback: unknown URLs return a real 404 status with /404.html.
 DirectoryIndex index.html
 Options -MultiViews
+ErrorDocument 404 /404.html
 
 <IfModule mod_rewrite.c>
   RewriteEngine On
-  RewriteRule ^index\.html$ - [L]
+  # Section names that are not pages: send them to the matching home-page section (301).
+  RewriteRule ^services/?$ /#services [NE,R=301,L]
+  RewriteRule ^about/?$ /#about [NE,R=301,L]
+  RewriteRule ^products/?$ /#solutions [NE,R=301,L]
+  RewriteRule ^industries/?$ /#industries [NE,R=301,L]
+  # Old Qlik sub-URLs (e.g. /qlik/capabilities) go to the Qlik page.
   RewriteCond %{REQUEST_FILENAME} !-f
-  RewriteCond %{REQUEST_FILENAME} !-d
-  RewriteRule ^ index.html [L]
+  RewriteRule ^qlik/.+ /qlik/ [R=301,L]
 </IfModule>

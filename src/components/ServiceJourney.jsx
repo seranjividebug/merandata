@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { QLIK_JOURNEY, QLIK_OFFERINGS } from "../qlikData";
 import { useSectionLink } from "../nav";
-import { REDUCED } from "../utils";
+import { REDUCED, useReducedMotion } from "../utils";
 import { CIcon } from "./caseIcons";
 import "../serviceJourney.css";
 
@@ -75,9 +75,10 @@ export default function ServiceJourney() {
   }, []);
 
   // Arc position 0..1 round the ring (snaps to the step for reduced motion); bar fill 0..1.
-  const arc = REDUCED ? active / COUNT : u;
-  const barFill = REDUCED ? active / (COUNT - 1) : clamp((u * COUNT - 0.5) / (COUNT - 1));
-  const done = (i) => i < active || (!REDUCED && u > 0.985);
+  const reduced = useReducedMotion(); // render-time value: false on the server and for the first client render
+  const arc = reduced ? active / COUNT : u;
+  const barFill = reduced ? active / (COUNT - 1) : clamp((u * COUNT - 0.5) / (COUNT - 1));
+  const done = (i) => i < active || (!reduced && u > 0.985);
   const cur = STEPS[shown];
 
   return (

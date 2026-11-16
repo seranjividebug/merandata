@@ -1,23 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { logoSource } from "../logoMap";
+import { useMedia } from "../utils";
 import { CIcon } from "./caseIcons";
 import "../spotlight.css";
 
 const TILT_DEG = 4;
-
-/** True while the media query matches (re-evaluated on change). */
-function useMedia(query) {
-  const [match, setMatch] = useState(() => typeof window !== "undefined" && window.matchMedia(query).matches);
-  useEffect(() => {
-    const mq = window.matchMedia(query);
-    const on = () => setMatch(mq.matches);
-    on();
-    mq.addEventListener("change", on);
-    return () => mq.removeEventListener("change", on);
-  }, [query]);
-  return match;
-}
 
 /** A logo (simple-icons brands only) or a generic icon, on a white round tile. */
 export function LogoTile({ item, size = 52 }) {

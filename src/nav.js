@@ -35,13 +35,3 @@ export function ScrollManager() {
   }, [pathname, hash]);
   return null;
 }
-
-/** Set the document title and meta description for the current page. */
-export function usePageTitle(title, description) {
-  useEffect(() => {
-    document.title = title;
-    if (!description) return;
-    const meta = document.querySelector('meta[name="description"]');
-    if (meta) meta.setAttribute("content", description);
-  }, [title, description]);
-}

@@ -1,8 +1,8 @@
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { caseStudies, FEATURED_CASE_IDS } from "../caseStudies";
-import { REDUCED } from "../utils";
-import CasePanel from "./CasePanel";
+import { REDUCED, useIsoLayoutEffect, useMedia } from "../utils";
+import CasePanel, { CaseText } from "./CasePanel";
 import { CIcon } from "./caseIcons";
 import "../caseStudies.css";
 
@@ -31,19 +31,6 @@ const setHash = (id) => {
   const { pathname, search } = window.location;
   window.history.replaceState(window.history.state, "", `${pathname}${search}#${HASH_PREFIX}${id}`);
 };
-
-/** True while the media query matches (re-evaluated on change). */
-function useMedia(query) {
-  const [match, setMatch] = useState(() => typeof window !== "undefined" && window.matchMedia(query).matches);
-  useEffect(() => {
-    const mq = window.matchMedia(query);
-    const on = () => setMatch(mq.matches);
-    on();
-    mq.addEventListener("change", on);
-    return () => mq.removeEventListener("change", on);
-  }, [query]);
-  return match;
-}
 
 /** Case studies: a jump strip on top, one case at a time in the panel, Previous / Next below. */
 export default function CaseStudies({ headingLevel = 2 }) {
@@ -85,7 +72,7 @@ export default function CaseStudies({ headingLevel = 2 }) {
   const step = (d) => goTo(at.current + d, d);
 
   // Deep link: #case-<id> selects that case and scrolls the section into view.
-  useLayoutEffect(() => {
+  useIsoLayoutEffect(() => {
     if (!hash.startsWith("#" + HASH_PREFIX)) return;
     const i = LIST.findIndex((s) => s.id === hash.slice(1 + HASH_PREFIX.length));
     if (i < 0) return;
@@ -98,7 +85,7 @@ export default function CaseStudies({ headingLevel = 2 }) {
   }, [hash, key]);
 
   // Animate the panel height as the case changes.
-  useLayoutEffect(() => {
+  useIsoLayoutEffect(() => {
     if (!slide.current || typeof ResizeObserver === "undefined") return undefined;
     const ro = new ResizeObserver(([e]) => setHeight(Math.round(e.target.getBoundingClientRect().height)));
     ro.observe(slide.current);
@@ -182,6 +169,11 @@ export default function CaseStudies({ headingLevel = 2 }) {
         <div key={study.id} ref={slide} className={"ck-slide" + (out ? " is-out" : "")} style={{ "--dx": dx }}>
           <CasePanel study={study} vertical={vertical} />
         </div>
+      </div>
+
+      {/* Every other case study, as text. Hidden on screen but always in the HTML for search engines and AI crawlers. */}
+      <div className="ck-archive" hidden>
+        {LIST.filter((s) => s.id !== shownId).map((s) => <CaseText key={s.id} study={s} />)}
       </div>
     </div>
   );

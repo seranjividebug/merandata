@@ -10,7 +10,10 @@ const BLOCKS = [
   { key: "result", n: "04", title: "Result", icon: "result", hl: true },
 ];
 
-/** One case study shown in full: the use case picture and stats on the left, the story on the right. */
+/**
+ * One case study shown in full: the use case picture and stats on the left, the story on the right.
+ * All four story sections are in the markup; only the selected tab's section is visible.
+ */
 export default function CasePanel({ study, vertical }) {
   const link = useSectionLink();
   const titleId = "ck-title-" + study.id;
@@ -26,7 +29,7 @@ export default function CasePanel({ study, vertical }) {
     document.getElementById(`${titleId}-tab-${next}`)?.focus();
   };
   return (
-    <div className="ck-panel-in">
+    <article className="ck-panel-in" aria-labelledby={titleId}>
       <div className="ck-left">
         <CaseDiagram diagram={study.diagram} title={study.title} vertical={vertical} />
         <ul className="ck-stats" aria-label="Key numbers">
@@ -52,19 +55,50 @@ export default function CasePanel({ study, vertical }) {
               role="tab"
               id={`${titleId}-tab-${b.key}`}
               aria-selected={tab === b.key}
-              aria-controls={`${titleId}-pane`}
+              aria-controls={`${titleId}-pane-${b.key}`}
               tabIndex={tab === b.key ? 0 : -1}
               className="ck-tab"
               onClick={() => setTab(b.key)}
             >{b.title}</button>
           ))}
         </div>
-        <div className="ck-pane" role="tabpanel" id={`${titleId}-pane`} aria-labelledby={`${titleId}-tab-${tab}`} tabIndex={0}>
-          <ul>{study[tab].map((t) => <li key={t}>{t}</li>)}</ul>
-        </div>
+        {BLOCKS.map((b) => (
+          <div
+            key={b.key}
+            className="ck-pane"
+            role="tabpanel"
+            id={`${titleId}-pane-${b.key}`}
+            aria-labelledby={`${titleId}-tab-${b.key}`}
+            tabIndex={0}
+            hidden={tab !== b.key}
+          >
+            <ul>{study[b.key].map((t) => <li key={t}>{t}</li>)}</ul>
+          </div>
+        ))}
 
         <AnimatedButton variant="dark" className="ck-discuss" {...link("contact")}>Discuss a similar project</AnimatedButton>
       </div>
-    </div>
+    </article>
+  );
+}
+
+/** Full text of a case study that is not currently on screen. Hidden with CSS but always present in the HTML. */
+export function CaseText({ study }) {
+  const id = "ck-text-" + study.id;
+  return (
+    <article aria-labelledby={id}>
+      <h3 id={id}>{study.title}</h3>
+      <p>{study.category}. {study.audience}</p>
+      <p>{study.summary}</p>
+      <ul aria-label="Key numbers">
+        {study.stats.map((s) => <li key={s.label}>{s.value} {s.label}</li>)}
+      </ul>
+      {BLOCKS.map((b) => (
+        <section key={b.key}>
+          <h4>{b.title}</h4>
+          <ul>{study[b.key].map((t) => <li key={t}>{t}</li>)}</ul>
+        </section>
+      ))}
+    </article>
   );
 }

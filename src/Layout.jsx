@@ -1,17 +1,14 @@
 import { useCallback, useEffect, useState } from "react";
-import { Navigate, Route, Routes, useLocation } from "react-router-dom";
-import { INDUSTRIES, NAV } from "./data";
+import { Outlet, useLocation } from "react-router-dom";
+import { NAV } from "./data";
 import { go } from "./utils";
 import { ScrollManager } from "./nav";
 import Header from "./components/Header";
 import { Footer, PrivacyDialog } from "./components/Footer";
 import FloatingActions from "./components/FloatingActions";
-import Home from "./pages/Home";
-import QlikOverview from "./pages/QlikOverview";
-import IndustryPage from "./pages/IndustryPage";
-import NotFound from "./pages/NotFound";
 
-export default function App() {
+/** Site chrome shared by every route: header, page content (<Outlet />), footer, floating buttons. */
+export default function Layout() {
   const { pathname } = useLocation();
   const [active, setActive] = useState("home");
   const [privacy, setPrivacy] = useState(false);
@@ -36,13 +33,7 @@ export default function App() {
       <a className="skip" href="#main" onClick={(e) => go("main", e)}>Skip to content</a>
       <Header active={active} />
       <main id="main">
-        <Routes>
-          <Route path="/" element={<Home onPrivacy={openPrivacy} />} />
-          <Route path="/qlik" element={<QlikOverview />} />
-          <Route path="/qlik/*" element={<Navigate to="/qlik#capabilities" replace />} />
-          {INDUSTRIES.map((d) => <Route key={d.slug} path={"/industries/" + d.slug} element={<IndustryPage industry={d} />} />)}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+        <Outlet context={{ onPrivacy: openPrivacy }} />
       </main>
       <Footer onPrivacy={openPrivacy} />
       <FloatingActions />

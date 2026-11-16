@@ -1,0 +1,8 @@
+# Cloudflare static-asset redirects (301). Kept in sync with the rules in .htaccess for Hostinger/Apache.
+# Section names people (and search engines) may try as pages; they live on the home page.
+/services /#services 301
+/about /#about 301
+/products /#solutions 301
+/industries /#industries 301
+# Old Qlik sub-URLs used to be redirected in the browser; do it on the server.
+/qlik/:rest /qlik/ 301

@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { HERO_SLIDES } from "../data";
 import { useSectionLink } from "../nav";
-import { REDUCED } from "../utils";
+import { Head } from "vite-react-ssg";
+import { REDUCED, useReducedMotion } from "../utils";
 import qlikImg from "../assets/hero/hero-qlik.webp";
 import aiImg from "../assets/hero/hero-ai.webp";
 import healthcareImg from "../assets/hero/hero-healthcare.webp";
@@ -11,16 +12,6 @@ import AnimatedButton from "./AnimatedButton";
 const IMAGES = { qlik: qlikImg, ai: aiImg, healthcare: healthcareImg };
 const INTERVAL = 6000;
 const SWIPE_PX = 50;
-
-// Preload the first slide's image so the hero paints without waiting on the React tree.
-if (typeof document !== "undefined" && !document.querySelector("link[data-hero-preload]")) {
-  const link = document.createElement("link");
-  link.rel = "preload";
-  link.as = "image";
-  link.href = IMAGES.qlik;
-  link.dataset.heroPreload = "";
-  document.head.appendChild(link);
-}
 
 const Arrow = ({ dir }) => (
   <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
@@ -35,6 +26,7 @@ export default function Hero() {
   const touchX = useRef(null);
   const sectionLink = useSectionLink();
   const count = HERO_SLIDES.length;
+  const reduced = useReducedMotion(); // render-time value
   const playing = !REDUCED && !paused && !userPaused;
 
   const goTo = useCallback((i) => setIndex((i + count) % count), [count]);
@@ -59,6 +51,8 @@ export default function Hero() {
   const onBlur = (e) => { if (!e.currentTarget.contains(e.relatedTarget)) setPaused(false); };
 
   return (
+    <>
+      <Head><link rel="preload" as="image" href={IMAGES.qlik} /></Head>
     <section
       id="home"
       data-hero
@@ -130,7 +124,7 @@ export default function Hero() {
               aria-label={`Go to slide ${i + 1}: ${s.title}`} aria-current={i === index ? "true" : undefined} onClick={() => goTo(i)} />
           ))}
         </div>
-        {!REDUCED && (
+        {!reduced && (
           <button type="button" className="hs-pp" aria-label={userPaused ? "Play slideshow" : "Pause slideshow"} onClick={() => setUserPaused((v) => !v)}>
             <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true" fill="currentColor">
               {userPaused ? <path d="M7 4.5v15l13-7.5z" /> : <path d="M6 4h4v16H6zM14 4h4v16h-4z" />}
@@ -139,5 +133,6 @@ export default function Hero() {
         )}
       </div>
     </section>
+    </>
   );
 }

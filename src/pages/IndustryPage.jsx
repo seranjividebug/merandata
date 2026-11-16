@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
-import { usePageTitle, useSectionLink } from "../nav";
+import { useSectionLink } from "../nav";
+import PageMeta from "../components/PageMeta";
 import { I, SectionHead } from "../components/Icons";
 import { INDUSTRY_ART } from "../components/IndustryArt";
 import { Breadcrumb, QlikCta } from "../components/QlikBits";
@@ -8,11 +9,11 @@ const CHAPTERS = [["challenge", "Industry challenges", "ch"], ["opportunity", "T
 
 /** One template for every /industries/<slug> page; the content comes from INDUSTRIES. */
 export default function IndustryPage({ industry: d }) {
-  usePageTitle(`${d.tab} | Meridanta`, d.cardDesc);
   const link = useSectionLink();
   const Art = INDUSTRY_ART[d.key];
   return (
     <>
+      <PageMeta title={`${d.tab} | Meridanta`} description={d.cardDesc} />
       <section className="qhero" aria-labelledby="ind-h1">
         <div className="wrap">
           <Breadcrumb trail={[{ label: "Industries", to: "/#industries" }, { label: d.tab }]} />
