@@ -130,3 +130,29 @@ Cloudflare dashboard setting names change over time; look for these features und
 - The checker warns on `href="#"`. It is expected to report 0 warnings once the social URLs are real.
 - No external links exist yet besides the social placeholders, so the `rel` rule is verified only on the social icons (they have `rel="noopener noreferrer"`).
 - FAQs: none exist. Phase 5 suggests candidate questions for Sri; if approved, add `faqs` to the page in `src/seo.js` and render them with `data-faq`.
+
+## Phase 5: content review pack (2026-11-16)
+
+**Done**
+- `docs/CONTENT_REVIEW.md` (new, 440 lines) for Sri, with Approve / Edit / Remove columns:
+  1. The eight decisions that matter most.
+  2. Page by page (Home with all its sections, Qlik, Healthcare, Communications/Media/Entertainment): current headline, description, key copy, meta title and description, and the JSON-LD values.
+  3. Discoverability suggestions: "who / what / for whom / proof" statements, entity-rich phrasing (Snowflake, Databricks, Azure, AWS are absent from the home and Qlik introductions), 13 draft FAQ questions, content gaps.
+  4. Wording to check (not changed).
+  5. Qlik and third-party branding check: mention counts per brand and page, trademark notices today, logo usage table, and a search for partner, certified or endorsement wording.
+  6. All TODOs and unverified claims in tables: 15 company/site items, 20 case studies with their numbers, 5 accelerators, content in the code that is not shown.
+- `scripts/build-content-review.mjs` (new) generates the pack from the data files and the built HTML, so it can be regenerated after Sri's changes: `npm run build && node scripts/build-content-review.mjs`.
+- One obvious typo fixed in unpublished data: "ADLF Integration" to "ADLS Integration" in `QLIK_ACCELERATORS` (`src/data.js`). No visible website wording was changed.
+
+**Files changed**
+`docs/CONTENT_REVIEW.md`, `scripts/build-content-review.mjs`, `src/data.js` (typo), `docs/DISCOVERABILITY_LOG.md`.
+
+**Evidence**
+- Brand mentions are counted from the built HTML: /qlik/ has 114 Qlik, 25 QlikView, 20 Qlik Replicate, 12 NPrinting, 7 Talend and 4 Power BI mentions; the home page has 11, 0, 0, 0, 3 and 2; the industry pages have none.
+- The only text matching partner / certified / official / endorse is "Certification programs" in the Training offering.
+
+**Open TODOs (all need Sri)**
+- Case studies and accelerators came from a deck carrying another company's branding; the code asks that anything Meridanta cannot claim be unpublished.
+- Qlik / Talend partner status, certification wording, and the "Qlik Center of Excellence" name.
+- Company facts, social URLs, the public "Preview build" note on the contact form.
+- The unused impact data says "40 hrs typical Qlik migration" while a published case says a QlikView to Qlik Cloud migration took "2 months": confirm which is true.

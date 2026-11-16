@@ -60,7 +60,7 @@ export const HC_FEATURES = [
   ["Pharmacy & Medication Insights", "Consolidated visibility across siloed pharmacy locations and the Medi Tracker platform."],
   ["Executive Dashboards", "Self-service Power BI analytics for leadership."],
 ];
-export const QLIK_ACCELERATORS = ["Prometheus Integration", "NPrinting Task Trigger", "PDF Dashboard Export", "Log Scraping", "ADLF Integration"];
+export const QLIK_ACCELERATORS = ["Prometheus Integration", "NPrinting Task Trigger", "PDF Dashboard Export", "Log Scraping", "ADLS Integration"];
 export const QLIK_BENEFITS = [
   ["Reusable analytics components", "Proven building blocks for integration, scheduling, exports, and monitoring."],
   ["Faster development", "Prebuilt components shorten the path from requirement to working app."],
