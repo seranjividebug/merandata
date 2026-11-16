@@ -1,9 +1,14 @@
-# Single-page app routing for Apache (Hostinger): serve index.html for any path that is not a real file.
+# Single-page app routing for Apache / LiteSpeed (Hostinger).
+# Real files and folders are served as they are; every other URL falls back to index.html,
+# so direct visits and refreshes of /qlik, /industries/<name>, etc. load the React app.
+# Query strings are kept. This is not a redirect to the home page.
+DirectoryIndex index.html
+Options -MultiViews
+
 <IfModule mod_rewrite.c>
   RewriteEngine On
-  RewriteBase /
   RewriteRule ^index\.html$ - [L]
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d
-  RewriteRule . /index.html [L]
+  RewriteRule ^ index.html [L]
 </IfModule>
