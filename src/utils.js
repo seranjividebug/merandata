@@ -15,9 +15,17 @@ export const REDUCED =
 export function scrollToEl(el) {
   el.scrollIntoView({ behavior: REDUCED ? "auto" : "smooth", block: "start" });
   const pad = parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop) || 0;
-  window.setTimeout(() => {
+  let cancelled = false;
+  const stop = () => { cancelled = true; };
+  // A visitor who scrolls by hand takes over; we never fight them.
+  ["wheel", "touchstart", "keydown"].forEach((t) => window.addEventListener(t, stop, { once: true, passive: true }));
+  let tries = 0;
+  const settle = () => {
+    if (cancelled || !el.isConnected || ++tries > 8) return;
     if (Math.abs(el.getBoundingClientRect().top - pad) > 8) el.scrollIntoView({ behavior: "auto", block: "start" });
-  }, REDUCED ? 100 : 1100);
+    window.setTimeout(settle, 350);
+  };
+  window.setTimeout(settle, REDUCED ? 100 : 1000);
 }
 
 /** Smooth-scroll to a section and move keyboard focus to its heading. */

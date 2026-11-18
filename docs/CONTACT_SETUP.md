@@ -6,6 +6,26 @@ You need to do four things once: set up Resend (a), set up Turnstile (b), create
 
 Keys must never go into the code, the repository, the `dist` folder or `public_html`.
 
+## Contact form switch (read this first)
+
+The website has a feature flag for the form, so visitors never meet a form that cannot send.
+
+| Setting in `.env` (read when you run `npm run build`) | What visitors see |
+|---|---|
+| `VITE_CONTACT_FORM_ENABLED=false` (the default, also in `.env.example`) | An **email contact card** in the same section: "Email us at srivatsans@meridanta.com", a "Send us an email" button (opens a new email with the subject "Website enquiry") and the registered office line. No form, no Turnstile, no call to `/api/contact.php`. |
+| `VITE_CONTACT_FORM_ENABLED=true` **and** `VITE_TURNSTILE_SITE_KEY=<site key>` | The full enquiry form with the Turnstile check. |
+| `VITE_CONTACT_FORM_ENABLED=true` but the site key is empty | The email contact card, and the build prints a clear `[contact] WARNING` line. |
+
+Every call to action on the site still goes to the contact section, whichever of the two is shown.
+
+**To switch the form on** (only after steps a, b and c below are finished):
+1. Open `.env` in the project folder (copy `.env.example` if it does not exist).
+2. Set `VITE_CONTACT_FORM_ENABLED=true` and `VITE_TURNSTILE_SITE_KEY=` followed by the **site key** from step b.
+3. Run `npm run build`. The build must not print the `[contact] WARNING` line; if it does, the key is missing.
+4. Upload the new `dist` (see `docs/DEPLOY_HOSTINGER.md`) and run the tests in section e.
+
+**To switch it off again:** set `VITE_CONTACT_FORM_ENABLED=false`, build and upload. `public/api/contact.php` stays in the upload either way; it is not used while the card is shown.
+
 ---
 
 ## a. Resend: the sending service
@@ -45,14 +65,12 @@ return [
 4. Save. Right-click the file → **Permissions** and set `640` (or `600`).
 5. Optional settings (destination mailbox, sender, IP header) are described in `config.sample.php` in the repository. The defaults already match your choices: to `srivatsans@meridanta.com`, from `Meridanta Website <noreply@send.meridanta.com>`.
 
-Until this file exists the form shows the error message with the email fallback link; it never pretends to send.
+Until this file exists the form (if you have switched it on) shows the error message with the email fallback link; it never pretends to send.
 
 ## d. Build and upload
 
-1. On your computer, copy `.env.example` to a new file called `.env` in the project folder and put the **site key** after the equals sign:
-   `VITE_TURNSTILE_SITE_KEY=0xYourSiteKey`
-   (`.env` is ignored by git, it is not committed.)
-2. Run `npm run build`. The build warns if the key is missing.
+1. On your computer, copy `.env.example` to a new file called `.env` in the project folder. Put the **site key** after `VITE_TURNSTILE_SITE_KEY=` and set `VITE_CONTACT_FORM_ENABLED=true` (see "Contact form switch" above). `.env` is ignored by git, it is not committed.
+2. Run `npm run build`. The build prints a `[contact] WARNING` if you enabled the form without a site key (it then builds the email card instead of the form).
 3. Upload **all** contents of the `dist` folder into `public_html`, replacing the old files. Follow `docs/DEPLOY_HOSTINGER.md` step by step. In File Manager, open **Settings** and turn on **Show hidden files**, because `.htaccess` is a hidden file and the `api` folder must be included too.
 
 ## e. Test procedure

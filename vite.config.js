@@ -53,8 +53,11 @@ async function checkContactEndpoint(server) {
   const php = readFileSync("dist/api/contact.php", "utf8");
   const missing = INTERESTS.filter((label) => !php.includes(`"${label}"`));
   if (missing.length) throw new Error(`public/api/contact.php does not list these areas of interest from src/data.js: ${missing.join("; ")}`);
-  if (!loadEnv("production", process.cwd(), "VITE_").VITE_TURNSTILE_SITE_KEY) {
-    console.warn("[contact] VITE_TURNSTILE_SITE_KEY is not set: the form is built without the Turnstile check and the server will refuse every enquiry. Copy .env.example to .env and fill it in before the production build.");
+  const env = loadEnv("production", process.cwd(), "VITE_");
+  if (env.VITE_CONTACT_FORM_ENABLED !== "true") {
+    console.log('[contact] The contact form is switched off (VITE_CONTACT_FORM_ENABLED is not "true"): visitors see the email contact card. See docs/CONTACT_SETUP.md to switch the form on.');
+  } else if (!env.VITE_TURNSTILE_SITE_KEY) {
+    console.warn("[contact] WARNING: VITE_CONTACT_FORM_ENABLED=true but VITE_TURNSTILE_SITE_KEY is empty. The form cannot be enabled without the Turnstile site key, so this build falls back to the email contact card.");
   }
 }
 

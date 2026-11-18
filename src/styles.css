@@ -357,6 +357,14 @@ section.alt{background:var(--mist)}
 .linkbtn{background:none;border:0;padding:0;color:var(--plum);font-weight:600;text-decoration:underline;text-underline-offset:3px;cursor:pointer;font-size:inherit}
 .form-foot{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
 .turnstile{margin:4px 0 16px;min-height:65px}
+/* Contact card (shown while the form is switched off) */
+.contact-card{display:flex;flex-direction:column;justify-content:center;gap:24px}
+.contact-card h3{font-size:clamp(22px,2.2vw,28px);line-height:1.25;font-weight:800;letter-spacing:-.02em;overflow-wrap:anywhere}
+.contact-card h3 a{color:var(--plum);text-decoration:none;border-bottom:2px solid var(--plum-tint)}
+@media (max-width:480px){.contact-card h3{font-size:clamp(17px,5vw,22px);overflow-wrap:break-word}.contact-card h3 a{white-space:nowrap}}
+.contact-card h3 a:hover{border-color:var(--plum)}
+.contact-office{margin:0;padding-top:22px;border-top:1px solid var(--line);color:var(--muted);font-size:15px;line-height:1.55}
+.contact-office strong{color:var(--ink);font-weight:600}
 .spin{display:inline-block;width:14px;height:14px;margin-right:10px;border:2px solid rgba(255,255,255,.35);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;vertical-align:-2px}
 @keyframes spin{to{transform:rotate(360deg)}}
 .alert a{color:inherit;font-weight:600}
@@ -381,6 +389,7 @@ section.alt{background:var(--mist)}
 .contact-details{display:grid;gap:6px;margin-top:16px;font-style:normal;font-size:15px}
 .footer .contact-details span{color:rgba(255,255,255,.75)}
 .contact-details a{text-decoration:none;font-weight:500}
+.contact-details a,.contact-details span{overflow-wrap:anywhere}
 .contact-details strong{font-weight:600;color:#fff}
 .contact-details.on-light strong{color:var(--ink)}
 .contact-details.on-light{margin:-8px 0 28px;color:var(--muted)}
@@ -393,7 +402,7 @@ section.alt{background:var(--mist)}
 .footer .social a:hover{color:var(--navy);opacity:.85;transform:translateY(-2px)}
 .footer .social a:focus-visible{outline:2px solid #fff;outline-offset:3px}
 .foot-bottom{margin-top:56px;padding-top:24px;border-top:1px solid var(--navy-line);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:14px}
-@media (max-width:760px){.foot-grid{grid-template-columns:1fr 1fr}.foot-grid > :first-child{grid-column:1/-1}}
+@media (max-width:760px){.foot-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.foot-grid > :first-child{grid-column:1/-1}}
 
 /* Dialog */
 .overlay{position:fixed;inset:0;z-index:90;background:rgba(12,18,48,.55);display:grid;place-items:center;padding:20px}

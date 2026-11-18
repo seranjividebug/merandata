@@ -105,5 +105,21 @@ console.log("CLAIM 7: registered office and email (footer and Organization JSON-
   ok(g.email === "srivatsans@meridanta.com" && g.address.streetAddress === "262 Chapman Rd, Ste 240" && g.address.postalCode === "19702" && g.location?.name === "Registered Office", `Organization JSON-LD: email=${g.email}; address=${JSON.stringify(g.address)}; location.name="${g.location?.name}"`);
 }
 
+console.log("CLAIM 8 (build part): contact section matches the feature flag");
+{
+  const home = html["/"];
+  const hasForm = home.includes('id="f-name"');
+  const hasCard = home.includes('class="form-card contact-card"');
+  const MAILTO = "mailto:srivatsans@meridanta.com?subject=Website%20enquiry";
+  if (hasCard) {
+    ok(!hasForm && !home.includes("Preview build"), "form switched off: email card rendered, no form fields, no Preview-build text");
+    ok(home.includes(MAILTO) && home.includes("Send us an email") && home.includes("Email us at"), `card has the mailto link with the prefilled subject (${MAILTO}) and the "Send us an email" button`);
+    ok(textOf("/").includes("Registered Office: " + company.addressLine()), "card shows the registered office line");
+  } else {
+    ok(hasForm && !home.includes("Preview build"), "form switched on: form rendered, no Preview-build text");
+  }
+  ok(existsSync("dist/api/contact.php"), "dist/api/contact.php is in the build");
+}
+
 console.log(`\n${fails} failed check(s)`);
 process.exit(fails ? 1 : 0);

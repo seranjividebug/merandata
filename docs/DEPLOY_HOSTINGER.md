@@ -5,7 +5,7 @@ meridanta.com is served by Hostinger. You upload the **contents of `dist`** into
 ## Before you build
 
 - [ ] The code you want live is on `main` (`git pull`).
-- [ ] `.env` exists in the project folder with `VITE_TURNSTILE_SITE_KEY=...` (copy `.env.example`). The build prints a `[contact]` warning if it is missing.
+- [ ] `.env` exists in the project folder (copy `.env.example`). Until the contact form is set up keep `VITE_CONTACT_FORM_ENABLED=false`: visitors then see the email contact card. To switch the form on set it to `true` and add `VITE_TURNSTILE_SITE_KEY=...` (see `docs/CONTACT_SETUP.md`). The build prints a `[contact]` message saying which one you are building.
 - [ ] `npm ci` (first time or after dependency changes).
 - [ ] `npm run build` finishes with `Build finished` and no error.
 - [ ] `npm run check:html` ends with `0 errors` (the "placeholder link #" warnings for the social icons are expected until the real URLs are added).
@@ -40,7 +40,7 @@ Use a private window and Ctrl+F5. Commands use `curl` (in any terminal); `-I` sh
 | 11 | https://meridanta.com/api/contact.php (browser) | `{"ok":false,"error":"method_not_allowed"}` (the PHP runs; it is not the home page). |
 | 12 | `curl -I https://meridanta.com/assets/<any .js file>` | `cache-control: public, max-age=31536000, immutable`. |
 | 13 | `curl -I https://meridanta.com/` | `cache-control: no-cache`. |
-| 14 | Contact form | Run the tests in `CONTACT_SETUP.md` section e (at least the real enquiry). |
+| 14 | Contact section | With the form off (default): the email card shows "Email us at srivatsans@meridanta.com" and "Send us an email" opens a new email with the subject "Website enquiry". With the form on: run the tests in `CONTACT_SETUP.md` section e (at least the real enquiry). |
 | 15 | Social preview | Paste the home URL into a LinkedIn or Slack message: title, description and the 1200x630 image appear. |
 
 If a check fails, restore the backup zip (upload, extract over `public_html`) and tell me which row failed.

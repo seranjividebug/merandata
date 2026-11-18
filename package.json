@@ -17,7 +17,8 @@
     "qa:resilience": "node scripts/qa/resilience.mjs",
     "qa:console": "node scripts/qa/console.mjs",
     "verify": "node scripts/verify-claims.mjs",
-    "qa:form": "node scripts/qa/form.mjs"
+    "qa:form": "node scripts/qa/form.mjs",
+    "qa:contact": "node scripts/qa/contact.mjs"
   },
   "dependencies": {
     "react": "18.3.1",

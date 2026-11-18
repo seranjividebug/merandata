@@ -3,6 +3,18 @@
 import { launch, BASE } from "./common.mjs";
 
 const b = await launch();
+{
+  const probe = await b.newPage();
+  await probe.goto(BASE + "/", { waitUntil: "load" });
+  await probe.waitForTimeout(1500);
+  const hasForm = (await probe.locator("#f-name").count()) > 0;
+  await probe.close();
+  if (!hasForm) {
+    console.log("SKIP this build shows the email contact card instead of the form (VITE_CONTACT_FORM_ENABLED is not true). Run npm run qa:contact.");
+    await b.close();
+    process.exit(0);
+  }
+}
 let fails = 0;
 const scenarios = [
   ["server not executing PHP (static host serves the file)", null, "error"],
