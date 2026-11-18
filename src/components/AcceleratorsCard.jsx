@@ -36,12 +36,12 @@ function Tile({ item, size }) {
 
 /**
  * One accelerator's full detail. Every accelerator is rendered; only the selected one is visible
- * (the others are hidden with the `hidden` attribute but stay in the HTML for search engines and AI crawlers).
+ * (the others are hidden with a CSS class, not the `hidden` attribute, so they stay in the HTML for search engines and AI crawlers).
  */
 function AcceleratorPanel({ acc, first, shown, out, index, total, onStep, link, firstImg, onFirstLoad }) {
   const id = acc.id;
   return (
-    <div id={`ax-panel-${id}`} role="tabpanel" aria-labelledby={`ax-tab-${id}`} className={"ax-panel" + (out ? " is-out" : "")} hidden={!shown}>
+    <div id={`ax-panel-${id}`} role="tabpanel" aria-labelledby={`ax-tab-${id}`} className={"ax-panel" + (out ? " is-out" : "") + (shown ? "" : " is-inactive")}>
       <div className="ax-cols">
         <div className="ax-col">
           <img

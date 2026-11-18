@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { INTEREST_KEYS, INTERESTS } from "../data";
 import { ENQUIRY_EMAIL } from "../company";
 import Turnstile, { TURNSTILE_SITE_KEY } from "./Turnstile";
@@ -47,7 +47,7 @@ function validate(d) {
 }
 
 /** The enquiry form. Shown only when the contact form is switched on (see src/contactConfig.js). */
-export default function ContactForm({ onPrivacy }) {
+export default function ContactForm() {
   const [v, setV] = useState(EMPTY);
   const { search } = useLocation();
   // /?interest=qlik#contact pre-selects the service, unless the visitor already chose one.
@@ -145,7 +145,7 @@ export default function ContactForm({ onPrivacy }) {
           </div>
           <p className="privacy">
             We use your details only to respond to your inquiry. See our{" "}
-            <button type="button" className="linkbtn" onClick={onPrivacy}>privacy policy</button>.
+            <Link to="/privacy/">privacy policy</Link>.
           </p>
           <Turnstile onToken={(t) => { setToken(t); if (t) setErrs(({ verify, ...rest }) => rest); }} resetKey={resetKey} />
           {errs.verify && <span className="err" role="alert">{I.alert}{errs.verify}</span>}

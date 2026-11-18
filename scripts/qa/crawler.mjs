@@ -11,6 +11,7 @@ const pages = [
   ["/qlik/", { must: ["Data Replication (CDC)", "Talend ETL", "Prometheus Integration", "Qlik Log Scraping", "250 SQL Server Databases to Azure Synapse", "trademarks of their respective owners"], articles: 20 }],
   ["/industries/healthcare/", { must: ["Industry challenges", "Technology opportunities", "Our capabilities"], articles: 0 }],
   ["/industries/communications-media-entertainment/", { must: ["Industry challenges", "Technology opportunities", "Our capabilities"], articles: 0 }],
+  ["/privacy/", { must: ["What we collect", "Why we use it", "do not sell your personal information", "srivatsans@meridanta.com"], articles: 0, minText: 800 }],
 ];
 console.log("== raw HTML per route (no JavaScript, crawler user agent)");
 for (const [path, spec] of pages) {
@@ -24,7 +25,7 @@ for (const [path, spec] of pages) {
   const caseArticles = text.match(/ck-(title|text)-[a-z0-9-]+/g) ? new Set(text.match(/ck-(title|text)-[a-z0-9-]+/g).map((x) => x.replace(/^ck-(title|text)-/, "").replace(/-(tab|pane).*$/, ""))).size : 0;
   const missing = spec.must.filter((t) => !body.includes(t));
   const canon = d.querySelector('link[rel="canonical"]')?.getAttribute("href");
-  const good = r.status === 200 && h1.length === 1 && !missing.length && ld.every(Boolean) && types.includes("Organization") && types.includes("WebPage") && canon === ORIGIN + path && (!spec.articles || caseArticles >= spec.articles) && body.length > 2000;
+  const good = r.status === 200 && h1.length === 1 && !missing.length && ld.every(Boolean) && types.includes("Organization") && types.includes("WebPage") && canon === ORIGIN + path && (!spec.articles || caseArticles >= spec.articles) && body.length > (spec.minText || 2000);
   ok(good, `${path.padEnd(48)} ${r.status} h1="${h1[0]?.textContent.trim().slice(0, 36)}" text=${body.length} chars JSON-LD=[${[...new Set(types)].join(",")}] canonical=${canon === ORIGIN + path ? "ok" : canon}${spec.articles ? " cases=" + caseArticles : ""}${missing.length ? " MISSING: " + missing.join("; ") : ""}`);
 }
 {
@@ -50,7 +51,7 @@ console.log("== robots.txt, sitemap.xml, llms.txt, llms-full.txt");
   const parsed = !xml.querySelector("parsererror");
   let all200 = true;
   for (const u of urls) { const path = u.loc.replace(ORIGIN, ""); const { r: rr } = await get(path); if (rr.status !== 200) all200 = false; }
-  ok(r.status === 200 && parsed && urls.length === 4 && urls.every((u) => u.loc.startsWith(ORIGIN + "/") && /^\d{4}-\d{2}-\d{2}$/.test(u.lastmod || "")) && all200, `sitemap.xml ${r.status} ${r.headers.get("content-type")} valid-xml=${parsed} urls=${urls.length} all-return-200=${all200} lastmod=${urls.map((u) => u.lastmod).join(",")}`);
+  ok(r.status === 200 && parsed && urls.length === 5 && urls.every((u) => u.loc.startsWith(ORIGIN + "/") && /^\d{4}-\d{2}-\d{2}$/.test(u.lastmod || "")) && all200, `sitemap.xml ${r.status} ${r.headers.get("content-type")} valid-xml=${parsed} urls=${urls.length} all-return-200=${all200} lastmod=${urls.map((u) => u.lastmod).join(",")}`);
 }
 for (const f of ["/llms.txt", "/llms-full.txt"]) {
   const { r, text } = await get(f);

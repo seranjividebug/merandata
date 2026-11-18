@@ -30,7 +30,7 @@ export const caseStudies = [
     stats: [
       { value: "< 12.xx", label: "starting version" },
       { value: "Latest", label: "release delivered" },
-      { value: "5 days", label: "business days" },
+      { value: "5 days", label: "to complete" },
     ],
     outcomes: ["Customer satisfaction"],
     diagram: { sources: ["Qlik < 12.xx"], engine: "Upgrade", targets: ["Latest Qlik release"], mode: "migration" },
@@ -391,7 +391,7 @@ export const caseStudies = [
     summary: "Read data once and wrote it to several RDBMS targets in real time using a log stream architecture.",
     highlight: { value: "$500K–$1M", label: "cost saving" },
     stats: [
-      { value: "1 → many", label: "read once, write many" },
+      { value: "1 → many", label: "one read, all targets" },
       { value: "100 GB+", label: "changes per day" },
       { value: "< 10s", label: "latency" },
     ],

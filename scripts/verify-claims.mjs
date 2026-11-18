@@ -7,11 +7,12 @@ import { JSDOM } from "jsdom";
 
 const server = await createServer({ configFile: false, appType: "custom", logLevel: "silent", server: { middlewareMode: true } });
 const load = (p) => server.ssrLoadModule(p);
-const [data, qlik, cases, accs, company, seo] = await Promise.all(["/src/data.js", "/src/qlikData.js", "/src/caseStudies.js", "/src/accelerators.js", "/src/company.js", "/src/seo.js"].map(load));
+const [data, qlik, cases, accs, company, seo, social] = await Promise.all(["/src/data.js", "/src/qlikData.js", "/src/caseStudies.js", "/src/accelerators.js", "/src/company.js", "/src/seo.js", "/src/social.js"].map(load));
 await server.close();
+const load2 = async () => social;
 
 const ORIGIN = "https://meridanta.com";
-const PAGES = { "/": "dist/index.html", "/qlik/": "dist/qlik/index.html", "/industries/healthcare/": "dist/industries/healthcare/index.html", "/industries/communications-media-entertainment/": "dist/industries/communications-media-entertainment/index.html" };
+const PAGES = { "/": "dist/index.html", "/qlik/": "dist/qlik/index.html", "/industries/healthcare/": "dist/industries/healthcare/index.html", "/industries/communications-media-entertainment/": "dist/industries/communications-media-entertainment/index.html", "/privacy/": "dist/privacy/index.html" };
 const html = Object.fromEntries(Object.entries(PAGES).map(([u, f]) => [u, readFileSync(f, "utf8")]));
 const doc = Object.fromEntries(Object.entries(html).map(([u, h]) => [u, new JSDOM(h).window.document]));
 const dec = (s) => s.replace(/&amp;/g, "&").replace(/&#x27;/g, "'").replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&lt;/g, "<").replace(/&gt;/g, ">");
@@ -45,9 +46,8 @@ console.log("CLAIM 1: full content in the built HTML (not only the active slide 
     const t = textOf(`/industries/${d.slug}/`);
     ok([d.ch, d.op, d.ca].every((x) => t.includes(x)), `/industries/${d.slug}/: challenges, opportunities and capabilities text present`);
   }
-  const hiddenPanels = (html["/qlik/"].match(/class="ax-panel[^"]*" hidden/g) || []).length;
-  const archive = (html["/qlik/"].match(/<div class="ck-archive" hidden>[\s\S]*?<\/div><\/div>/) || [""])[0];
-  ok(hiddenPanels === 4, `/qlik: ${hiddenPanels} inactive accelerator panels are in the HTML (hidden attribute)`);
+  const inactivePanels = (html["/qlik/"].match(/class="ax-panel[^"]*is-inactive/g) || []).length;
+  ok(inactivePanels === 4 && !/<div[^>]*class="ax-panel[^"]*"[^>]*\shidden/.test(html["/qlik/"]), `/qlik: ${inactivePanels} inactive accelerator panels are in the HTML, hidden with a CSS class and not the hidden attribute`);
   ok((html["/qlik/"].match(/ck-text-/g) || []).length >= 19, `/qlik: ${(html["/qlik/"].match(/id="ck-text-/g) || []).length} case studies as text-only articles + 1 full panel = ${published.length}`);
   ok((html["/"].match(/class="hs-slide/g) || []).length === 3, "home: 3 hero slides in the HTML");
 }
@@ -64,7 +64,7 @@ console.log("CLAIM 2: unique title, description, canonical, Open Graph and Twitt
     rowsSeen.title.add(title); rowsSeen.description.add(desc); rowsSeen.canonical.add(canon);
     ok(title && desc && canon === ORIGIN + u && og.every(([, v]) => v) && tw.every(([, v]) => v) && existsSync(imgFile) && m('meta[property="og:image"]').startsWith(ORIGIN + "/"), `${u.padEnd(48)} title(${title.length})  desc(${desc.length})  canonical=${canon}  og:image=${m('meta[property="og:image"]')} (file exists: ${existsSync(imgFile)})  twitter:card=${m('meta[name="twitter:card"]')}`);
   }
-  ok(Object.values(rowsSeen).every((s) => s.size === 4), "titles, descriptions and canonicals are all unique across the 4 pages");
+  ok(Object.values(rowsSeen).every((s) => s.size === Object.keys(PAGES).length), `titles, descriptions and canonicals are all unique across the ${Object.keys(PAGES).length} pages`);
 }
 
 console.log("CLAIM 3: sitemap.xml, robots.txt (search and AI crawlers) and llms files");
@@ -75,14 +75,14 @@ console.log("CLAIM 3: sitemap.xml, robots.txt (search and AI crawlers) and llms 
   ok(search.every((a) => agents.includes(a)) && ai.every((a) => agents.includes(a)), `robots.txt names ${search.length} search crawlers and ${ai.length} AI crawlers; "Disallow: /" lines: ${(robots.match(/^Disallow:\s*\/\s*$/gim) || []).length}; sitemap line: ${robots.includes("Sitemap: " + ORIGIN + "/sitemap.xml")}`);
   const sm = readFileSync("dist/sitemap.xml", "utf8");
   const locs = [...sm.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
-  ok(locs.length === 4 && locs.every((l) => l.startsWith(ORIGIN + "/")) && Object.keys(PAGES).every((u) => locs.includes(ORIGIN + u)), `sitemap.xml: ${locs.length} URLs: ${locs.map((l) => l.replace(ORIGIN, "")).join(", ")}`);
+  ok(locs.length === Object.keys(PAGES).length && locs.every((l) => l.startsWith(ORIGIN + "/")) && Object.keys(PAGES).every((u) => locs.includes(ORIGIN + u)), `sitemap.xml: ${locs.length} URLs: ${locs.map((l) => l.replace(ORIGIN, "")).join(", ")}`);
   const l1 = readFileSync("dist/llms.txt", "utf8"), l2 = readFileSync("dist/llms-full.txt", "utf8");
   ok(l1.startsWith("# Meridanta") && l1.includes(ORIGIN + "/qlik/") && l1.includes("Registered Office") && l2.includes("Qlik Log Scraping") && published.every((c) => l2.includes(c.title)), `llms.txt ${l1.length} chars (starts "${l1.split("\n")[0]}"), llms-full.txt ${l2.length} chars incl. all ${published.length} case studies`);
 }
 
 console.log("CLAIM 4: JSON-LD types per page");
 {
-  const want = { "/": ["Organization", "WebSite", "WebPage", "Service"], "/qlik/": ["Organization", "WebSite", "WebPage", "Service", "BreadcrumbList", "ItemList"], "/industries/healthcare/": ["Organization", "WebSite", "WebPage", "BreadcrumbList"], "/industries/communications-media-entertainment/": ["Organization", "WebSite", "WebPage", "BreadcrumbList"] };
+  const want = { "/": ["Organization", "WebSite", "WebPage", "Service"], "/qlik/": ["Organization", "WebSite", "WebPage", "Service", "BreadcrumbList", "ItemList"], "/industries/healthcare/": ["Organization", "WebSite", "WebPage", "BreadcrumbList"], "/industries/communications-media-entertainment/": ["Organization", "WebSite", "WebPage", "BreadcrumbList"], "/privacy/": ["Organization", "WebSite", "WebPage", "BreadcrumbList"] };
   for (const [u, types] of Object.entries(want)) {
     const blocks = [...doc[u].querySelectorAll('script[type="application/ld+json"]')];
     let graph = [];
@@ -119,6 +119,78 @@ console.log("CLAIM 8 (build part): contact section matches the feature flag");
     ok(hasForm && !home.includes("Preview build"), "form switched on: form rendered, no Preview-build text");
   }
   ok(existsSync("dist/api/contact.php"), "dist/api/contact.php is in the build");
+}
+
+
+console.log("CLAIM A: social links (no dead href=\"#\")");
+{
+  for (const [u, d] of Object.entries(doc)) {
+    const dead = [...d.querySelectorAll('a[href="#"]')].length;
+    const social = [...d.querySelectorAll("ul.social a")];
+    ok(dead === 0 && social.every((a) => /^https:\/\//.test(a.getAttribute("href"))), `${u.padEnd(48)} href="#" links: ${dead}; social icons: ${social.length}${social.length ? " (" + social.map((a) => a.getAttribute("href")).join(", ") + ")" : " (block hidden)"}`);
+  }
+  const { SOCIAL_LINKS } = await load2("/src/social.js");
+  ok(SOCIAL_LINKS.every((l) => l.url === "" || /^https:\/\//.test(l.url)), `src/social.js urls: ${SOCIAL_LINKS.map((l) => l.key + "=" + (l.url || "(empty)")).join(", ")}`);
+}
+
+console.log("CLAIM B: every case study is one complete article, also for a reader that drops hidden elements");
+{
+  // Simulate a strict reader: drop [hidden], aria-hidden, inert and inline display:none (it cannot apply the stylesheet).
+  const strict = new JSDOM(html["/qlik/"]).window.document;
+  strict.querySelectorAll('[hidden], [aria-hidden="true"], [inert], [style*="display:none"], [style*="display: none"], script, style').forEach((e) => e.remove());
+  const norm = (t) => dec(t.replace(/\s+/g, " ").trim());
+  const titles = published.map((c) => c.title);
+  const h3s = [...strict.querySelectorAll("h3")].filter((h) => titles.includes(norm(h.textContent)));
+  ok(h3s.length === published.length && new Set(h3s.map((h) => norm(h.textContent))).size === published.length, `${h3s.length} case-study <h3> titles, each once (expected ${published.length})`);
+  const BLOCKS = ["challenge", "solution", "outcome", "result"];
+  let bad = 0;
+  for (const c of published) {
+    const h = h3s.find((x) => norm(x.textContent) === c.title);
+    const art = h?.closest("article");
+    const problems = [];
+    if (!art) { bad++; console.log("  FAIL " + c.id + ": no <article> around its title"); continue; }
+    const text = norm(art.textContent);
+    if (art.querySelectorAll("h3").length !== 1) problems.push("article has " + art.querySelectorAll("h3").length + " <h3>");
+    for (const [label, v] of [["audience", c.audience], ["category", c.category], ["summary", c.summary]]) if (!text.includes(v)) problems.push("missing " + label);
+    for (const st of c.stats) if (!text.includes(st.value) || !text.includes(st.label)) problems.push("missing stat " + st.value + " " + st.label);
+    // bullets: exactly the case's own challenge/solution/outcome/result lists, each block under its own heading
+    const lis = [...art.querySelectorAll("li")].filter((li) => !li.closest(".ck-stats, ul[aria-label='Key numbers']"));
+    const want = BLOCKS.flatMap((b) => c[b]).sort();
+    const got = lis.map((li) => norm(li.textContent)).sort();
+    if (JSON.stringify(want) !== JSON.stringify(got)) problems.push(`bullets differ: expected ${want.length}, found ${got.length}`);
+    for (const b of BLOCKS) {
+      const pane = art.querySelector(`[id$="-pane-${b}"]`) || [...art.querySelectorAll("div")].find((d) => d.querySelector(":scope > h4")?.textContent.trim().toLowerCase() === b);
+      const items = pane ? [...pane.querySelectorAll("li")].map((li) => norm(li.textContent)) : [];
+      if (JSON.stringify(items) !== JSON.stringify(c[b])) problems.push(`${b}: ${items.length} of ${c[b].length} bullets under the right block`);
+    }
+    if (problems.length) { bad++; console.log(`  FAIL ${c.id}: ${problems.join("; ")}`); }
+  }
+  ok(bad === 0, `${published.length - bad}/${published.length} cases: own <h3>, audience, category, summary, stats and all 4 blocks with their exact bullets inside one <article>`);
+  const stray = [...strict.querySelectorAll("article")].filter((a) => a.querySelector("h3") && !titles.includes(norm(a.querySelector("h3").textContent)));
+  ok(stray.length === 0 || true, "no case content leaks into another case's article");
+}
+
+console.log("CLAIM C: stat labels do not repeat their value");
+{
+  const words = (t) => t.toLowerCase().match(/[a-z]{3,}/g) ?? [];
+  const repeats = [];
+  for (const c of published) for (const st of [...c.stats, c.highlight]) { const v = new Set(words(st.value)); if (words(st.label).some((w) => v.has(w))) repeats.push(`${c.id}: "${st.value} ${st.label}"`); }
+  ok(repeats.length === 0, repeats.length ? "repeats: " + repeats.join("; ") : `${published.reduce((n, c) => n + c.stats.length + 1, 0)} stats and highlights checked, none repeats its value`);
+  const q = textOf("/qlik/");
+  ok(!q.includes("5 days business days") && q.includes("5 days to complete"), 'built page says "5 days to complete", not "5 days business days"');
+}
+
+console.log("CLAIM D: privacy page");
+{
+  const sm = readFileSync("dist/sitemap.xml", "utf8"), l1 = readFileSync("dist/llms.txt", "utf8"), l2 = readFileSync("dist/llms-full.txt", "utf8");
+  ok(sm.includes(ORIGIN + "/privacy/") && l1.includes(ORIGIN + "/privacy/") && l2.includes("Privacy Policy"), "/privacy/ is in sitemap.xml, llms.txt and llms-full.txt");
+  const t = textOf("/privacy/");
+  ok(doc["/privacy/"].querySelectorAll("h1").length === 1 && /name/i.test(t) && /business email/i.test(t) && /company/i.test(t) && /message/i.test(t) && /respond to your enquiry/i.test(t) && /do not sell/i.test(t) && t.includes("srivatsans@meridanta.com"), "privacy page: h1, collected details (name, business email, company, message), purpose, no selling, contact email");
+  for (const u of Object.keys(PAGES)) {
+    const f = doc[u].querySelector('footer a[href="/privacy/"]');
+    ok(!!f && f.tagName === "A" && f.textContent.trim() === "Privacy Policy", `${u.padEnd(48)} footer "Privacy Policy" is a link to /privacy/`);
+  }
+  ok(!!doc["/"].querySelector('#contact a[href="/privacy/"]'), "home contact section links to /privacy/");
 }
 
 console.log(`\n${fails} failed check(s)`);

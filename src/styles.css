@@ -133,6 +133,10 @@ button{font:inherit;color:inherit}
 .flow.d2{animation-delay:-2.3s}.flow.d3{animation-delay:-4.6s}.flow.slow{animation-duration:11s}
 @keyframes flow{to{stroke-dashoffset:-600}}
 
+/* Content switched off on screen but kept in the HTML for crawlers: inactive tabs, other case studies, other accelerators.
+   A class, not the `hidden` attribute, because some readers drop [hidden] elements. */
+.is-inactive{display:none}
+
 /* Sections */
 section.block{padding:88px 0}
 section.alt{background:var(--mist)}
@@ -363,6 +367,8 @@ section.alt{background:var(--mist)}
 .contact-card h3 a{color:var(--plum);text-decoration:none;border-bottom:2px solid var(--plum-tint)}
 @media (max-width:480px){.contact-card h3{font-size:clamp(17px,5vw,22px);overflow-wrap:break-word}.contact-card h3 a{white-space:nowrap}}
 .contact-card h3 a:hover{border-color:var(--plum)}
+.contact-privacy{margin:0;font-size:14.5px;color:var(--muted)}
+.contact-privacy a,.privacy a{color:var(--plum);font-weight:600}
 .contact-office{margin:0;padding-top:22px;border-top:1px solid var(--line);color:var(--muted);font-size:15px;line-height:1.55}
 .contact-office strong{color:var(--ink);font-weight:600}
 .spin{display:inline-block;width:14px;height:14px;margin-right:10px;border:2px solid rgba(255,255,255,.35);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;vertical-align:-2px}
@@ -437,6 +443,17 @@ section.alt{background:var(--mist)}
 .crumbs a{color:rgba(255,255,255,.85);text-decoration:none}
 .crumbs a:hover{color:#fff;text-decoration:underline}
 .crumbs [aria-current]{color:#fff;font-weight:600}
+.crumbs.on-light ol{color:var(--muted)}
+.crumbs.on-light a{color:var(--plum)}
+.crumbs.on-light [aria-current]{color:var(--ink)}
+/* Privacy policy page */
+.policy{max-width:760px}
+.policy-date{font-size:14px;color:var(--muted);margin:0 0 8px}
+.policy h2{font-size:22px;margin:30px 0 8px;letter-spacing:-.01em}
+.policy p,.policy li{color:var(--muted);line-height:1.65}
+.policy p{margin:8px 0}
+.policy ul{margin:8px 0 8px 20px;padding:0;display:grid;gap:4px}
+.policy a{color:var(--plum);font-weight:600}
 .qhero-in{display:grid;grid-template-columns:44fr 56fr;gap:48px;align-items:center;padding:0}
 .qeyebrow{display:inline-flex;align-items:center;gap:10px;margin-bottom:10px;font-size:12px}
 .qeyebrow::before{content:"";width:28px;height:3px;border-radius:3px;background:var(--grad-lift)}

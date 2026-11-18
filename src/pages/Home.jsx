@@ -1,4 +1,3 @@
-import { useOutletContext } from "react-router-dom";
 import PageMeta from "../components/PageMeta";
 import Hero from "../components/Hero";
 import { Services } from "../components/Services";
@@ -8,7 +7,6 @@ import About from "../components/About";
 import Contact from "../components/Contact";
 
 export default function Home() {
-  const { onPrivacy } = useOutletContext();
   return (
     <>
       <PageMeta path="/" />
@@ -17,7 +15,7 @@ export default function Home() {
       <Industries />
       <Products />
       <About />
-      <Contact onPrivacy={onPrivacy} />
+      <Contact />
     </>
   );
 }

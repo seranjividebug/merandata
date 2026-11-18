@@ -24,7 +24,7 @@ const GLYPHS = {
 };
 
 export function SocialIcons() {
-  const links = SOCIAL_LINKS.filter((s) => s.url && GLYPHS[s.key]);
+  const links = SOCIAL_LINKS.filter((s) => /^https?:\/\//.test(s.url) && GLYPHS[s.key]);
   if (!links.length) return null;
   return (
     <ul className="social" aria-label="Meridanta on social media">

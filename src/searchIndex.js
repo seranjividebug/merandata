@@ -14,6 +14,7 @@ export const SEARCH_INDEX = [
   section("contact", "Contact Us", "get in touch talk email form united states india"),
   ...SERVICES.map((s) => ({ title: s.title, group: "Services", path: "/", hash: "services", keywords: [s.short, ...s.items].join(" ") })),
   ...INDUSTRIES.map((d) => ({ title: d.tab, group: "Industries", path: "/industries/" + d.slug + "/", keywords: [d.cardTitle, d.cardDesc, d.tagline].filter(Boolean).join(" ") })),
+  { title: "Privacy Policy", group: "Company", path: "/privacy/", keywords: "privacy policy personal data contact details enquiry" },
   { title: "Qlik Center of Excellence", group: "Qlik", path: "/qlik/", keywords: "qlik sense talend data integration analytics ai platform" },
   ...QLIK_CAPABILITIES.map((c) => ({ title: c.title, group: "Qlik capabilities", path: "/qlik/", hash: "capabilities", keywords: [c.intro, ...c.bullets].join(" ") })),
   ...QLIK_OFFERINGS.map((o) => ({ title: "Qlik " + o.title, group: "Qlik services", path: "/qlik/", hash: "qlik-services", keywords: o.items.join(" ") })),

@@ -65,12 +65,11 @@ export default function CasePanel({ study, vertical }) {
         {BLOCKS.map((b) => (
           <div
             key={b.key}
-            className="ck-pane"
+            className={"ck-pane" + (tab !== b.key ? " is-inactive" : "")}
             role="tabpanel"
             id={`${titleId}-pane-${b.key}`}
             aria-labelledby={`${titleId}-tab-${b.key}`}
             tabIndex={0}
-            hidden={tab !== b.key}
           >
             <ul>{study[b.key].map((t) => <li key={t}>{t}</li>)}</ul>
           </div>
@@ -82,7 +81,7 @@ export default function CasePanel({ study, vertical }) {
   );
 }
 
-/** Full text of a case study that is not currently on screen. Hidden with CSS but always present in the HTML. */
+/** Full text of a case study that is not currently on screen. Hidden with a CSS class (not the `hidden` attribute, which some readers drop) but always present in the HTML. */
 export function CaseText({ study }) {
   const id = "ck-text-" + study.id;
   return (

@@ -2,10 +2,10 @@ import { Link } from "react-router-dom";
 import { useSectionLink } from "../nav";
 import { QLIK_TM } from "../qlikData";
 
-export function Breadcrumb({ trail }) {
+export function Breadcrumb({ trail, light = false }) {
   const link = useSectionLink();
   return (
-    <nav className="crumbs" aria-label="Breadcrumb">
+    <nav className={"crumbs" + (light ? " on-light" : "")} aria-label="Breadcrumb">
       <ol>
         <li><a {...link("home")}>Home</a></li>
         {trail.map((t, i) => (

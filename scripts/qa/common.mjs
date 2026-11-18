@@ -3,7 +3,7 @@ export const BASE = process.env.BASE || "http://localhost:8090";
 // Path of a Chromium-based browser (Edge or Chrome). Set BROWSER_PATH to override.
 export const EDGE = process.env.BROWSER_PATH || "C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe";
 export const launch = () => chromium.launch({ executablePath: EDGE });
-export const PAGES = ["/", "/qlik/", "/industries/healthcare/", "/industries/communications-media-entertainment/"];
+export const PAGES = ["/", "/qlik/", "/industries/healthcare/", "/industries/communications-media-entertainment/", "/privacy/"];
 /** Collects console errors/warnings, page errors and failed requests (404 on the page URL itself is ignored when expected). */
 export function watch(page, ignore = []) {
   const issues = [];

@@ -171,8 +171,8 @@ export default function CaseStudies({ headingLevel = 2 }) {
         </div>
       </div>
 
-      {/* Every other case study, as text. Hidden on screen but always in the HTML for search engines and AI crawlers. */}
-      <div className="ck-archive" hidden>
+      {/* Every other case study, as text. Hidden with a CSS class, not the `hidden` attribute, so it stays in the HTML for search engines and AI crawlers. */}
+      <div className="ck-archive is-inactive">
         {LIST.filter((s) => s.id !== shownId).map((s) => <CaseText key={s.id} study={s} />)}
       </div>
     </div>

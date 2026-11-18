@@ -8,6 +8,7 @@ import { caseStudies, FEATURED_CASE_IDS } from "./caseStudies";
 import { QLIK_CAPABILITIES, QLIK_JOURNEY, QLIK_OFFERINGS, QLIK_OVERVIEW, QLIK_TM } from "./qlikData";
 import { ABOUT, COMPANY, addressLine } from "./company";
 import { SITE, absoluteUrl } from "./seo";
+import { PRIVACY_UPDATED, privacyText } from "./privacyData";
 
 const TAGLINE = COMPANY.slogan;
 const PUBLISHED = caseStudies.filter((c) => c.published);
@@ -54,6 +55,7 @@ export function buildLlmsTxt() {
     ...contactLines(),
     "",
     "## Optional",
+    link("Privacy Policy", "/privacy/", "what personal details we collect through the website and why"),
     link("Full site text for AI systems", "/llms-full.txt"),
     link("Sitemap", "/sitemap.xml"),
     "",
@@ -114,6 +116,7 @@ export function buildLlmsFullTxt() {
     section("Data Platforms & Cloud Solutions", platform),
     section(`Case studies (${PUBLISHED.length})`, casesText()),
     section("Contact", `Use the contact form at ${absoluteUrl("/#contact")} to describe your business challenge or technology initiative.${contactLines().length ? "\n\n" + contactLines().join("\n") : ""}`),
+    section(`Privacy Policy (${absoluteUrl("/privacy/")}, last updated ${PRIVACY_UPDATED})`, privacyText()),
     section("Trademarks", QLIK_TM),
   ].join("\n").replace(/\n{3,}/g, "\n\n").trimEnd() + "\n";
 }

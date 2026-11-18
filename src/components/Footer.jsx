@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
 import logoWhite from "../assets/logo-white-118.webp";
 import { NAV } from "../data";
 import { useSectionLink } from "../nav";
@@ -6,7 +6,7 @@ import { SocialIcons } from "./SocialIcons";
 import ContactDetails from "./ContactDetails";
 import { COMPANY } from "../company";
 
-export function Footer({ onPrivacy }) {
+export function Footer() {
   const link = useSectionLink();
   return (
     <footer className="footer">
@@ -25,7 +25,7 @@ export function Footer({ onPrivacy }) {
             <h2 className="foot-h">Company</h2>
             <ul>
               <li><a {...link("contact")}>Get in Touch</a></li>
-              <li><button className="linkbtn" style={{ textDecoration: "none" }} onClick={onPrivacy}>Privacy Policy</button></li>
+              <li><Link to="/privacy/">Privacy Policy</Link></li>
             </ul>
             <ContactDetails />
           </div>
@@ -37,26 +37,5 @@ export function Footer({ onPrivacy }) {
         </div>
       </div>
     </footer>
-  );
-}
-
-export function PrivacyDialog({ onClose }) {
-  const btn = useRef();
-  useEffect(() => {
-    const prev = document.activeElement;
-    btn.current?.focus();
-    const esc = (e) => e.key === "Escape" && onClose();
-    window.addEventListener("keydown", esc);
-    return () => { window.removeEventListener("keydown", esc); prev?.focus?.(); };
-  }, [onClose]);
-  return (
-    <div className="overlay" onClick={(e) => e.target === e.currentTarget && onClose()}>
-      <div className="dialog" role="dialog" aria-modal="true" aria-labelledby="pp-h">
-        <h2 id="pp-h">Privacy policy</h2>
-        <p>Meridanta collects only the contact details needed to respond to your inquiry: your name, business email, optional company, and message. We do not sell or share this information.</p>
-        <p>The full privacy policy will be published here before the contact form goes live.</p>
-        <button ref={btn} className="btn btn-dark" onClick={onClose}>Close</button>
-      </div>
-    </div>
   );
 }

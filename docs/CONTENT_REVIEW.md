@@ -15,7 +15,8 @@ How to use it: for each row, mark **Approve**, **Edit** (write the new wording i
 | 5 | **Contact form delivery (done in Phase 6).** The form now sends through a PHP endpoint and Resend to srivatsans@meridanta.com, and the public "Preview build" note is gone. It needs the one-time setup in `docs/CONTACT_SETUP.md` (Resend domain, Turnstile keys, private config file) before it can send. Until then visitors see an error message with an email link, never a fake success. | Confirm the setup is finished and test with a real enquiry. |
 | 6 | **Third-party logos in diagrams** (AWS, Microsoft Azure services, Oracle, IBM Db2, Power BI, Qlik, plus brands from the open-source icon set). | Each owner has brand-usage rules. See section 5. |
 | 7 | **Metrics shown as headline numbers** (shown: for example "~40% faster response time" and "Under 5 seconds" replication latency; in the code but not shown: "40 hrs typical Qlik migration"). | Each is a quantified claim a prospect or AI assistant may repeat. Section 6 lists them. |
-| 8 | **Social profile links** are placeholders (`#`). | Real URLs are needed before launch. They also feed structured data. |
+| 8 | **Social profile links.** None are set, so the footer shows no social icons. | Send the real URLs (LinkedIn, X, Facebook, Instagram, YouTube) and the icons appear; they also feed the structured data. |
+| 9 | **Privacy Policy page (DRAFT – Sri to review).** A basic policy now lives at `/privacy/` and is linked from the footer and the contact section. | Wording, retention period and the statement about trackers need your confirmation (see "Privacy Policy page" in section 2). |
 
 ## 2. Page by page
 
@@ -256,6 +257,20 @@ Eyebrow: COMMUNICATIONS, MEDIA & ENTERTAINMENT. Lede: Data, AI and cloud solutio
 **Our capabilities.** Meridanta supports data management, service delivery optimization, real-time streaming analytics, network and marketing analytics, cost optimization, predictive customer-contact analytics, advertising-led data monetization, omnichannel sales, NPS, customer and employee experience, and viewership analytics, delivered with Agile and CI/CD practices that accelerate time to market.
 
 
+### Privacy Policy page (`/privacy/`): **DRAFT – Sri to review**
+
+A basic policy, written from how the site works today and linked from the footer and the contact section. It says: Meridanta collects the name, business email, company (optional), area of interest (optional) and message that you choose to send; uses them only to respond to enquiries; does not sell the information or share it for others' marketing; keeps it as long as needed to handle the request and for ordinary business records; uses no advertising or analytics trackers; and that you can ask to see, correct or delete your information by writing to srivatsans@meridanta.com. When the form is in use it names the email delivery service (Resend) and the human check (Cloudflare Turnstile).
+
+| Point for Sri to confirm | Approve | Edit | Remove |
+|---|---|---|---|
+| Overall wording and tone (this is a basic policy, not legal advice) | | | |
+| Retention: "as long as we need it to handle your request and for ordinary business records" (no fixed period is stated) | | | |
+| "This website does not use advertising or analytics trackers" | | | |
+| Naming Resend and Cloudflare Turnstile when the form is in use | | | |
+| "We do not sell your personal information" | | | |
+| Contact for privacy requests: srivatsans@meridanta.com and the registered office | | | |
+| Any legal wording required for the United States and India (governing law, data-protection rights, a named privacy contact) | | | |
+
 ## 3. Suggestions for AI and search discoverability
 
 These are proposals only. Anything in square brackets needs a fact from Sri. Nothing here has been added to the site.
@@ -324,7 +339,7 @@ Question-style heading ideas (optional): "What We Do" -> "What does Meridanta do
 | QlikView | 0 | 25 | 0 | 0 |
 | Qlik Replicate | 0 | 20 | 0 | 0 |
 | Qlik Cloud | 0 | 5 | 0 | 0 |
-| Qlik (any) | 11 | 114 | 0 | 0 |
+| Qlik (any) | 10 | 114 | 0 | 0 |
 | Talend | 3 | 7 | 0 | 0 |
 | Power BI | 2 | 4 | 0 | 0 |
 | NPrinting | 0 | 12 | 0 | 0 |
@@ -377,7 +392,8 @@ Tick one column per row. Items from the code comments are quoted.
 | Fact | address | Registered Office | set to 262 Chapman Rd, Ste 240, Newark, DE 19702, USA (footer, contact section, Organization data, llms.txt) | | | |
 | Fact | foundingDate | Founding date | empty | | | |
 | Fact | areaServed | "United States and India" | from the project brief, used in structured data | | | |
-| Link | social | LinkedIn, X, Facebook, Instagram, YouTube | all `#` placeholders in `src/social.js` | | | |
+| Link | social | LinkedIn, X, Facebook, Instagram, YouTube | all empty in `src/social.js`; no icons are shown until real URLs are added | | | |
+| Page | privacy | Privacy Policy page `/privacy/` | DRAFT – Sri to review (source: `src/privacyData.js`) | | | |
 | Link | twitterSite | X handle for Twitter cards | empty in `src/seo.js` | | | |
 | Text | form-note | Public "Preview build" note on the contact form | removed in Phase 6 | | | |
 | Product | HCInsights | "A turnkey healthcare insights solution that unifies clinical, operational and financial data"; "5 modules"; "Power BI dashboards" | card links to the Healthcare page; no HCInsights page exists | | | |
@@ -391,7 +407,7 @@ Tick one column per row. Items from the code comments are quoted.
 
 | Type | ID | Title | Client descriptor | Headline and key numbers | Approve | Edit | Remove |
 |---|---|---|---|---|---|---|---|
-| Case study | `qlik-server-upgrade` | Qlik Server Upgrade to the Latest Release | For complex enterprise customers | 5 days to complete; < 12.xx starting version; Latest release delivered; 5 days business days | | | |
+| Case study | `qlik-server-upgrade` | Qlik Server Upgrade to the Latest Release | For complex enterprise customers | 5 days to complete; < 12.xx starting version; Latest release delivered; 5 days to complete | | | |
 | Case study | `qlikview-to-qliksense` | QlikView to Qlik Sense Migration | For multiple customers | 40 hrs upgrade & migration; 3 servers migrated; 40 hrs end to end; 1 week hypercare support | | | |
 | Case study | `qliksense-upgrade-domain` | Qlik Sense Server Upgrade & Domain Migration | For multiple customers | 40 hrs upgrade & migration; 3 servers; 40 hrs end to end; 0 issues reported | | | |
 | Case study | `qlikview-domain-migration` | QlikView Domain Migration | For multiple customers | 40 hrs migration; 3 servers; 40 hrs end to end; 0 issues reported | | | |
@@ -405,7 +421,7 @@ Tick one column per row. Items from the code comments are quoted.
 | Case study | `sap-extractor-adls` | SAP Extractor to ADLS Gen2 | For multiple customers | $500K–$1M cost saving; 40 GB+ changes per day; 5 GB peak hour load; < 5s latency | | | |
 | Case study | `rdbms-kafka` | RDBMS to Kafka / Event Hub | For multiple customers | < 5s streaming latency; 4 source databases; 50 GB+ changes per day; < 5s latency | | | |
 | Case study | `rdbms-snowflake-redshift` | RDBMS to Snowflake / Redshift | For multiple customers | < 5s replication latency; 100 GB+ changes per day; 30 GB peak hour load; < 5s latency | | | |
-| Case study | `one-source-multi-target` | One Source to Multiple Targets | For multiple customers | $500K–$1M cost saving; 1 → many read once, write many; 100 GB+ changes per day; < 10s latency | | | |
+| Case study | `one-source-multi-target` | One Source to Multiple Targets | For multiple customers | $500K–$1M cost saving; 1 → many one read, all targets; 100 GB+ changes per day; < 10s latency | | | |
 | Case study | `postgres-bidirectional` | PostgreSQL to PostgreSQL (Bidirectional) | For multiple customers | $300K–$1M cost saving; 2-way replication; 20 GB+ changes per day; < 15s latency | | | |
 | Case study | `oracle-rds-snowflake` | Oracle (RDS) to Snowflake | For multiple customers | $200K–$300K cost saving; 40 GB+ changes per day; 10 GB peak hour load; < 5s latency | | | |
 | Case study | `oracle-s3` | Oracle On-Prem to AWS S3 | For multiple customers | $200K–$300K cost saving; 20 GB+ changes per day; 5 GB peak hour load; < 5s latency | | | |

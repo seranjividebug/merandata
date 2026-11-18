@@ -46,6 +46,11 @@ const QLIK = {
   title: "Qlik Center of Excellence | Data, Analytics & AI | Meridanta",
   description: QLIK_OVERVIEW.description,
 };
+const PRIVACY = {
+  title: "Privacy Policy: How Meridanta Uses Your Details | Meridanta",
+  description: "How Meridanta handles the personal details you share when you contact us: what we collect, why we use it, who can see it, and how to reach us.",
+};
+
 const INDUSTRY_SEO = {
   healthcare: {
     title: "Healthcare Data, AI & Analytics Solutions | Meridanta",
@@ -70,6 +75,7 @@ const industryFallback = (d) => ({
 export const PAGES = [
   { path: "/", ...HOME, sources: ["src/pages/Home.jsx", "src/data.js", "src/components"] },
   { path: "/qlik/", ...QLIK, trail: [{ label: "Qlik" }], sources: ["src/pages/QlikOverview.jsx", "src/qlikData.js", "src/accelerators.js", "src/caseStudies.js"] },
+  { path: "/privacy/", ...PRIVACY, trail: [{ label: "Privacy Policy" }], sources: ["src/pages/Privacy.jsx", "src/privacyData.js"] },
   ...INDUSTRIES.map((d) => ({
     path: `/industries/${d.slug}/`,
     ...(INDUSTRY_SEO[d.slug] ?? industryFallback(d)),

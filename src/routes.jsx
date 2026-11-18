@@ -3,6 +3,7 @@ import { INDUSTRIES } from "./data";
 import Layout from "./Layout";
 import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
+import Privacy from "./pages/Privacy";
 
 /**
  * Public routes. Every path returned here (including one page per INDUSTRIES entry) is prerendered
@@ -14,6 +15,7 @@ export const routes = [
     element: <Layout />,
     children: [
       { index: true, element: <Home /> },
+      { path: "privacy", element: <Privacy /> },
       { path: "qlik", lazy: async () => ({ Component: (await import("./pages/QlikOverview")).default }), entry: "src/pages/QlikOverview.jsx" },
       { path: "qlik/*", element: <Navigate to="/qlik/#capabilities" replace /> },
       {

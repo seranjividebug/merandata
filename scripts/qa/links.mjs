@@ -65,7 +65,7 @@ await click("/", "Services card: Explore Qlik", (p) => p.locator(".sv-link"), { 
 await click("/", "Industries card: Learn More (healthcare)", (p) => p.locator("#industries a", { hasText: /Learn More/ }), { url: "/industries/healthcare/" }, undefined, async (p) => { await p.locator("#industries .ic-card").first().hover(); await p.waitForTimeout(700); });
 console.log(rows.splice(0).join("\n"));
 
-console.log("== controls: back to top, privacy dialog, search, mobile menu");
+console.log("== controls: back to top, privacy page link, search, mobile menu");
 {
   const p = await b.newPage({ viewport: { width: 1440, height: 900 } });
   const issues = watch(p);
@@ -77,12 +77,11 @@ console.log("== controls: back to top, privacy dialog, search, mobile menu");
   await p.locator("button.fab-top").click();
   await p.waitForTimeout(1200);
   check((await p.evaluate(() => scrollY)) < 30, "back-to-top returns to the top");
-  await p.locator("footer .linkbtn", { hasText: "Privacy Policy" }).click();
-  await p.waitForTimeout(400);
-  check((await p.locator('[role="dialog"]').count()) === 1, "privacy dialog opens");
-  await p.keyboard.press("Escape");
-  await p.waitForTimeout(300);
-  check((await p.locator('[role="dialog"]').count()) === 0, "privacy dialog closes with Escape");
+  await p.locator("footer a", { hasText: "Privacy Policy" }).click();
+  await p.waitForTimeout(1200);
+  check(norm(new URL(p.url()).pathname) === "/privacy" && (await p.locator("h1").innerText()) === "Privacy Policy" && (await p.evaluate(() => scrollY)) < 60, "footer Privacy Policy opens the /privacy/ page (client navigation)");
+  await p.goBack();
+  await p.waitForTimeout(800);
   await p.locator("button.search-btn").click();
   await p.waitForTimeout(400);
   await p.keyboard.type("healthcare");
