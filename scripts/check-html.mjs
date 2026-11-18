@@ -161,6 +161,15 @@ for (const [url, { doc }] of pages) {
   }
 }
 
+// ---------- sitemap, robots and llms files use the canonical host ----------
+for (const file of ["sitemap.xml", "robots.txt", "llms.txt", "llms-full.txt"]) {
+  const text = readFileSync(join(DIST, file), "utf8");
+  for (const m of text.matchAll(/https?:\/\/[^\s<>"')]+/g)) {
+    const url = m[0].replace(/[.,;:]+$/, "");
+    if (url !== ORIGIN && !url.startsWith(ORIGIN + "/") && !/^https?:\/\/(www\.sitemaps\.org|schema\.org)/.test(url)) err(file, `URL not on ${ORIGIN}: ${url}`);
+  }
+}
+
 // ---------- report ----------
 console.log(`Checked ${pages.size} pages: ${[...pages.keys()].join("  ")}`);
 for (const [url, o] of outlines) {

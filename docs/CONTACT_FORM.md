@@ -1,6 +1,6 @@
 # Contact form: real delivery options
 
-Status: **waiting for a decision** (nothing implemented). Today the form validates in the browser and then pretends to send (`sendInquiry` in `src/components/Contact.jsx` waits 900 ms and returns success). No message leaves the browser, and the page shows a public note: "Preview build: messages will be routed to the company inbox before launch."
+Status: **decided and implemented.** Option A was chosen, but with a PHP endpoint on Hostinger instead of a Worker (meridanta.com is served by Hostinger, not Cloudflare): `public/api/contact.php` validates the request, checks Cloudflare Turnstile, rate-limits per IP, and sends the email with the Resend API. Setup steps are in `docs/CONTACT_SETUP.md` and the deploy checklist in `docs/DEPLOY_HOSTINGER.md`. The text below is the original comparison and is kept for reference; the Worker-specific parts (wrangler `run_worker_first`, `wrangler secret put`) do **not** apply.
 
 Goal: every enquiry reaches a Microsoft 365 mailbox reliably, spam is blocked, and no secret is ever committed to git.
 

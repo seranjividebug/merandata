@@ -1,4 +1,4 @@
-import { createServer, defineConfig } from "vite";
+import { createServer, defineConfig, loadEnv } from "vite";
 import react from "@vitejs/plugin-react";
 
 // Date (YYYY-MM-DD) of the last commit touching any of `sources`; today if git history is unavailable.
@@ -46,12 +46,25 @@ function postProcessHtml(dir = "dist") {
   }
 }
 
+// The contact endpoint (public/api/contact.php) accepts only the "Area of interest" values the form offers.
+// Fail the build if the two lists drift apart, and warn when the Turnstile site key was not provided.
+async function checkContactEndpoint(server) {
+  const { INTERESTS } = await server.ssrLoadModule("/src/data.js");
+  const php = readFileSync("dist/api/contact.php", "utf8");
+  const missing = INTERESTS.filter((label) => !php.includes(`"${label}"`));
+  if (missing.length) throw new Error(`public/api/contact.php does not list these areas of interest from src/data.js: ${missing.join("; ")}`);
+  if (!loadEnv("production", process.cwd(), "VITE_").VITE_TURNSTILE_SITE_KEY) {
+    console.warn("[contact] VITE_TURNSTILE_SITE_KEY is not set: the form is built without the Turnstile check and the server will refuse every enquiry. Copy .env.example to .env and fill it in before the production build.");
+  }
+}
+
 // Writes sitemap.xml, robots.txt, llms.txt and llms-full.txt from the site data (see src/seoFiles.js).
 async function writeSeoFiles() {
   const server = await createServer({ configFile: false, appType: "custom", logLevel: "silent", server: { middlewareMode: true } });
   try {
     const { buildSeoFiles } = await server.ssrLoadModule("/src/seoFiles.js");
     const { files, warnings } = buildSeoFiles(lastModified);
+    await checkContactEndpoint(server);
     for (const [name, content] of Object.entries(files)) writeFileSync(`dist/${name}`, content);
     warnings.forEach((w) => console.warn(`[seo] ${w}`));
   } finally {

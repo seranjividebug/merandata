@@ -1,24 +1,82 @@
-# Static site on Apache / LiteSpeed (Hostinger). Every public page is a real file (/qlik/index.html, ...),
-# so there is no single-page-app fallback: unknown URLs return a real 404 status with /404.html.
+# =====================================================================================================
+# meridanta.com on Hostinger (Apache / LiteSpeed). This file is the single source of truth for
+# redirects, 404 handling and caching. It is copied into the build (dist/.htaccess) and uploaded
+# to public_html together with the rest of the site.
+#
+# How the site works: every public page is a real file (/qlik/index.html, /industries/.../index.html,
+# /404.html), so there is NO "send everything to index.html" rule. A URL that matches no file gets
+# the real 404 page with a real 404 status. /api/contact.php is a real PHP file and runs normally.
+# =====================================================================================================
+
+# Serve folder URLs (/qlik/) from their index.html. MultiViews would guess file names (/qlik -> qlik.html)
+# and Indexes would list folders that have no index file; both are switched off.
 DirectoryIndex index.html
-Options -MultiViews
+Options -MultiViews -Indexes
+
+# Unknown URLs, and the files blocked below, answer with this page and a real 404 status.
 ErrorDocument 404 /404.html
 
 <IfModule mod_rewrite.c>
   RewriteEngine On
-  # Section names that are not pages: send them to the matching home-page section (301).
+
+  # ---- 1. One canonical address: https://meridanta.com (matches every canonical URL and the sitemap) ----
+  # www.meridanta.com -> https://meridanta.com, in one redirect (301 = permanent, passes search ranking).
+  RewriteCond %{HTTP_HOST} ^www\.meridanta\.com$ [NC]
+  RewriteRule ^ https://meridanta.com%{REQUEST_URI} [R=301,L]
+  # Plain http -> https. The X-Forwarded-Proto check stops a redirect loop when Hostinger's proxy
+  # terminates TLS and the server itself sees http.
+  RewriteCond %{HTTPS} !=on
+  RewriteCond %{HTTP:X-Forwarded-Proto} !https
+  RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+
+  # ---- 2. Never serve secrets, logs, samples, hidden files or Cloudflare-only files (they get the 404 page) ----
+  # Any file or folder whose name starts with a dot, except /.well-known/ (used for certificate checks).
+  RewriteRule (^|/)\.(?!well-known/) - [R=404,L]
+  # Configuration, log, backup, sample and notes files, in case one is ever uploaded by mistake.
+  RewriteRule (^|/)(meridanta-config|config)[^/]*$ - [R=404,L]
+  RewriteRule \.(log|bak|sql|ini|env|sample|md|lock)$ - [R=404,L]
+  RewriteRule \.sample\.php$ - [R=404,L]
+  # Files that only matter on Cloudflare Workers hosting (the Hostinger site ignores them).
+  RewriteRule ^(_headers|_redirects|wrangler\.jsonc)$ - [R=404,L]
+
+  # ---- 3. Old and guessable URLs -> where the content lives now (301, permanent) ----
+  # These words are sections of the home page, not separate pages.
   RewriteRule ^services/?$ /#services [NE,R=301,L]
   RewriteRule ^about/?$ /#about [NE,R=301,L]
   RewriteRule ^products/?$ /#solutions [NE,R=301,L]
   RewriteRule ^industries/?$ /#industries [NE,R=301,L]
-  # Old Qlik sub-URLs (e.g. /qlik/capabilities) go to the Qlik page.
+  # Old Qlik sub-URLs (for example /qlik/capabilities) -> the Qlik page. Real files are left alone.
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteRule ^qlik/.+ /qlik/ [R=301,L]
+
+  # Nothing else is rewritten. /api/contact.php is a real file, so it is executed as PHP and is never
+  # turned into index.html.
 </IfModule>
 
-# Files in /assets/ carry a content hash in their name, so browsers may keep them for a year.
+# ---- 4. Caching and a few safe security headers ----
 <IfModule mod_headers.c>
+  # Files in /assets/ have a content hash in their name (a new build means new names), so browsers and
+  # CDNs can keep them for a year. Only hashed build output has these extensions; do not put hand-named
+  # .js, .css, .webp, .avif or .woff2 files in public/ (they would be cached for a year too).
   <FilesMatch "\.(avif|webp|woff2|js|css)$">
     Header set Cache-Control "public, max-age=31536000, immutable"
   </FilesMatch>
+
+  # Pages and text files change with every deploy, so browsers must check with the server each time
+  # (a quick "not modified" answer when nothing changed): HTML pages, 404.html, sitemap.xml, robots.txt,
+  # llms.txt, llms-full.txt, the web manifest and JSON files.
+  <FilesMatch "\.(html|xml|txt|webmanifest|json)$">
+    Header set Cache-Control "no-cache"
+  </FilesMatch>
+
+  # Do not let browsers guess file types, send only the site name to other sites, and keep other sites
+  # from putting this site in a frame.
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set X-Frame-Options "SAMEORIGIN"
+</IfModule>
+
+# ---- 5. Compression for text files (smaller downloads) ----
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css text/plain text/xml application/xml application/javascript text/javascript application/json application/manifest+json image/svg+xml
 </IfModule>

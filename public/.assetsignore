@@ -1,0 +1,4 @@
+# Only used when the build is deployed to Cloudflare Workers (the merandatav3 preview): these files belong to
+# the Hostinger deployment and must not be served there. Hostinger blocks this file itself (dot files are hidden).
+api/
+.htaccess

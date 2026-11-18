@@ -21,6 +21,10 @@ npm-debug.log*
 .DS_Store
 Thumbs.db
 
+# Real contact-form secrets and runtime data (they live on the server, never in the repository)
+meridanta-config.php
+meridanta-data/
+
 # Cloudflare
 .wrangler/
 .dev.vars

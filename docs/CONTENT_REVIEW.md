@@ -12,7 +12,7 @@ How to use it: for each row, mark **Approve**, **Edit** (write the new wording i
 | 2 | **Partner status and certifications.** No Qlik or Talend partner status or certification is claimed anywhere. The Training offering says "Certification programs" (flagged in code as unconfirmed). | Confirm what Meridanta may say. If a partner status exists, it is a strong trust signal; if not, "Certification programs" should be reworded. |
 | 3 | **"Qlik Center of Excellence" naming.** The name appears in the hero, navigation cards, page titles and structured data. | It can read as an official Qlik programme. Confirm Meridanta may use the name, or consider "Meridanta Qlik Center of Excellence" everywhere (it already is in the meta description). |
 | 4 | **Company facts are missing**: legal name, email, phone, address, founding date (`src/company.js`). | Needed for vendor due diligence and for Organization structured data. Nothing is invented; fields stay blank until you confirm them. |
-| 5 | **A public note on the contact form says "Preview build: messages will be routed to the company inbox before launch."** The form does not send anything yet. | Visitors see this today. It must be removed when the form goes live (Phase 6 covers delivery options). |
+| 5 | **Contact form delivery (done in Phase 6).** The form now sends through a PHP endpoint and Resend to srivatsans@meridanta.com, and the public "Preview build" note is gone. It needs the one-time setup in `docs/CONTACT_SETUP.md` (Resend domain, Turnstile keys, private config file) before it can send. Until then visitors see an error message with an email link, never a fake success. | Confirm the setup is finished and test with a real enquiry. |
 | 6 | **Third-party logos in diagrams** (AWS, Microsoft Azure services, Oracle, IBM Db2, Power BI, Qlik, plus brands from the open-source icon set). | Each owner has brand-usage rules. See section 5. |
 | 7 | **Metrics shown as headline numbers** (shown: for example "~40% faster response time" and "Under 5 seconds" replication latency; in the code but not shown: "40 hrs typical Qlik migration"). | Each is a quantified claim a prospect or AI assistant may repeat. Section 6 lists them. |
 | 8 | **Social profile links** are placeholders (`#`). | Real URLs are needed before launch. They also feed structured data. |
@@ -379,7 +379,7 @@ Tick one column per row. Items from the code comments are quoted.
 | Fact | areaServed | "United States and India" | from the project brief, used in structured data | | | |
 | Link | social | LinkedIn, X, Facebook, Instagram, YouTube | all `#` placeholders in `src/social.js` | | | |
 | Link | twitterSite | X handle for Twitter cards | empty in `src/seo.js` | | | |
-| Text | form-note | "Preview build: messages will be routed to the company inbox before launch." | visible on the contact form | | | |
+| Text | form-note | Public "Preview build" note on the contact form | removed in Phase 6 | | | |
 | Product | HCInsights | "A turnkey healthcare insights solution that unifies clinical, operational and financial data"; "5 modules"; "Power BI dashboards" | card links to the Healthcare page; no HCInsights page exists | | | |
 | Product | qlik-coe | Qlik / Talend partner status | none claimed; `qlikData.js` asks to confirm | | | |
 | Offering | training | "Certification programs" in the Training offering | flagged in code as unconfirmed | | | |

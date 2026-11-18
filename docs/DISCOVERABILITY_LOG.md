@@ -174,3 +174,26 @@ Cloudflare dashboard setting names change over time; look for these features und
 - Check the `.htaccess` caching rule on Hostinger after upload (`curl -I https://meridanta.com/assets/<file>.js` should show the one-year `Cache-Control`).
 - INP needs field data after launch.
 - Deferred hydration means JavaScript-only controls wake up about a second after load. If that is not acceptable, remove `deferHydration` in `vite.config.js` (the home LCP goes back to about 3 s on this test).
+
+## Phase 6 addendum: real contact form via PHP + Resend on Hostinger (2026-11-18)
+
+**Decisions received:** Option A, but as a PHP endpoint on Hostinger (not a Worker); meridanta.com is served by Hostinger (Apache/LiteSpeed) and Cloudflare is not used for the live domain; enquiries go to srivatsans@meridanta.com; `.htaccess` is the source of truth for rewrites, 404 and caching.
+
+**Done**
+- `public/api/contact.php` (copied to `dist/api/`): POST only, JSON in and out, status codes 200 / 400 / 403 / 405 / 413 / 415 / 422 / 429 / 502 / 503 / 500. Server-side validation (name, business email, company, area of interest from an allow-list, message 10-4000 characters), honeypot (silently accepted and dropped), Cloudflare Turnstile verification, rate limit of 5 requests per hour per IP (files outside `public_html`), email through the Resend API with curl (from `Meridanta Website <noreply@send.meridanta.com>`, to srivatsans@meridanta.com, `reply_to` = visitor, HTML + plain text), errors written to a log outside `public_html`, internal details never returned to the visitor.
+- Secrets: `RESEND_API_KEY` and `TURNSTILE_SECRET_KEY` are read from `../meridanta-config.php` (one level above `public_html`). `config.sample.php` (repository root, not deployed) documents it. The Turnstile **site** key is the Vite variable `VITE_TURNSTILE_SITE_KEY` (`.env.example`). `.gitignore` now also excludes `meridanta-config.php` and `meridanta-data/`.
+- Front end: Cloudflare Turnstile widget (`src/components/Turnstile.jsx`, script loaded only when the form is near the screen, so no cost on first paint); the form posts to `/api/contact.php` with `fetch`; states: sending (button disabled with spinner), success, error with a `mailto:srivatsans@meridanta.com` link, and a separate message for 429. Success is shown **only** when the server answers 200 with `{"ok":true}`. The public "Preview build" note is removed. The fallback address is a separate constant (`ENQUIRY_EMAIL`), so it is not published in the footer, the structured data or `llms.txt`.
+- `public/.htaccess` rewritten with a comment on every rule: HTTPS and www to non-www redirects (one hop), blocked config / log / sample / dot / Cloudflare-only files (answered with the 404 page), the existing section redirects and `/qlik/*` 301, no catch-all rewrite (PHP runs; unknown URLs get a real 404), one-year immutable cache for hashed `/assets` files, `no-cache` for HTML, sitemap, robots, llms files and manifest, three safe security headers, text compression.
+- Build safeguards: the build fails if `INTERESTS` in `src/data.js` and the allow-list in `contact.php` differ; it warns when `VITE_TURNSTILE_SITE_KEY` is missing; `npm run check:html` now also checks that the sitemap, robots.txt and the llms files only contain `https://meridanta.com` URLs.
+- Cross-check for Hostinger: `_headers`, `_redirects` and `.assetsignore` (Cloudflare only) stay in the repository and in `dist` (the Cloudflare preview needs them) but are blocked by `.htaccess` and can be deleted after upload; `wrangler.jsonc` and `.nvmrc` are never in `dist`. `docs/DEPLOY_HOSTINGER.md` has the table.
+- Docs: `docs/CONTACT_SETUP.md` (Resend, Turnstile, private config file, upload, 7-part test procedure, troubleshooting) and `docs/DEPLOY_HOSTINGER.md` (deploy checklist, 15-row verification table, rollback). `docs/CONTACT_FORM.md` is marked as decided.
+
+**Verified here**
+- `public/api/contact.php` parses as valid PHP (checked with a JavaScript PHP parser). **PHP itself could not be run on this computer, so the endpoint has not been executed**; the test procedure in `docs/CONTACT_SETUP.md` section e is the first real run.
+- Front-end behaviour tested in a browser with mocked responses and the Cloudflare test site key: the widget produces a token; 200 shows the thank-you message; 503, 403, network failure and a static host that does not run PHP show the error message with the mailto link; 429 shows the rate-limit message; 422 highlights the field; the sending state disables the button and shows the spinner. No "Preview build" text remains.
+- `.htaccess` rules could not be run here (no Apache). They need the checks in `docs/DEPLOY_HOSTINGER.md` after upload.
+
+**Open TODOs (need you)**
+- Do the manual setup in `docs/CONTACT_SETUP.md` (Resend domain `send.meridanta.com` with its DNS records, Turnstile widget, `meridanta-config.php`), put the site key in `.env`, build and upload.
+- Check on Hostinger which header holds the real visitor IP; if every visitor shares one IP in the log, set `ip_header` in the config file.
+- A DMARC record at the root domain is optional and was not touched.

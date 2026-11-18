@@ -37,6 +37,13 @@ export const COMPANY = {
   products: ["Qlik Replicate", "Qlik Compose", "Qlik Catalog", "QlikView", "Qlik Sense", "Talend"],
 };
 
+/**
+ * Mailbox that receives website enquiries. It is shown to a visitor only when the contact form cannot send
+ * ("email us directly"). It is deliberately not part of COMPANY.email, so it is not published in the footer,
+ * the structured data or llms.txt.
+ */
+export const ENQUIRY_EMAIL = "srivatsans@meridanta.com";
+
 /** Social profiles that are real (placeholder "#" links are not published as structured data). */
 export const socialProfiles = () => SOCIAL_LINKS.filter((s) => /^https?:\/\//.test(s.url));
 

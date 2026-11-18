@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { INTEREST_KEYS, INTERESTS } from "../data";
+import { ENQUIRY_EMAIL } from "../company";
+import Turnstile, { TURNSTILE_SITE_KEY } from "./Turnstile";
 import { I, SectionHead } from "./Icons";
 import AnimatedButton from "./AnimatedButton";
 import ContactDetails from "./ContactDetails";
@@ -9,14 +11,31 @@ import locImg from "../assets/loc-qlik.webp";
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 const EMPTY = { name: "", email: "", company: "", interest: "", message: "", website: "" };
 
+const ENDPOINT = "/api/contact.php";
+const TIMEOUT_MS = 20000;
+
 /**
- * TODO before launch: replace the simulated send in `submit` with the real
- * form endpoint (e.g. Framer form, Formspree, or a Microsoft 365 / Power Automate flow)
- * and confirm the receiving inbox.
+ * Sends the enquiry to the PHP endpoint. Resolves to { ok: true }, or { ok: false, status, errors }.
+ * It never reports success unless the server answered 200 with {"ok":true}.
  */
-async function sendInquiry(data) {
-  await new Promise((r) => setTimeout(r, 900));
-  return { ok: true };
+async function sendInquiry(data, turnstileToken) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), TIMEOUT_MS);
+  try {
+    const res = await fetch(ENDPOINT, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ ...data, turnstileToken, page: window.location.href.split("#")[0] }),
+      signal: controller.signal,
+    });
+    const body = await res.json().catch(() => null);
+    if (res.ok && body && body.ok === true) return { ok: true };
+    return { ok: false, status: res.status, errors: body && body.errors ? body.errors : null };
+  } catch {
+    return { ok: false, status: 0, errors: null };
+  } finally {
+    clearTimeout(timer);
+  }
 }
 
 function validate(d) {
@@ -39,7 +58,9 @@ export default function Contact({ onPrivacy }) {
   }, [search]);
   const [errs, setErrs] = useState({});
   const [touched, setTouched] = useState(false);
-  const [status, setStatus] = useState("idle"); // idle | sending | sent | error
+  const [status, setStatus] = useState("idle"); // idle | sending | sent | error | limited
+  const [token, setToken] = useState("");
+  const [resetKey, setResetKey] = useState(0);
   const refs = { name: useRef(), email: useRef(), message: useRef() };
 
   const set = (k) => (e) => {
@@ -55,14 +76,14 @@ export default function Contact({ onPrivacy }) {
     setErrs(ex);
     const first = ["name", "email", "message"].find((k) => ex[k]);
     if (first) { refs[first].current?.focus(); return; }
-    if (v.website) { setStatus("sent"); return; } // honeypot: silently ignore bots
+    if (TURNSTILE_SITE_KEY && !token) { setErrs({ verify: "Please complete the verification below." }); return; }
     setStatus("sending");
-    try {
-      const res = await sendInquiry(v);
-      setStatus(res.ok ? "sent" : "error");
-    } catch {
-      setStatus("error");
-    }
+    const res = await sendInquiry(v, token);
+    if (res.ok) { setStatus("sent"); return; }
+    if (res.status === 422 && res.errors) setErrs(res.errors);
+    setToken("");
+    setResetKey((k) => k + 1); // a Turnstile token can be used once; ask for a new one
+    setStatus(res.status === 429 ? "limited" : "error");
   };
 
   const fieldErr = (k) => errs[k] && <span className="err" id={k + "-err"}>{I.alert}{errs[k]}</span>;
@@ -88,8 +109,11 @@ export default function Contact({ onPrivacy }) {
                 {touched && count > 0 && (
                   <div className="alert" role="alert">Please fix {count} {count === 1 ? "field" : "fields"} highlighted below.</div>
                 )}
-                {status === "error" && (
-                  <div className="alert" role="alert">Your inquiry couldn’t be sent. Check your connection and try again.</div>
+                {(status === "error" || status === "limited") && (
+                  <div className="alert" role="alert">
+                    {status === "limited" ? "You have sent several requests recently. Please try again later" : "Your inquiry couldn’t be sent just now. Please try again in a moment"}
+                    {" or email us directly at "}<a href={"mailto:" + ENQUIRY_EMAIL}>{ENQUIRY_EMAIL}</a>.
+                  </div>
                 )}
                 <div className="grid2">
                   <div className="field">
@@ -129,9 +153,12 @@ export default function Contact({ onPrivacy }) {
                   We use your details only to respond to your inquiry. See our{" "}
                   <button type="button" className="linkbtn" onClick={onPrivacy}>privacy policy</button>.
                 </p>
+                <Turnstile onToken={(t) => { setToken(t); if (t) setErrs(({ verify, ...rest }) => rest); }} resetKey={resetKey} />
+                {errs.verify && <span className="err" role="alert">{I.alert}{errs.verify}</span>}
                 <div className="form-foot">
-                  <AnimatedButton variant="dark" type="submit" disabled={status === "sending"}>{status === "sending" ? "Sending…" : "Send inquiry"}</AnimatedButton>
-                  <span className="note">Preview build: messages will be routed to the company inbox before launch.</span>
+                  <AnimatedButton variant="dark" type="submit" disabled={status === "sending"} aria-busy={status === "sending"}>
+                    {status === "sending" ? <><span className="spin" aria-hidden="true" />Sending…</> : "Send inquiry"}
+                  </AnimatedButton>
                 </div>
               </form>
             )}
