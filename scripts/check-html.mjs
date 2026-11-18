@@ -105,6 +105,7 @@ for (const [url, page] of pages) {
       continue;
     }
     const u = new URL(href, ORIGIN + url);
+    if (!href.startsWith("#") && u.pathname !== "/" && !u.pathname.endsWith("/") && !/\.[a-z0-9]+$/i.test(u.pathname)) { row.status = "NO SLASH"; err(url, `link ${href} should end with a slash (canonical form), text "${row.label}"`); }
     const target = href.startsWith("#") ? page : resolvePage(u.pathname);
     const targetPath = u.pathname || url;
     if (!target && !existsSync(join(DIST, u.pathname))) { row.status = "BROKEN"; err(url, `link to missing page ${u.pathname} (${row.label})`); continue; }

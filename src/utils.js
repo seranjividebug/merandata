@@ -7,12 +7,25 @@ export const REDUCED =
   window.matchMedia &&
   window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+/**
+ * Scrolls an element to the top of the screen (below the header). Long sections that skip rendering until they are
+ * near the screen change size while the page scrolls past them, so the position is checked once more at the end and
+ * corrected if the element did not land where it should.
+ */
+export function scrollToEl(el) {
+  el.scrollIntoView({ behavior: REDUCED ? "auto" : "smooth", block: "start" });
+  const pad = parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop) || 0;
+  window.setTimeout(() => {
+    if (Math.abs(el.getBoundingClientRect().top - pad) > 8) el.scrollIntoView({ behavior: "auto", block: "start" });
+  }, REDUCED ? 100 : 1100);
+}
+
 /** Smooth-scroll to a section and move keyboard focus to its heading. */
 export function go(id, e) {
   if (e) e.preventDefault();
   const el = document.getElementById(id);
   if (!el) return;
-  el.scrollIntoView({ behavior: REDUCED ? "auto" : "smooth", block: "start" });
+  scrollToEl(el);
   const heading = el.querySelector("h1, h2");
   if (heading) {
     heading.setAttribute("tabindex", "-1");

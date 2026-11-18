@@ -60,7 +60,7 @@ function IndustryCard({ d, side, state, open, onToggle, onEnter }) {
             <p className="ic-desc">{d.cardDesc}</p>
           </div>
           <div className="ic-actions">
-            <Link className="btn btn-grad" to={"/industries/" + d.slug}>Learn More<span className="sr"> about {d.tab}</span></Link>
+            <Link className="btn btn-grad" to={"/industries/" + d.slug + "/"}>Learn More<span className="sr"> about {d.tab}</span></Link>
             <a className="btn btn-outline" {...link("contact")}>Talk to Our Team</a>
           </div>
         </div>

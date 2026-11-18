@@ -34,7 +34,7 @@ export default function Search({ onOpen }) {
 
   const choose = (entry) => {
     close(false);
-    if (entry.path === pathname) {
+    if (entry.path.replace(/\/$/, "") === pathname.replace(/\/$/, "")) {
       if (entry.hash) go(entry.hash);
       else window.scrollTo({ top: 0, behavior: REDUCED ? "auto" : "smooth" });
       return;

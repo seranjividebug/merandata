@@ -104,7 +104,7 @@ export default function Hero() {
                   {s.eyebrow && <p className="hs-eyebrow">{s.eyebrow}</p>}
                   <Title className="hs-title">
                     {s.titleLines
-                      ? <><span className="hs-t1">{s.logo ? <><span className="sr">Qlik </span><QlikLogo className="hs-logo" decorative /></> : s.titleLines[0]}</span>{" "}<span className="hs-t2">{s.titleLines[1]}</span></>
+                      ? <><span className="hs-t1">{s.logo ? <><span className="sr">Qlik</span><QlikLogo className="hs-logo" decorative /></> : s.titleLines[0]}</span>{" "}<span className="hs-t2">{s.titleLines[1]}</span></>
                       : s.title}
                   </Title>
                 </div>

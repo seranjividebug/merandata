@@ -197,3 +197,16 @@ Cloudflare dashboard setting names change over time; look for these features und
 - Do the manual setup in `docs/CONTACT_SETUP.md` (Resend domain `send.meridanta.com` with its DNS records, Turnstile widget, `meridanta-config.php`), put the site key in `.env`, build and upload.
 - Check on Hostinger which header holds the real visitor IP; if every visitor shares one IP in the log, set `ip_header` in the config file.
 - A DMARC record at the root domain is optional and was not touched.
+
+## Phase 7: QA and browser testing (2026-11-18)
+
+**Done** (full report in `docs/QA_REPORT.md`)
+- Repeatable test suites in `scripts/qa/` (`npm run qa:routes`, `qa:links`, `qa:layout`, `qa:crawler`, `qa:resilience`, plus a local test server `qa:serve`); `playwright-core` added as a dev dependency (no browsers are downloaded; it drives an installed Edge or Chrome).
+- Results on the final build: routes 32 checks, links and controls 63, layouts 20 (5 widths x 4 pages), crawler view 9, resilience 12, `check:html` 0 errors; zero console errors or hydration warnings in React development mode and in production, at 390 and 1440 px.
+- Fixed: internal links now use the canonical trailing-slash URLs (and `check:html` enforces it); double scroll offset on the Proven Outcomes anchor; smooth scrolls corrected after layout changes (`scrollToEl`); double space in the home heading text; search same-page detection.
+- Lighthouse mobile (median of 3): `/` 92, `/qlik/` 99, both industry pages 99; accessibility, best practices and SEO 100 everywhere. The home score fluctuates between 89 and 99 from run to run (hydration timing, busy workstation); recheck on PageSpeed Insights after the upload.
+
+**Not tested here:** Firefox and Safari/WebKit (not installed, cannot be downloaded here), real devices, screen readers, the PHP contact endpoint and the Apache `.htaccess` rules (neither PHP nor Apache could be run). Manual checklist is in `docs/QA_REPORT.md`.
+
+**Files changed**
+`src/data.js`, `src/components/{Products,Industries,Search,Hero,AcceleratorsCard,CaseStudies}.jsx`, `src/pages/NotFound.jsx`, `src/routes.jsx`, `src/searchIndex.js`, `src/nav.js`, `src/utils.js`, `src/caseStudies.css`, `scripts/check-html.mjs`, `scripts/qa/*` (new), `package.json`, `docs/QA_REPORT.md`.

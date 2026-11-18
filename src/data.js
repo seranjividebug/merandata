@@ -9,14 +9,14 @@ export const NAV = [
 ];
 
 export const HIGHLIGHTS = [
-  { icon: "bi", title: "Qlik", suffix: "Center of Excellence", href: "/qlik", desc: "Deliver greater value with our Qlik-focused expertise across a complete portfolio of modern Data Integration, Data Fabric, Agentic Architecture, AI and Analytics platform" },
+  { icon: "bi", title: "Qlik", suffix: "Center of Excellence", href: "/qlik/", desc: "Deliver greater value with our Qlik-focused expertise across a complete portfolio of modern Data Integration, Data Fabric, Agentic Architecture, AI and Analytics platform" },
   { icon: "ai", title: "AI", tag: "AI-Driven Solutions & Services", desc: "Build intelligent business solutions using AI, machine learning, automation and advanced AI-powered technologies." },
   { icon: "health", title: "Healthcare", tag: "Healthcare Solutions", desc: "Enable healthcare organizations with intelligent digital solutions, data analytics and technology-driven operational improvements." },
 ];
 
 // Home hero slider. Give a slide `to` for a route, or `section` for a home-page section id; change them here later.
 export const HERO_SLIDES = [
-  { key: "qlik", title: "Qlik Center of Excellence", titleLines: ["Qlik", "Center of Excellence"], logo: true, to: "/qlik", alt: "Qlik data, analytics and AI platform connecting data integration, quality, governance, dashboards, reporting and automation",
+  { key: "qlik", title: "Qlik Center of Excellence", titleLines: ["Qlik", "Center of Excellence"], logo: true, to: "/qlik/", alt: "Qlik data, analytics and AI platform connecting data integration, quality, governance, dashboards, reporting and automation",
     desc: "Deliver greater value with our Qlik-focused expertise across a complete portfolio of modern Data Integration, Data Fabric, Agentic Architecture, AI and Analytics." },
   { key: "ai", eyebrow: "AI-DRIVEN SOLUTIONS & SERVICES", title: "AI-Driven Solutions & Services", section: "services", alt: "AI chip connected to machine learning, generative AI, NLP, agentic AI, intelligent automation and predictive insights",
     desc: "Build intelligent business solutions using AI, machine learning, automation and advanced AI-powered technologies." },
@@ -31,7 +31,7 @@ export const SERVICES = [
     items: ["AI strategy & roadmap", "Technology evaluation, maturity assessment & selection", "Business adoption & ROI", "Data science, NLP, ML & deep learning", "Agentic & generative AI", "AI Custom Solutions Lab"] },
   { icon: "db", title: "Data Engineering & Analytics", short: "Modern data foundations that power better decisions.", desc: "Building data foundations and enabling data-driven solutions that support better decisions.",
     items: ["Data strategy & roadmap", "Technology evaluation, maturity assessment & selection", "Data modernization & cloud migration", "Data fabric, integration, governance, MDM & quality", "Data security & data privacy", "Advanced analytics & business intelligence"] },
-  { icon: "chart", title: "Qlik Center of Excellence", short: "Expert consultants and accelerators across the Qlik and Talend portfolio.", href: "/qlik", desc: "Expert consultants, solutions, and accelerators across Qlik Replicate, Compose, Catalog, QlikView, Qlik Sense, and Talend.",
+  { icon: "chart", title: "Qlik Center of Excellence", short: "Expert consultants and accelerators across the Qlik and Talend portfolio.", href: "/qlik/", desc: "Expert consultants, solutions, and accelerators across Qlik Replicate, Compose, Catalog, QlikView, Qlik Sense, and Talend.",
     items: ["Architecture consulting & roadmap", "Proofs of concept & benchmarking", "Performance improvement & infrastructure recommendations", "Estimation techniques & templates", "Accelerators: server performance monitors, governance dashboards & meta scanner", "Outcome-based managed platform support"] },
 ];
 

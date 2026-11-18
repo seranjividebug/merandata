@@ -1,6 +1,6 @@
 import { useCallback, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { go, REDUCED } from "./utils";
+import { go, scrollToEl } from "./utils";
 
 /** The service of interest implied by the page a contact link sits on (null on pages with no single service). */
 export const interestForPath = (pathname) => (/^\/qlik(\/|$)/.test(pathname) ? "qlik" : /^\/industries\/healthcare(\/|$)/.test(pathname) ? "healthcare" : null);
@@ -37,7 +37,7 @@ export function ScrollManager() {
     if (!hash) { window.scrollTo({ top: 0, left: 0, behavior: "auto" }); return undefined; }
     const t = setTimeout(() => {
       const el = document.getElementById(hash.slice(1));
-      if (el) el.scrollIntoView({ behavior: REDUCED ? "auto" : "smooth", block: "start" });
+      if (el) scrollToEl(el);
     }, 60);
     return () => clearTimeout(t);
   }, [pathname, hash]);

@@ -8,7 +8,13 @@
     "build": "vite-react-ssg build",
     "preview": "vite preview",
     "check:html": "node scripts/check-html.mjs",
-    "check:html:write": "node scripts/check-html.mjs --write"
+    "check:html:write": "node scripts/check-html.mjs --write",
+    "qa:serve": "node scripts/qa/serve.mjs dist 8090",
+    "qa:routes": "node scripts/qa/routes.mjs",
+    "qa:links": "node scripts/qa/links.mjs",
+    "qa:layout": "node scripts/qa/layout.mjs",
+    "qa:crawler": "node scripts/qa/crawler.mjs",
+    "qa:resilience": "node scripts/qa/resilience.mjs"
   },
   "dependencies": {
     "react": "18.3.1",
@@ -21,6 +27,7 @@
     "@vitejs/plugin-react": "4.3.4",
     "beasties": "^0.1.0",
     "jsdom": "24.1.3",
+    "playwright-core": "^1.65.1",
     "vite": "5.4.11",
     "vite-react-ssg": "0.8.9"
   }

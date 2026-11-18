@@ -1,5 +1,6 @@
 /* Case studies: section, cards and detail dialog. Uses the tokens from styles.css. */
-.cases{scroll-margin-top:var(--header-h)}
+/* the page-wide html scroll-padding-top already clears the header */
+.cases{scroll-margin-top:0}
 .cases-top{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:40px}
 .cases-top .head{margin-bottom:0}
 @media (max-width:700px){.cases-top{flex-direction:column;align-items:flex-start;gap:20px}}

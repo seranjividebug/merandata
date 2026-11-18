@@ -14,7 +14,7 @@ export default function NotFound() {
         </div>
         <div className="nf-links">
           <Link className="btn btn-dark" to="/">Back to home</Link>
-          <Link className="btn btn-outline" to="/qlik">Explore Qlik</Link>
+          <Link className="btn btn-outline" to="/qlik/">Explore Qlik</Link>
         </div>
       </div>
     </section>

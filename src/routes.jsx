@@ -15,7 +15,7 @@ export const routes = [
     children: [
       { index: true, element: <Home /> },
       { path: "qlik", lazy: async () => ({ Component: (await import("./pages/QlikOverview")).default }), entry: "src/pages/QlikOverview.jsx" },
-      { path: "qlik/*", element: <Navigate to="/qlik#capabilities" replace /> },
+      { path: "qlik/*", element: <Navigate to="/qlik/#capabilities" replace /> },
       {
         path: "industries/:slug",
         lazy: async () => ({ Component: (await import("./pages/IndustryRoute")).default }),

@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { caseStudies, FEATURED_CASE_IDS } from "../caseStudies";
-import { REDUCED, useIsoLayoutEffect, useMedia } from "../utils";
+import { REDUCED, scrollToEl, useIsoLayoutEffect, useMedia } from "../utils";
 import CasePanel, { CaseText } from "./CasePanel";
 import { CIcon } from "./caseIcons";
 import "../caseStudies.css";
@@ -81,7 +81,7 @@ export default function CaseStudies({ headingLevel = 2 }) {
     setShownId(LIST[i].id);
     setOut(false);
     window.clearTimeout(timer.current);
-    root.current?.scrollIntoView({ behavior: REDUCED ? "auto" : "smooth", block: "start" });
+    if (root.current) scrollToEl(root.current);
   }, [hash, key]);
 
   // Animate the panel height as the case changes.

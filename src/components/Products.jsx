@@ -38,7 +38,7 @@ export function Products() {
         <SectionHead id="prod-h" title="Products & Solutions" intro="Explore Meridanta’s solutions for turning complex data into useful insight and accelerating the delivery of business intelligence." />
         <div className="spot-grid">
           <SpotlightCard
-            to="/qlik#accelerators"
+            to="/qlik/#accelerators"
             label="Qlik Accelerators: explore accelerators"
             title="Qlik Accelerators"
             line="Ready-made components that speed up Qlik monitoring, reporting and operations."
@@ -48,7 +48,7 @@ export function Products() {
           />
           {/* TODO: point this at a dedicated HCInsights page when one exists. */}
           <SpotlightCard
-            to="/industries/healthcare"
+            to="/industries/healthcare/"
             label="HCInsights: explore HCInsights"
             title="HCInsights"
             line="A turnkey healthcare insights solution that unifies clinical, operational and financial data."

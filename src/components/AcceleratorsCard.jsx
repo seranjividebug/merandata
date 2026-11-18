@@ -5,7 +5,7 @@ import { ACCELERATOR_STACK } from "../acceleratorStack";
 import { QLIK_BENEFITS } from "../data";
 import { logoSource } from "../logoMap";
 import { useSectionLink } from "../nav";
-import { REDUCED, useIsoLayoutEffect } from "../utils";
+import { REDUCED, scrollToEl, useIsoLayoutEffect } from "../utils";
 import AnimatedButton from "./AnimatedButton";
 import { CIcon } from "./caseIcons";
 import { I } from "./Icons";
@@ -151,7 +151,7 @@ export default function AcceleratorsCard({ seeAll = false, headingId = "acc-h" }
     setActive(id);
     setShown(id);
     setOut(false);
-    card.current?.scrollIntoView({ behavior: REDUCED ? "auto" : "smooth", block: "start" });
+    if (card.current) scrollToEl(card.current);
   }, [hash, key]);
 
   // Slide the indicator under the active tab, and keep that tab in view in the scrolling tab bar.
