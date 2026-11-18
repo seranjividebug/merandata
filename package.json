@@ -14,7 +14,8 @@
     "qa:links": "node scripts/qa/links.mjs",
     "qa:layout": "node scripts/qa/layout.mjs",
     "qa:crawler": "node scripts/qa/crawler.mjs",
-    "qa:resilience": "node scripts/qa/resilience.mjs"
+    "qa:resilience": "node scripts/qa/resilience.mjs",
+    "qa:console": "node scripts/qa/console.mjs"
   },
   "dependencies": {
     "react": "18.3.1",
