@@ -28,3 +28,6 @@ meridanta-data/
 # Cloudflare
 .wrangler/
 .dev.vars
+
+# Release zips (build artifacts)
+release/

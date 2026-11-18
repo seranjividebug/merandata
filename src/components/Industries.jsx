@@ -85,7 +85,7 @@ export default function Industries() {
   };
 
   return (
-    <section id="industries" className="block" aria-labelledby="ind-h">
+    <section id="industries" className="block cv" aria-labelledby="ind-h">
       <div className="wrap">
         <SectionHead id="ind-h" title="Industries We Serve" intro="We apply AI, data, analytics, and modern technology capabilities to the needs of complex, data-driven industries." />
         <div

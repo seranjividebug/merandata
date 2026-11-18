@@ -21,7 +21,7 @@ const stack = (id) => (ACCELERATOR_STACK[id] ?? []).map((s) => s.label).join(", 
 const contactLines = () => [
   COMPANY.email && `- Email: ${COMPANY.email}`,
   COMPANY.phone && `- Phone: ${COMPANY.phone}`,
-  addressLine() && `- Address: ${addressLine()}`,
+  addressLine() && `- ${COMPANY.addressLabel}: ${addressLine()}`,
 ].filter(Boolean);
 
 /** Concise overview with links (https://llmstxt.org format). */

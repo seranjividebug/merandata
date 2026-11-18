@@ -11,7 +11,7 @@ How to use it: for each row, mark **Approve**, **Edit** (write the new wording i
 | 1 | **All 20 case studies came from a deck that carries another company's branding.** The data file says: "confirm with Srivatsan before publishing ... Set `published: false` on any case Meridanta cannot claim." All 20 are currently published, with named outcomes and numbers (for example "$1M-$2M cost saving"). The 5 accelerators come from the "Qlik competency deck" as well. | Publishing results Meridanta cannot claim is a legal and reputational risk, and these pages are what AI search will quote. Section 6 lists every case with its numbers. |
 | 2 | **Partner status and certifications.** No Qlik or Talend partner status or certification is claimed anywhere. The Training offering says "Certification programs" (flagged in code as unconfirmed). | Confirm what Meridanta may say. If a partner status exists, it is a strong trust signal; if not, "Certification programs" should be reworded. |
 | 3 | **"Qlik Center of Excellence" naming.** The name appears in the hero, navigation cards, page titles and structured data. | It can read as an official Qlik programme. Confirm Meridanta may use the name, or consider "Meridanta Qlik Center of Excellence" everywhere (it already is in the meta description). |
-| 4 | **Company facts are missing**: legal name, email, phone, address, founding date (`src/company.js`). | Needed for vendor due diligence and for Organization structured data. Nothing is invented; fields stay blank until you confirm them. |
+| 4 | **Company facts still missing**: legal name, phone, founding date (`src/company.js`). The email and the registered office are set. | Needed for vendor due diligence and for Organization structured data. Nothing is invented; fields stay blank until you confirm them. |
 | 5 | **Contact form delivery (done in Phase 6).** The form now sends through a PHP endpoint and Resend to srivatsans@meridanta.com, and the public "Preview build" note is gone. It needs the one-time setup in `docs/CONTACT_SETUP.md` (Resend domain, Turnstile keys, private config file) before it can send. Until then visitors see an error message with an email link, never a fake success. | Confirm the setup is finished and test with a real enquiry. |
 | 6 | **Third-party logos in diagrams** (AWS, Microsoft Azure services, Oracle, IBM Db2, Power BI, Qlik, plus brands from the open-source icon set). | Each owner has brand-usage rules. See section 5. |
 | 7 | **Metrics shown as headline numbers** (shown: for example "~40% faster response time" and "Under 5 seconds" replication latency; in the code but not shown: "40 hrs typical Qlik migration"). | Each is a quantified claim a prospect or AI assistant may repeat. Section 6 lists them. |
@@ -372,9 +372,9 @@ Tick one column per row. Items from the code comments are quoted.
 | Type | ID | Item | Detail | Approve | Edit | Remove |
 |---|---|---|---|---|---|---|
 | Fact | legalName | Registered legal entity name | empty in `src/company.js` | | | |
-| Fact | email | Public business email | empty; contact form note says it will go to "the company inbox" | | | |
+| Fact | email | Public business email | set to srivatsans@meridanta.com (footer, contact section, Organization data, llms.txt) | | | |
 | Fact | phone | Public phone | empty | | | |
-| Fact | address | Registered or head-office address | empty | | | |
+| Fact | address | Registered Office | set to 262 Chapman Rd, Ste 240, Newark, DE 19702, USA (footer, contact section, Organization data, llms.txt) | | | |
 | Fact | foundingDate | Founding date | empty | | | |
 | Fact | areaServed | "United States and India" | from the project brief, used in structured data | | | |
 | Link | social | LinkedIn, X, Facebook, Instagram, YouTube | all `#` placeholders in `src/social.js` | | | |

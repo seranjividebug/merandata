@@ -3,7 +3,7 @@
 // updates the structured data automatically.
 import { SERVICES } from "./data";
 import { caseStudies, FEATURED_CASE_IDS } from "./caseStudies";
-import { COMPANY, hasContactDetails, knowsAbout, socialProfiles } from "./company";
+import { COMPANY, knowsAbout, socialProfiles } from "./company";
 import { QLIK_JOURNEY, QLIK_OFFERINGS } from "./qlikData";
 import { SITE, absoluteUrl, canonicalUrl, seoFor } from "./seo";
 
@@ -47,9 +47,7 @@ function organization() {
     email: COMPANY.email,
     telephone: COMPANY.phone,
     address: Object.values(a).some(Boolean) ? { "@type": "PostalAddress", ...a } : undefined,
-    contactPoint: hasContactDetails() && (COMPANY.email || COMPANY.phone)
-      ? { "@type": "ContactPoint", contactType: "sales", email: COMPANY.email, telephone: COMPANY.phone, areaServed: COMPANY.areaServed, availableLanguage: "English" }
-      : undefined,
+    location: Object.values(a).some(Boolean) ? { "@type": "Place", name: COMPANY.addressLabel, address: { "@type": "PostalAddress", ...a } } : undefined,
     areaServed: areaServed(),
     sameAs: socialProfiles().map((s) => s.url),
     knowsAbout: knowsAbout(),
@@ -100,7 +98,7 @@ const service = (id, name, description, url) => ({
   areaServed: areaServed(),
 });
 
-const homeServices = () => SERVICES.map((s) => service(slug(s.title), s.title, s.desc, s.href ? absoluteUrl(s.href + "/") : `${SITE.url}/#services`));
+const homeServices = () => SERVICES.map((s) => service(slug(s.title), s.title, s.desc, s.href ? absoluteUrl(s.href) : `${SITE.url}/#services`));
 
 const qlikServices = () => QLIK_OFFERINGS.map((o, i) =>
   service(`qlik-${slug(o.title)}`, `Qlik Center of Excellence: ${o.title}`, QLIK_JOURNEY[i].description, `${canonicalUrl("/qlik/")}#qlik-services`));

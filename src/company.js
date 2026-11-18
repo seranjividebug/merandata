@@ -6,8 +6,7 @@
 //
 // TODO (needs confirmation before launch):
 //   legalName          registered legal entity name
-//   email, phone       public business contact details
-//   address            registered or head-office address (street, city, region, postal code, country)
+//   phone              public business phone, with country code
 //   foundingDate       year or date the company was founded (YYYY or YYYY-MM-DD)
 import { INDUSTRIES, SERVICES } from "./data";
 import { QLIK_CAPABILITIES } from "./qlikData";
@@ -28,9 +27,11 @@ export const COMPANY = {
   logoSize: 512,
   description: ABOUT[0],
   slogan: "Technology Expertise. Business Outcomes.",
-  email: "", // TODO: public business email
+  email: "srivatsans@meridanta.com", // public business email (supplied by the owner)
   phone: "", // TODO: public business phone, with country code
-  address: { streetAddress: "", addressLocality: "", addressRegion: "", postalCode: "", addressCountry: "" }, // TODO: confirm
+  // Registered office (supplied by the owner). addressCountry is the ISO code used by search engines; the page shows "USA".
+  address: { streetAddress: "262 Chapman Rd, Ste 240", addressLocality: "Newark", addressRegion: "DE", postalCode: "19702", addressCountry: "US" },
+  addressLabel: "Registered Office",
   foundingDate: "", // TODO: confirm
   areaServed: ["United States", "India"],
   // Product names that appear in the site copy (Qlik offerings and capabilities).
@@ -58,6 +59,9 @@ export const knowsAbout = () => [
 ];
 
 const hasAddress = () => Object.values(COMPANY.address).some(Boolean);
-/** One-line postal address, or "" while it is not confirmed. */
-export const addressLine = () => Object.values(COMPANY.address).filter(Boolean).join(", ");
+/** One-line postal address as shown on the page ("262 Chapman Rd, Ste 240, Newark, DE 19702, USA"), or "" when not set. */
+export const addressLine = () => {
+  const a = COMPANY.address;
+  return [a.streetAddress, a.addressLocality, [a.addressRegion, a.postalCode].filter(Boolean).join(" "), a.addressCountry === "US" ? "USA" : a.addressCountry].filter(Boolean).join(", ");
+};
 export const hasContactDetails = () => Boolean(COMPANY.email || COMPANY.phone || hasAddress());

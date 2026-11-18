@@ -155,6 +155,7 @@ for (const [url, { doc }] of pages) {
     if (n["@type"] === "ItemList" && n.numberOfItems !== n.itemListElement.length) err(url, "ItemList numberOfItems mismatch");
     if (n["@type"] === "FAQPage" && !doc.querySelector("[data-faq]")) err(url, "FAQPage JSON-LD without a visible FAQ on the page");
     const json = JSON.stringify(n);
+    for (const u of json.matchAll(/"(https?:\/\/[^"]+)"/g)) if (u[1].slice(8).includes("//")) err(url, `JSON-LD URL has a double slash: ${u[1]}`);
     if (/"[a-zA-Z]+":""/.test(json)) err(url, `JSON-LD ${n["@type"]} has an empty value`);
     for (const m of json.matchAll(/"@id":"([^"]+)"/g)) { /* ids defined here */ }
     const refs = [...json.matchAll(/"(?:provider|publisher|isPartOf|about|parentOrganization|mainEntityOfPage|breadcrumb)":\{"@id":"([^"]+)"\}/g)].map((m) => m[1]);

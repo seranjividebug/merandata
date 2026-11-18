@@ -91,7 +91,7 @@ export default function Contact({ onPrivacy }) {
   const reset = () => { setV(EMPTY); setErrs({}); setTouched(false); setStatus("idle"); };
 
   return (
-    <section id="contact" className="block alt" aria-labelledby="contact-h">
+    <section id="contact" className="block alt cv" aria-labelledby="contact-h">
       <div className="wrap">
         <SectionHead id="contact-h" title="Let’s Discuss Your Next Opportunity" intro="Tell us about your business challenge or technology initiative. Our team will review your inquiry and determine how we can help." />
         <ContactDetails className="on-light" />

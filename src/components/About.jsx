@@ -4,7 +4,7 @@ import { I } from "./Icons";
 
 export default function About() {
   return (
-    <section id="about" className="block" aria-labelledby="about-h">
+    <section id="about" className="block cv" aria-labelledby="about-h">
       <div className="wrap">
         <div className="about">
           <div>
