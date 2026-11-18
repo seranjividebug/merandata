@@ -38,7 +38,7 @@ for (const [w, h] of [[1440, 900], [768, 1024], [390, 844]]) {
   ok(info.heading === "Let’s Discuss Your Next Opportunity" && /^Tell us about your business challenge/.test(info.intro), `${w}px  section heading and intro unchanged`);
   ok(info.hscroll <= 0 && info.top >= 0 && info.top <= 140, `${w}px  no horizontal scroll; section top ${info.top}px after #contact; card ${info.cardBox?.join("x")}px`);
   ok(issues.length === 0, `${w}px  no console messages ${issues.join(" | ")}`);
-  if (w === 1440 || w === 390) await p.screenshot({ path: (process.env.SHOTS || ".") + `/contact_card_${w}.png` });
+  if (process.env.SHOTS && (w === 1440 || w === 390)) await p.screenshot({ path: `${process.env.SHOTS}/contact_card_${w}.png` });
   await p.close();
 }
 
