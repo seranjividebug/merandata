@@ -12,9 +12,9 @@ export default function Home() {
       <PageMeta path="/" />
       <Hero />
       <Services />
+      <About />
       <Industries />
       <Products />
-      <About />
       <QlikCta title="Let’s Discuss Your Next Opportunity" text="Tell us about your business challenge or technology initiative. Our team will review your inquiry and determine how we can help." button="Talk to Our Team" />
     </>
   );

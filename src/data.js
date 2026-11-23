@@ -3,9 +3,9 @@
 export const NAV = [
   { id: "home", label: "Home" },
   { id: "services", label: "Services" },
+  { id: "about", label: "About Us" },
   { id: "industries", label: "Industries" },
   { id: "solutions", label: "Products & Solutions" },
-  { id: "about", label: "About Us" },
 ];
 
 /** Header menu (DRAFT – Sri to review): Home, Services (dropdown), Solutions. Space is left for items added later. The footer keeps the full NAV list. */
