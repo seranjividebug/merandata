@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import logo from "../assets/logo-112.webp";
-import { BRAND_TAGLINE, NAV } from "../data";
+import { BRAND_TAGLINE, HEADER_NAV } from "../data";
 import { SERVICE_MENU } from "../services";
 import { useSectionLink } from "../nav";
 import { I } from "./Icons";
@@ -82,7 +82,7 @@ export default function Header({ active }) {
   }, [open]);
 
   const close = () => setOpen(false);
-  const links = (mobile) => NAV.map((n) => (n.id === "services"
+  const links = (mobile) => HEADER_NAV.map((n) => (n.id === "services"
     ? <ServicesMenu key={n.id} label={n.label} mobile={mobile} onNavigate={close} />
     : <a key={n.id} {...link(n.id, close)} aria-current={active === n.id ? "true" : undefined}>{n.label}</a>));
   const talk = <>Let’s Talk<span className="sr"> – get in touch</span></>;

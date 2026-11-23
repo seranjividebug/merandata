@@ -206,7 +206,7 @@ console.log("CLAIM E: header, hero banners, /contact page, Qlik shown as a word"
   for (const u of Object.keys(PAGES)) {
     const d = doc[u];
     const nav = [...d.querySelectorAll("header nav.nav > a, header nav.nav > .nav-dd > button")].map((e) => e.textContent.trim());
-    ok(nav.join("|") === "Home|Services|Industries|Products & Solutions|About Us", `${u.padEnd(48)} header nav: ${nav.join(", ")}`);
+    ok(nav.join("|") === data.HEADER_NAV.map((n) => n.label).join("|"), `${u.padEnd(48)} header nav: ${nav.join(", ")}`);
     const dd = [...d.querySelectorAll("header nav.nav .nav-dd-list a")].map((a) => a.textContent.trim());
     ok(dd.join("|") === services.SERVICE_MENU.map((s) => s.label).join("|") && !!d.querySelector('header nav.nav .nav-dd-btn[aria-expanded="false"][aria-controls="svc-menu"]'), `${u.padEnd(48)} Services dropdown: ${dd.length} links in the HTML, button has aria-expanded`);
     ok(d.querySelector(".brand-tag")?.textContent.trim().toUpperCase() === data.BRAND_TAGLINE.toUpperCase(), `${u.padEnd(48)} brand tagline is text in the header`);

@@ -8,6 +8,13 @@ export const NAV = [
   { id: "about", label: "About Us" },
 ];
 
+/** Header menu (DRAFT – Sri to review): Home, Services (dropdown), Solutions. Space is left for items added later. The footer keeps the full NAV list. */
+export const HEADER_NAV = [
+  { id: "home", label: "Home" },
+  { id: "services", label: "Services" },
+  { id: "solutions", label: "Solutions" },
+];
+
 export const HIGHLIGHTS = [
   { icon: "bi", title: "Qlik", suffix: "Center of Excellence", href: "/qlik/", desc: "Deliver greater value with our Qlik-focused expertise across a complete portfolio of modern Data Integration, Data Fabric, Agentic Architecture, AI and Analytics platform" },
   { icon: "ai", title: "AI", tag: "AI-Driven Solutions & Services", desc: "Build intelligent business solutions using AI, machine learning, automation and advanced AI-powered technologies." },
