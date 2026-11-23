@@ -33,8 +33,8 @@ async function click(start, label, locatorFn, expect, vp = { width: 1440, height
 }
 
 const L = (text, scope = "header") => (p) => p.locator(`${scope} a`, { hasText: new RegExp("^\\s*" + text + "\\s*$") });
-const SECTIONS = [["Services", "#services"], ["Industries", "#industries"], ["Products & Solutions", "#solutions"], ["About Us", "#about"]];
-const HEADER_SECTIONS = [["About Us", "#about"], ["Solutions", "#solutions"]]; // "Services" in the header is a dropdown button, tested below
+const SECTIONS = [["Services", "#services"], ["Industries", "#industries"], ["Products & Solutions", "#solutions"], ["About", "#about"]];
+const HEADER_SECTIONS = [["About", "#about"], ["Solutions", "#solutions"]]; // "Services" in the header is a dropdown button, tested below
 
 console.log("== header, footer and call-to-action links (desktop 1440px)");
 for (const start of ["/", "/qlik/", "/industries/healthcare/", "/services/data-engineering-analytics/"]) {

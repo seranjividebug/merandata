@@ -3,7 +3,7 @@
 export const NAV = [
   { id: "home", label: "Home" },
   { id: "services", label: "Services" },
-  { id: "about", label: "About Us" },
+  { id: "about", label: "About" },
   { id: "industries", label: "Industries" },
   { id: "solutions", label: "Products & Solutions" },
 ];
@@ -12,7 +12,7 @@ export const NAV = [
 export const HEADER_NAV = [
   { id: "home", label: "Home" },
   { id: "services", label: "Services" },
-  { id: "about", label: "About Us" },
+  { id: "about", label: "About" },
   { id: "solutions", label: "Solutions" },
 ];
 
