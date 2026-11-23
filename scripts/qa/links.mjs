@@ -158,7 +158,7 @@ console.log("== controls: back to top, privacy page link, search, mobile menu");
   check((await p.locator("button.menu-btn").getAttribute("aria-expanded")) === "true", "mobile menu opens (aria-expanded=true)");
   const items = await p.locator("#mnav a").allInnerTexts();
   check(items.length === 8, `mobile menu lists ${items.length} links (4 plus the 4 Services links... ): ${items.map((t) => t.trim()).join(", ")}`);
-  await p.locator("#mnav a", { hasText: "Solutions" }).click();
+  await p.locator("#mnav a", { hasText: /^s*Solutionss*$/ }).click();
   await p.waitForTimeout(1500);
   const u = new URL(p.url());
   check(u.pathname === "/" && u.hash === "#solutions" && (await p.locator("button.menu-btn").getAttribute("aria-expanded")) === "false", `mobile menu link -> ${u.pathname}${u.hash}, menu closed`);
