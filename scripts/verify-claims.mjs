@@ -27,7 +27,10 @@ console.log("CLAIM 1: full content in the built HTML (not only the active slide 
   const home = textOf("/"), q = textOf("/qlik/");
   const rows = [
     ["home: hero slides", data.HERO_SLIDES.length, found(data.HERO_SLIDES, home, (s) => s.title)],
-    ["home: services", data.SERVICES.length, found(data.SERVICES, home, (s) => s.title)],
+    ["home: services (title)", data.SERVICES.length, found(data.SERVICES, home, (s) => s.title)],
+    ["home: service taglines", data.SERVICES.length, found(data.SERVICES, home, (s) => s.tagline)],
+    ["home: service descriptions", data.SERVICES.length, found(data.SERVICES, home, (s) => s.desc)],
+    ["home: What We Do intro (tagline + 2 lines)", 3, found([data.SERVICES_INTRO.tagline, ...data.SERVICES_INTRO.lines], home, (s) => s)],
     ["home: service bullet items", data.SERVICES.flatMap((s) => s.items).length, found(data.SERVICES.flatMap((s) => s.items), home, (s) => s)],
     ["home: industry cards", data.INDUSTRIES.length, found(data.INDUSTRIES, home, (s) => s.cardTitle)],
     ["/qlik: capabilities", qlik.QLIK_CAPABILITIES.length, found(qlik.QLIK_CAPABILITIES, q, (s) => s.title)],

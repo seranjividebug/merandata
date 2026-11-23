@@ -38,15 +38,37 @@ export const SERVICE_MENU = [
 
 export const BRAND_TAGLINE = "AI. Data. Cloud. Transforming Business.";
 
+/** "What We Do" intro (DRAFT – Sri to review): an h2 tagline and two lines. */
+export const SERVICES_INTRO = {
+  eyebrow: "What We Do",
+  tagline: "Technology Expertise. Practical Execution. Measurable Outcomes.",
+  lines: [
+    "We combine business understanding, deep technology expertise and disciplined delivery to help enterprises modernize their data ecosystems, apply AI and build scalable digital solutions.",
+    "From strategic consulting and architecture to implementation and managed services, we turn complex technology initiatives into measurable business outcomes.",
+  ],
+};
+
+/**
+ * The four pillars (DRAFT – Sri to review). `href` is the page the "Explore" link opens; the dedicated pages for
+ * the first three do not exist yet, so their link is hidden until `href` is set (the planned address is in `future`).
+ */
 export const SERVICES = [
-  { icon: "compass", title: "Consulting & Delivery", short: "From strategy to end-to-end implementation, with outcome-based delivery.", desc: "Outcome-based, data-driven, and AI-first consulting that takes solutions from strategy through end-to-end implementation.",
-    items: ["Technology consulting: strategy & roadmap", "Solution architecture", "Business adoption, use cases & ROI", "Technology evaluation, maturity assessment & selection", "Outcome-based project delivery", "Managed services, platform support & intelligent automation"] },
-  { icon: "spark", title: "AI Solutions & Services", short: "AI-enabled solutions and intelligent automation for real business challenges.", desc: "AI-enabled business solutions and intelligent automation, applied to real-world business challenges.",
-    items: ["AI strategy & roadmap", "Technology evaluation, maturity assessment & selection", "Business adoption & ROI", "Data science, NLP, ML & deep learning", "Agentic & generative AI", "AI Custom Solutions Lab"] },
-  { icon: "db", title: "Data Engineering & Analytics", short: "Modern data foundations that power better decisions.", desc: "Building data foundations and enabling data-driven solutions that support better decisions.",
-    items: ["Data strategy & roadmap", "Technology evaluation, maturity assessment & selection", "Data modernization & cloud migration", "Data fabric, integration, governance, MDM & quality", "Data security & data privacy", "Advanced analytics & business intelligence"] },
-  { icon: "chart", title: "Qlik Center of Excellence", short: "Expert consultants and accelerators across the Qlik and Talend portfolio.", href: "/qlik/", desc: "Expert consultants, solutions, and accelerators across Qlik Replicate, Compose, Catalog, QlikView, Qlik Sense, and Talend.",
-    items: ["Architecture consulting & roadmap", "Proofs of concept & benchmarking", "Performance improvement & infrastructure recommendations", "Estimation techniques & templates", "Accelerators: server performance monitors, governance dashboards & meta scanner", "Outcome-based managed platform support"] },
+  { icon: "compass", n: "01", title: "Consulting & Delivery", tagline: "From Strategy to Successful Execution", future: "/services/consulting-delivery",
+    short: "We help organizations translate business priorities into practical technology strategies, architectures and successfully delivered solutions.",
+    desc: "We help organizations translate business priorities into practical technology strategies, architectures and successfully delivered solutions.",
+    items: ["Technology strategy, assessment & roadmap", "Enterprise and solution architecture", "Platform evaluation and technology selection", "Proof of concepts and solution validation", "End-to-end implementation and project delivery", "Managed services, platform support and optimization"] },
+  { icon: "spark", n: "02", title: "AI Solutions & Services", tagline: "Applying AI to Real Business Challenges", future: "/services/ai-solutions",
+    short: "We design and implement intelligent solutions that combine enterprise data, AI technologies and automation to improve business processes and decision-making.",
+    desc: "We design and implement intelligent solutions that combine enterprise data, AI technologies and automation to improve business processes and decision-making.",
+    items: ["AI strategy, readiness assessment & roadmap", "Generative AI and agentic AI solutions", "Machine learning, deep learning and predictive analytics", "Natural language processing (NLP)", "Intelligent automation and AI integration", "Custom AI solutions, prototyping and development"] },
+  { icon: "db", n: "03", title: "Data Engineering & Analytics", tagline: "Building the Foundation for Intelligent Decisions", future: "/services/data-engineering-analytics",
+    short: "We engineer modern, secure and scalable data ecosystems that connect enterprise information, enable trusted insights and power advanced analytics.",
+    desc: "We engineer modern, secure and scalable data ecosystems that connect enterprise information, enable trusted insights and power advanced analytics.",
+    items: ["Data strategy, architecture & modernization", "Data engineering and cloud data migration", "Data integration, data fabric and ETL/ELT", "Data governance, master data management (MDM) & quality", "Data security, privacy and regulatory alignment", "Business intelligence, reporting and advanced analytics"] },
+  { icon: "chart", n: "04", title: "Qlik Center of Excellence", tagline: "Maximizing the Value of Your Qlik Ecosystem", href: "/qlik/",
+    short: "We provide specialized Qlik and Talend professional services, helping enterprises design, implement, optimize and manage their data integration and analytics platforms.",
+    desc: "We provide specialized Qlik and Talend professional services, helping enterprises design, implement, optimize and manage their data integration and analytics platforms.",
+    items: ["Qlik architecture, consulting & implementation", "Qlik Replicate, Compose and Talend data integration", "Qlik Sense, QlikView and analytics modernization", "Performance optimization and platform engineering", "Custom accelerators, reusable frameworks and automation", "Managed platform support and Center of Excellence services"] },
 ];
 
 // Add Insurance, Banking & Financial Services and Enterprise Technology here when content is approved.

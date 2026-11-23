@@ -17,6 +17,7 @@ How to use it: for each row, mark **Approve**, **Edit** (write the new wording i
 | 7 | **Metrics shown as headline numbers** (shown: for example "~40% faster response time" and "Under 5 seconds" replication latency; in the code but not shown: "40 hrs typical Qlik migration"). | Each is a quantified claim a prospect or AI assistant may repeat. Section 6 lists them. |
 | 8 | **Social profile links.** None are set, so the footer shows no social icons. | Send the real URLs (LinkedIn, X, Facebook, Instagram, YouTube) and the icons appear; they also feed the structured data. |
 | 9 | **Privacy Policy page (DRAFT – Sri to review).** A basic policy now lives at `/privacy/` and is linked from the footer and the contact section. | Wording, retention period and the statement about trackers need your confirmation (see "Privacy Policy page" in section 2). |
+| 11 | **What We Do copy (DRAFT – Sri to review).** New section tagline and two intro lines, and new tagline, description and six bullets for each of the four pillars. | **Qlik pillar: walkthrough with Nataraj pending (old vs new content).** Old Qlik card: "Expert consultants, solutions, and accelerators across Qlik Replicate, Compose, Catalog, QlikView, Qlik Sense, and Talend." with bullets on architecture consulting and roadmap, proofs of concept and benchmarking, performance and infrastructure recommendations, estimation templates, accelerators (server performance monitors, governance dashboards, meta scanner) and managed platform support. The "Explore" links for the first three pillars are hidden until their pages (/services/consulting-delivery, /services/ai-solutions, /services/data-engineering-analytics) exist. |
 | 10 | **Header, hero banners and /contact page (DRAFT – Sri to review).** New header (brand tagline "AI. Data. Cloud. Transforming Business.", Services dropdown, "Let’s Talk" button), three new hero banners, and a /contact page that replaces the home page’s contact section. | Confirm the banner wording, the title and description of /contact/, and the URLs for the three service pages in the Services menu (/services/consulting-delivery, /services/ai-solutions, /services/data-engineering-analytics). They are not built yet, so those three menu items go to the home page’s Services section for now. Also confirm whether the Healthcare banner should go to /industries/healthcare/ or /healthcare. |
 
 ## 2. Page by page
@@ -46,44 +47,53 @@ JSON-LD values:
 
 | Section | Headline | Intro | Approve | Edit | Remove |
 |---|---|---|---|---|---|
-| Services | What We Do | Meridanta brings together technology expertise and practical delivery to help organizations modernize, innovate, and achieve measurable business outcomes, with an AI-first approach. | | | |
+| Services | Technology Expertise. Practical Execution. Measurable Outcomes. | What We Do | | | |
 | Industries | Industries We Serve | We apply AI, data, analytics, and modern technology capabilities to the needs of complex, data-driven industries. | | | |
 | Products & Solutions | Products & Solutions | Explore Meridanta’s solutions for turning complex data into useful insight and accelerating the delivery of business intelligence. | | | |
 | About | About Meridanta | Meridanta focuses on AI, Data & Analytics, and Cloud solutions that help organizations address business challenges through practical technology and disciplined delivery. Our approach brings together business understanding, engineering expertise, and outcome-oriented execution to help customers turn technology opportunities into meaningful results. | | | |
 
-#### Services (What We Do)
+#### What We Do: DRAFT – Sri to review
 
-**Consulting & Delivery.** Outcome-based, data-driven, and AI-first consulting that takes solutions from strategy through end-to-end implementation.
-- Technology consulting: strategy & roadmap
-- Solution architecture
-- Business adoption, use cases & ROI
-- Technology evaluation, maturity assessment & selection
-- Outcome-based project delivery
-- Managed services, platform support & intelligent automation
+**Technology Expertise. Practical Execution. Measurable Outcomes.** (h2)
 
-**AI Solutions & Services.** AI-enabled business solutions and intelligent automation, applied to real-world business challenges.
-- AI strategy & roadmap
-- Technology evaluation, maturity assessment & selection
-- Business adoption & ROI
-- Data science, NLP, ML & deep learning
-- Agentic & generative AI
-- AI Custom Solutions Lab
+We combine business understanding, deep technology expertise and disciplined delivery to help enterprises modernize their data ecosystems, apply AI and build scalable digital solutions.  
+From strategic consulting and architecture to implementation and managed services, we turn complex technology initiatives into measurable business outcomes.  
 
-**Data Engineering & Analytics.** Building data foundations and enabling data-driven solutions that support better decisions.
-- Data strategy & roadmap
-- Technology evaluation, maturity assessment & selection
-- Data modernization & cloud migration
-- Data fabric, integration, governance, MDM & quality
-- Data security & data privacy
-- Advanced analytics & business intelligence
+**01 · Consulting & Delivery: From Strategy to Successful Execution.** We help organizations translate business priorities into practical technology strategies, architectures and successfully delivered solutions.
+- Technology strategy, assessment & roadmap
+- Enterprise and solution architecture
+- Platform evaluation and technology selection
+- Proof of concepts and solution validation
+- End-to-end implementation and project delivery
+- Managed services, platform support and optimization
+Explore link: not shown yet (planned page /services/consulting-delivery)
 
-**Qlik Center of Excellence.** Expert consultants, solutions, and accelerators across Qlik Replicate, Compose, Catalog, QlikView, Qlik Sense, and Talend.
-- Architecture consulting & roadmap
-- Proofs of concept & benchmarking
-- Performance improvement & infrastructure recommendations
-- Estimation techniques & templates
-- Accelerators: server performance monitors, governance dashboards & meta scanner
-- Outcome-based managed platform support
+**02 · AI Solutions & Services: Applying AI to Real Business Challenges.** We design and implement intelligent solutions that combine enterprise data, AI technologies and automation to improve business processes and decision-making.
+- AI strategy, readiness assessment & roadmap
+- Generative AI and agentic AI solutions
+- Machine learning, deep learning and predictive analytics
+- Natural language processing (NLP)
+- Intelligent automation and AI integration
+- Custom AI solutions, prototyping and development
+Explore link: not shown yet (planned page /services/ai-solutions)
+
+**03 · Data Engineering & Analytics: Building the Foundation for Intelligent Decisions.** We engineer modern, secure and scalable data ecosystems that connect enterprise information, enable trusted insights and power advanced analytics.
+- Data strategy, architecture & modernization
+- Data engineering and cloud data migration
+- Data integration, data fabric and ETL/ELT
+- Data governance, master data management (MDM) & quality
+- Data security, privacy and regulatory alignment
+- Business intelligence, reporting and advanced analytics
+Explore link: not shown yet (planned page /services/data-engineering-analytics)
+
+**04 · Qlik Center of Excellence: Maximizing the Value of Your Qlik Ecosystem.** We provide specialized Qlik and Talend professional services, helping enterprises design, implement, optimize and manage their data integration and analytics platforms.
+- Qlik architecture, consulting & implementation
+- Qlik Replicate, Compose and Talend data integration
+- Qlik Sense, QlikView and analytics modernization
+- Performance optimization and platform engineering
+- Custom accelerators, reusable frameworks and automation
+- Managed platform support and Center of Excellence services
+Explore link: /qlik/
 
 #### Industries We Serve (home cards)
 
@@ -335,12 +345,12 @@ Question-style heading ideas (optional): "What We Do" -> "What does Meridanta do
 
 | Brand | / | /qlik/ | /industries/healthcare/ | /industries/communications-media-entertainment/ |
 |---|---|---|---|---|
-| Qlik Sense | 1 | 28 | 0 | 0 |
-| QlikView | 0 | 25 | 0 | 0 |
-| Qlik Replicate | 0 | 20 | 0 | 0 |
+| Qlik Sense | 2 | 28 | 0 | 0 |
+| QlikView | 1 | 25 | 0 | 0 |
+| Qlik Replicate | 1 | 20 | 0 | 0 |
 | Qlik Cloud | 0 | 5 | 0 | 0 |
-| Qlik (any) | 14 | 126 | 2 | 2 |
-| Talend | 3 | 7 | 0 | 0 |
+| Qlik (any) | 19 | 126 | 2 | 2 |
+| Talend | 4 | 7 | 0 | 0 |
 | Power BI | 2 | 4 | 0 | 0 |
 | NPrinting | 0 | 12 | 0 | 0 |
 
@@ -348,7 +358,7 @@ Related phrases:
 
 | Phrase | / | /qlik/ | /industries/healthcare/ | /industries/communications-media-entertainment/ |
 |---|---|---|---|---|
-| "Center of Excellence" | 4 | 5 | 2 | 2 |
+| "Center of Excellence" | 6 | 5 | 2 | 2 |
 | "Qlik expert" | 0 | 0 | 0 | 0 |
 | "Qlik Expert" | 0 | 2 | 0 | 0 |
 

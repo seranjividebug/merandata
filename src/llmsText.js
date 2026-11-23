@@ -1,7 +1,7 @@
 // Plain-text and Markdown summaries of the public site for AI systems (llms.txt, llms-full.txt).
 // Everything here is read from the same data files that render the pages, so new services,
 // industries, accelerators and case studies appear automatically. Nothing is written by hand.
-import { HERO_SLIDES, INDUSTRIES, PILLARS, QLIK_BENEFITS, SERVICES, TALEND, PLATFORM } from "./data";
+import { HERO_SLIDES, INDUSTRIES, PILLARS, QLIK_BENEFITS, SERVICES, SERVICES_INTRO, TALEND, PLATFORM } from "./data";
 import { accelerators } from "./accelerators";
 import { ACCELERATOR_STACK } from "./acceleratorStack";
 import { caseStudies, FEATURED_CASE_IDS } from "./caseStudies";
@@ -36,7 +36,9 @@ export function buildLlmsTxt() {
     `${TAGLINE} ${ABOUT[1]}`,
     "",
     "## Services",
-    bullets(SERVICES.map((s) => `${s.title}: ${s.short}`)),
+    `${SERVICES_INTRO.tagline} ${SERVICES_INTRO.lines[0]}`,
+    "",
+    bullets(SERVICES.map((s) => `${s.title} (${s.tagline}): ${s.short}`)),
     "",
     "## Qlik Center of Excellence",
     link(QLIK_OVERVIEW.h1, "/qlik/", QLIK_OVERVIEW.description),
@@ -67,7 +69,8 @@ export function buildLlmsTxt() {
 const section = (title, body) => `\n## ${title}\n\n${body}\n`;
 
 function servicesText() {
-  return SERVICES.map((s) => `### ${s.title}\n\n${s.desc}\n\n${bullets(s.items)}`).join("\n\n");
+  const intro = `**${SERVICES_INTRO.tagline}**\n\n${SERVICES_INTRO.lines.join("\n\n")}`;
+  return [intro, ...SERVICES.map((s) => `### ${s.n} · ${s.title}: ${s.tagline}\n\n${s.desc}\n\n${bullets(s.items)}`)].join("\n\n");
 }
 
 function industriesText() {

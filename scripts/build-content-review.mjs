@@ -62,8 +62,8 @@ const home = () => [
   "#### Sections", "", "| Section | Headline | Intro | Approve | Edit | Remove |", "|---|---|---|---|---|---|",
   sectionRow(dom["/"], "services", "Services"), sectionRow(dom["/"], "industries", "Industries"), sectionRow(dom["/"], "solutions", "Products & Solutions"),
   `| About | ${cell(q(dom["/"], "#about-h"))} | ${cell(company.ABOUT.join(" "))} | | | |`, "",
-  "#### Services (What We Do)", "",
-  ...data.SERVICES.map((s) => `**${s.title}.** ${s.desc}\n${bullets(s.items)}\n`),
+  "#### What We Do: DRAFT – Sri to review", "", `**${data.SERVICES_INTRO.tagline}** (h2)`, "", ...data.SERVICES_INTRO.lines.map((l) => l + "  "), "",
+  ...data.SERVICES.map((s) => `**${s.n} · ${s.title}: ${s.tagline}.** ${s.desc}\n${bullets(s.items)}\nExplore link: ${s.href ?? "not shown yet (planned page " + s.future + ")"}\n`),
   "#### Industries We Serve (home cards)", "",
   ...data.INDUSTRIES.map((d) => `**${d.tab}: ${d.cardTitle}.** ${d.cardDesc}\n${bullets(d.points.map(([a, b]) => `${a}: ${b}`))}\n`),
   "#### Products & Solutions", "",
@@ -133,6 +133,7 @@ How to use it: for each row, mark **Approve**, **Edit** (write the new wording i
 | 7 | **Metrics shown as headline numbers** (shown: for example "~40% faster response time" and "Under 5 seconds" replication latency; in the code but not shown: "40 hrs typical Qlik migration"). | Each is a quantified claim a prospect or AI assistant may repeat. Section 6 lists them. |
 | 8 | **Social profile links.** None are set, so the footer shows no social icons. | Send the real URLs (LinkedIn, X, Facebook, Instagram, YouTube) and the icons appear; they also feed the structured data. |
 | 9 | **Privacy Policy page (DRAFT – Sri to review).** A basic policy now lives at \`/privacy/\` and is linked from the footer and the contact section. | Wording, retention period and the statement about trackers need your confirmation (see "Privacy Policy page" in section 2). |
+| 11 | **What We Do copy (DRAFT – Sri to review).** New section tagline and two intro lines, and new tagline, description and six bullets for each of the four pillars. | **Qlik pillar: walkthrough with Nataraj pending (old vs new content).** Old Qlik card: "Expert consultants, solutions, and accelerators across Qlik Replicate, Compose, Catalog, QlikView, Qlik Sense, and Talend." with bullets on architecture consulting and roadmap, proofs of concept and benchmarking, performance and infrastructure recommendations, estimation templates, accelerators (server performance monitors, governance dashboards, meta scanner) and managed platform support. The "Explore" links for the first three pillars are hidden until their pages (/services/consulting-delivery, /services/ai-solutions, /services/data-engineering-analytics) exist. |
 | 10 | **Header, hero banners and /contact page (DRAFT – Sri to review).** New header (brand tagline "AI. Data. Cloud. Transforming Business.", Services dropdown, "Let’s Talk" button), three new hero banners, and a /contact page that replaces the home page’s contact section. | Confirm the banner wording, the title and description of /contact/, and the URLs for the three service pages in the Services menu (/services/consulting-delivery, /services/ai-solutions, /services/data-engineering-analytics). They are not built yet, so those three menu items go to the home page’s Services section for now. Also confirm whether the Healthcare banner should go to /industries/healthcare/ or /healthcare. |
 
 ## 2. Page by page

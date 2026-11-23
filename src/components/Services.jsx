@@ -1,7 +1,7 @@
 import { useId, useState } from "react";
 import { Link } from "react-router-dom";
-import { SERVICES } from "../data";
-import { I, SectionHead } from "./Icons";
+import { SERVICES, SERVICES_INTRO } from "../data";
+import { I } from "./Icons";
 
 const HOVER = "(hover: hover)";
 const canHover = () => typeof window !== "undefined" && window.matchMedia(HOVER).matches;
@@ -27,13 +27,16 @@ function ServiceCard({ s, open, onToggle, onClose }) {
         className="sv-toggle"
         aria-expanded={on}
         aria-controls={listId}
-        aria-label={s.title}
+        aria-label={`${s.title}: ${s.tagline}`}
         onClick={(e) => { if (e.detail === 0 || !canHover()) onToggle(); }}
       />
       <span className="sv-bg" aria-hidden="true">{I[s.icon]}</span>
       <div className="sv-head">
         <span className="sv-ic">{I[s.icon]}</span>
-        <h3>{s.title}</h3>
+        <div className="sv-titles">
+          <p className="sv-pill">{s.n} · {s.title}</p>
+          <h3>{s.tagline}</h3>
+        </div>
       </div>
       <div className="sv-body">
         <p className="sv-desc">{s.short}</p>
@@ -41,7 +44,7 @@ function ServiceCard({ s, open, onToggle, onClose }) {
           {s.items.map((t, i) => <li key={t} style={{ "--i": i }}>{t}</li>)}
         </ul>
       </div>
-      {s.href && <Link className="sv-link" to={s.href}>Explore Qlik<svg viewBox="0 0 14 14" width="12" height="12" fill="none" aria-hidden="true"><path d="M5 3l4 4-4 4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" /></svg></Link>}
+      {s.href && <Link className="sv-link" to={s.href}>Explore<span className="sr"> {s.title}</span><svg viewBox="0 0 14 14" width="12" height="12" fill="none" aria-hidden="true"><path d="M5 3l4 4-4 4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" /></svg></Link>}
       <Plus />
     </article>
   );
@@ -52,7 +55,12 @@ export function Services() {
   return (
     <section id="services" className="block" aria-labelledby="services-h">
       <div className="wrap">
-        <SectionHead id="services-h" title="What We Do" intro="Meridanta brings together technology expertise and practical delivery to help organizations modernize, innovate, and achieve measurable business outcomes, with an AI-first approach." />
+        <div className="head sv-intro">
+          <div className="rule" />
+          <p className="sv-eyebrow">{SERVICES_INTRO.eyebrow}</p>
+          <h2 id="services-h">{SERVICES_INTRO.tagline}</h2>
+          {SERVICES_INTRO.lines.map((l) => <p key={l}>{l}</p>)}
+        </div>
         <div className="sv-grid">
           {SERVICES.map((s, k) => (
             <ServiceCard
