@@ -51,6 +51,12 @@ const PRIVACY = {
   description: "How Meridanta handles the personal details you share when you contact us: what we collect, why we use it, who can see it, and how to reach us.",
 };
 
+// DRAFT – Sri to review.
+const CONTACT = {
+  title: "Contact Meridanta: Talk to Our AI, Data & Cloud Team",
+  description: "Tell Meridanta about your business challenge or technology initiative. Our AI, data, cloud and Qlik team will review your inquiry and reply by email.",
+};
+
 const INDUSTRY_SEO = {
   healthcare: {
     title: "Healthcare Data, AI & Analytics Solutions | Meridanta",
@@ -75,6 +81,7 @@ const industryFallback = (d) => ({
 export const PAGES = [
   { path: "/", ...HOME, sources: ["src/pages/Home.jsx", "src/data.js", "src/components"] },
   { path: "/qlik/", ...QLIK, trail: [{ label: "Qlik" }], sources: ["src/pages/QlikOverview.jsx", "src/qlikData.js", "src/accelerators.js", "src/caseStudies.js"] },
+  { path: "/contact/", ...CONTACT, trail: [{ label: "Contact" }], sources: ["src/pages/ContactPage.jsx", "src/components/ContactCard.jsx", "src/components/ContactForm.jsx"] },
   { path: "/privacy/", ...PRIVACY, trail: [{ label: "Privacy Policy" }], sources: ["src/pages/Privacy.jsx", "src/privacyData.js"] },
   ...INDUSTRIES.map((d) => ({
     path: `/industries/${d.slug}/`,

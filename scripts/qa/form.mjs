@@ -38,7 +38,7 @@ for (const [label, mock, expect] of scenarios) {
       return route.fulfill({ status: mock.status, contentType: "application/json", body: JSON.stringify(mock.body) });
     });
   }
-  await p.goto(BASE + "/?interest=qlik#contact", { waitUntil: "load" });
+  await p.goto(BASE + "/contact/?interest=qlik", { waitUntil: "load" });
   await p.waitForTimeout(2500);
   await p.fill("#f-name", "Test Person");
   await p.fill("#f-email", "test@example.com");

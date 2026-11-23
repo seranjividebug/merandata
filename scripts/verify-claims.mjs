@@ -1,7 +1,7 @@
 // Checks the claims made about the website against the data files and the BUILT output in dist/.
 //   npm run build && node scripts/verify-claims.mjs
 // Prints one evidence block per claim. Exits 1 when a check fails.
-import { readFileSync, existsSync } from "node:fs";
+import { readFileSync, existsSync, readdirSync } from "node:fs";
 import { createServer } from "vite";
 import { JSDOM } from "jsdom";
 
@@ -12,7 +12,7 @@ await server.close();
 const load2 = async () => social;
 
 const ORIGIN = "https://meridanta.com";
-const PAGES = { "/": "dist/index.html", "/qlik/": "dist/qlik/index.html", "/industries/healthcare/": "dist/industries/healthcare/index.html", "/industries/communications-media-entertainment/": "dist/industries/communications-media-entertainment/index.html", "/privacy/": "dist/privacy/index.html" };
+const PAGES = { "/": "dist/index.html", "/qlik/": "dist/qlik/index.html", "/industries/healthcare/": "dist/industries/healthcare/index.html", "/industries/communications-media-entertainment/": "dist/industries/communications-media-entertainment/index.html", "/privacy/": "dist/privacy/index.html", "/contact/": "dist/contact/index.html" };
 const html = Object.fromEntries(Object.entries(PAGES).map(([u, f]) => [u, readFileSync(f, "utf8")]));
 const doc = Object.fromEntries(Object.entries(html).map(([u, h]) => [u, new JSDOM(h).window.document]));
 const dec = (s) => s.replace(/&amp;/g, "&").replace(/&#x27;/g, "'").replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&lt;/g, "<").replace(/&gt;/g, ">");
@@ -50,6 +50,7 @@ console.log("CLAIM 1: full content in the built HTML (not only the active slide 
   ok(inactivePanels === 4 && !/<div[^>]*class="ax-panel[^"]*"[^>]*\shidden/.test(html["/qlik/"]), `/qlik: ${inactivePanels} inactive accelerator panels are in the HTML, hidden with a CSS class and not the hidden attribute`);
   ok((html["/qlik/"].match(/ck-text-/g) || []).length >= 19, `/qlik: ${(html["/qlik/"].match(/id="ck-text-/g) || []).length} case studies as text-only articles + 1 full panel = ${published.length}`);
   ok((html["/"].match(/class="hs-slide/g) || []).length === 3, "home: 3 hero slides in the HTML");
+  ok(data.HERO_SLIDES.every((s) => [s.title, s.tagline, s.desc, s.cta].every((x) => textOf("/").includes(x))), "home: every banner has its headline, tagline, description and button text as real HTML");
 }
 
 console.log("CLAIM 2: unique title, description, canonical, Open Graph and Twitter tags with an og:image");
@@ -82,7 +83,7 @@ console.log("CLAIM 3: sitemap.xml, robots.txt (search and AI crawlers) and llms 
 
 console.log("CLAIM 4: JSON-LD types per page");
 {
-  const want = { "/": ["Organization", "WebSite", "WebPage", "Service"], "/qlik/": ["Organization", "WebSite", "WebPage", "Service", "BreadcrumbList", "ItemList"], "/industries/healthcare/": ["Organization", "WebSite", "WebPage", "BreadcrumbList"], "/industries/communications-media-entertainment/": ["Organization", "WebSite", "WebPage", "BreadcrumbList"], "/privacy/": ["Organization", "WebSite", "WebPage", "BreadcrumbList"] };
+  const want = { "/": ["Organization", "WebSite", "WebPage", "Service"], "/qlik/": ["Organization", "WebSite", "WebPage", "Service", "BreadcrumbList", "ItemList"], "/industries/healthcare/": ["Organization", "WebSite", "WebPage", "BreadcrumbList"], "/industries/communications-media-entertainment/": ["Organization", "WebSite", "WebPage", "BreadcrumbList"], "/privacy/": ["Organization", "WebSite", "WebPage", "BreadcrumbList"], "/contact/": ["Organization", "WebSite", "ContactPage", "BreadcrumbList"] };
   for (const [u, types] of Object.entries(want)) {
     const blocks = [...doc[u].querySelectorAll('script[type="application/ld+json"]')];
     let graph = [];
@@ -105,16 +106,17 @@ console.log("CLAIM 7: registered office and email (footer and Organization JSON-
   ok(g.email === "srivatsans@meridanta.com" && g.address.streetAddress === "262 Chapman Rd, Ste 240" && g.address.postalCode === "19702" && g.location?.name === "Registered Office", `Organization JSON-LD: email=${g.email}; address=${JSON.stringify(g.address)}; location.name="${g.location?.name}"`);
 }
 
-console.log("CLAIM 8 (build part): contact section matches the feature flag");
+console.log("CLAIM 8 (build part): contact page matches the feature flag");
 {
-  const home = html["/"];
+  const home = html["/contact/"];
+  ok(!html["/"].includes('id="f-name"') && !html["/"].includes("contact-card"), "home page has no form and no contact card (it has a short call-to-action band linking to /contact/)");
   const hasForm = home.includes('id="f-name"');
   const hasCard = home.includes('class="form-card contact-card"');
   const MAILTO = "mailto:srivatsans@meridanta.com?subject=Website%20enquiry";
   if (hasCard) {
     ok(!hasForm && !home.includes("Preview build"), "form switched off: email card rendered, no form fields, no Preview-build text");
     ok(home.includes(MAILTO) && home.includes("Send us an email") && home.includes("Email us at"), `card has the mailto link with the prefilled subject (${MAILTO}) and the "Send us an email" button`);
-    ok(textOf("/").includes("Registered Office: " + company.addressLine()), "card shows the registered office line");
+    ok(textOf("/contact/").includes("Registered Office: " + company.addressLine()), "card shows the registered office line");
   } else {
     ok(hasForm && !home.includes("Preview build"), "form switched on: form rendered, no Preview-build text");
   }
@@ -190,7 +192,59 @@ console.log("CLAIM D: privacy page");
     const f = doc[u].querySelector('footer a[href="/privacy/"]');
     ok(!!f && f.tagName === "A" && f.textContent.trim() === "Privacy Policy", `${u.padEnd(48)} footer "Privacy Policy" is a link to /privacy/`);
   }
-  ok(!!doc["/"].querySelector('#contact a[href="/privacy/"]'), "home contact section links to /privacy/");
+  ok(!!doc["/contact/"].querySelector('#contact a[href="/privacy/"]'), "contact page links to /privacy/");
+}
+
+console.log("CLAIM E: header, hero banners, /contact page, Qlik shown as a word");
+{
+  const sitemap = readFileSync("dist/sitemap.xml", "utf8"), l1 = readFileSync("dist/llms.txt", "utf8"), l2 = readFileSync("dist/llms-full.txt", "utf8");
+  for (const u of Object.keys(PAGES)) {
+    const d = doc[u];
+    const nav = [...d.querySelectorAll("header nav.nav > a, header nav.nav > .nav-dd > button")].map((e) => e.textContent.trim());
+    ok(nav.join("|") === "Home|Services|Industries|Products & Solutions|About Us", `${u.padEnd(48)} header nav: ${nav.join(", ")}`);
+    const dd = [...d.querySelectorAll("header nav.nav .nav-dd-list a")].map((a) => a.textContent.trim());
+    ok(dd.join("|") === data.SERVICE_MENU.map((s) => s.label).join("|") && !!d.querySelector('header nav.nav .nav-dd-btn[aria-expanded="false"][aria-controls="svc-menu"]'), `${u.padEnd(48)} Services dropdown: ${dd.length} links in the HTML, button has aria-expanded`);
+    ok(d.querySelector(".brand-tag")?.textContent.trim().toUpperCase() === data.BRAND_TAGLINE.toUpperCase(), `${u.padEnd(48)} brand tagline is text in the header`);
+    const talk = d.querySelector("header a.cta-head");
+    ok(!!talk && /^\/contact\/(\?interest=[a-z]+)?$/.test(talk.getAttribute("href")) && /Let.s Talk/.test(talk.textContent), `${u.padEnd(48)} header "Let's Talk" button links to ${talk?.getAttribute("href")}`);
+  }
+  const slides = [...doc["/"].querySelectorAll(".hs-slide")];
+  ok(slides.length === 3, "home: 3 hero banners");
+  slides.forEach((s, i) => {
+    const want = data.HERO_SLIDES[i];
+    const head = s.querySelector(".hs-title");
+    const hit = s.querySelectorAll("a.hs-hit");
+    const target = want.to ?? "/#" + want.section;
+    ok(head?.tagName === (i === 0 ? "H1" : "H2") && head.textContent.trim() === want.title && s.querySelector(".hs-tag")?.textContent.trim() === want.tagline && s.querySelector(".hs-desc")?.textContent.trim() === want.desc && s.textContent.includes(want.cta),
+      `banner ${i + 1}: ${head?.tagName} "${want.title}", tagline, description and button text present`);
+    ok(hit.length === 1 && hit[0].getAttribute("href") === target, `banner ${i + 1}: one overlay link to ${target}`);
+  });
+  ok(doc["/"].querySelectorAll("h1").length === 1, "home: exactly one h1 (banner 1)");
+  const c = doc["/contact/"];
+  ok(c.querySelectorAll("h1").length === 1 && !!c.querySelector('#contact a[href="/privacy/"]') && textOf("/contact/").includes("Registered Office: " + company.addressLine()), "/contact/: h1, privacy link, registered office");
+  ok(sitemap.includes(ORIGIN + "/contact/") && l1.includes(ORIGIN + "/contact/") && l2.includes(ORIGIN + "/contact/"), "/contact/ is in sitemap.xml, llms.txt and llms-full.txt");
+  const ld = JSON.parse(c.querySelector('script[type="application/ld+json"]').textContent)["@graph"];
+  ok(ld.some((n) => n["@type"] === "ContactPage"), "/contact/ JSON-LD contains a ContactPage");
+  // Every contact call to action (header, footer, floating button, hero buttons, case studies...) goes to /contact/.
+  const bad = [];
+  for (const u of Object.keys(PAGES)) for (const a of doc[u].querySelectorAll("a")) {
+    const h = a.getAttribute("href") || "";
+    if (/#contact$/.test(h) || (/^\/contact\//.test(h) && !/^\/contact\/(\?interest=[a-z]+)?$/.test(h))) bad.push(u + " " + h);
+  }
+  ok(bad.length === 0, "no link still points to the old /#contact section" + (bad.length ? ": " + bad.slice(0, 3).join(", ") : ""));
+  const qlikTo = doc["/qlik/"].querySelector("header a.cta-head");
+  ok(qlikTo?.getAttribute("href") === "/contact/?interest=qlik", `Qlik page keeps the service of interest: ${qlikTo?.getAttribute("href")}`);
+  // Qlik logo: not in the build, not imported by the source.
+  const assets = readdirSync("dist/assets");
+  ok(!assets.some((f) => /^qlik(-logo)?-[\w-]+\.png$/i.test(f)), "no Qlik logo image in dist/assets");
+  const srcUsesLogo = [];
+  const walk = (dir) => { for (const e of readdirSync(dir, { withFileTypes: true })) { const f = dir + "/" + e.name; if (e.isDirectory()) { if (!f.endsWith("/unused")) walk(f); } else if (/\.(jsx?|css)$/.test(e.name) && /assets\/unused|qlik-logo|siQlik/.test(readFileSync(f, "utf8").replace(/\/\/.*|\/\*[\s\S]*?\*\//g, ""))) srcUsesLogo.push(f); } };
+  walk("src");
+  ok(srcUsesLogo.length === 0, "the source imports no Qlik logo file or icon" + (srcUsesLogo.length ? ": " + srcUsesLogo.join(", ") : ""));
+  const logoImgs = [];
+  for (const u of Object.keys(PAGES)) for (const i of doc[u].querySelectorAll("img,image")) { if (/qlik-logo|\/qlik-[\w-]+\.png/i.test(i.getAttribute("src") || i.getAttribute("href") || "")) logoImgs.push(u); }
+  ok(logoImgs.length === 0, "no page has an <img>/<image> of the Qlik logo");
+  ok(/class="logo-word"[^>]*>Qlik</.test(html["/qlik/"]), '/qlik/: the word "Qlik" is drawn as text in the accelerator "Built with" tiles');
 }
 
 console.log(`\n${fails} failed check(s)`);

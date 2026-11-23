@@ -94,7 +94,7 @@ export default function ContactForm() {
       {status === "sent" ? (
         <div className="success" role="status">
           <div className="tick">{I.check}</div>
-          <h3>Thank you{v.name ? ", " + v.name.trim().split(" ")[0] : ""}.</h3>
+          <h2>Thank you{v.name ? ", " + v.name.trim().split(" ")[0] : ""}.</h2>
           <p>Your inquiry{v.interest ? " about " + v.interest : ""} has been received. Our team will review it and reply to {v.email || "you"}.</p>
           <button className="btn btn-outline" onClick={reset}>Send another inquiry</button>
         </div>

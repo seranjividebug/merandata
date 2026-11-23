@@ -1,6 +1,6 @@
 # Meridanta Website – AI Search Discoverability: Status Report
 
-**Date:** 19 November 2026 &nbsp;|&nbsp; **Prepared for:** Srivatsan (Sri) &nbsp;|&nbsp; **Website:** https://meridanta.com
+**Date:** 23 November 2026 &nbsp;|&nbsp; **Prepared for:** Srivatsan (Sri) &nbsp;|&nbsp; **Website:** https://meridanta.com
 
 ## Executive summary
 
@@ -11,17 +11,17 @@
 
 ## 1. Claims verified against the code and a fresh build
 
-Verified on 19 Nov 2026 with a clean production build, scripts in the repository (`npm run verify`, `check:html`, `qa:*`) and Lighthouse. ✅ verified · 🟡 partly · ❌ not true.
+Verified on 23 Nov 2026 with a clean production build, scripts in the repository (`npm run verify`, `check:html`, `qa:*`) and Lighthouse. ✅ verified · 🟡 partly · ❌ not true.
 
 | # | Claim | Result | Evidence | Fixed now? |
 |---|---|---|---|---|
 | 1 | Every page has its full content in the HTML, not only the active slide or tab | ✅ | Home: 3/3 hero slides, 4/4 services, 24/24 service items, 2/2 industries. `/qlik/`: 7/7 capabilities (21/21 bullets), 4/4 offerings, 5/5 accelerators (all challenge, solution and benefit text), 20/20 case studies (165/165 story bullets). Inactive accelerator panels, inactive case-study tabs and the 19 other case studies are in the HTML and are hidden only with a CSS class (not the `hidden` attribute), so text readers that skip hidden elements still see them. A strict-reader check (`npm run verify`) confirms each of the 20 case studies is one complete article with its own title, audience, summary, stats and all four blocks (challenge, solution, outcome, result) exactly once. Both industry pages contain their challenges, opportunities and capabilities text. | No change needed |
-| 2 | Unique title, description, canonical, Open Graph and Twitter tags with an og:image | ✅ | 5 pages, titles 53 to 60 characters, descriptions 144 to 152, all unique; canonical `https://meridanta.com/` plus path; `og:image` = `https://meridanta.com/og-image.png` (file present, 1200×630); `twitter:card` = `summary_large_image`. The 404 page is `noindex`. | No change needed |
-| 3 | sitemap.xml, robots.txt (search and AI crawlers allowed), llms.txt and llms-full.txt | ✅ | `sitemap.xml`: 5 URLs, all return 200. `robots.txt`: 4 search crawlers and 10 AI crawlers named and allowed, 0 "Disallow: /" lines, `Sitemap:` line present. `llms.txt` (3.9 KB) and `llms-full.txt` (31 KB, includes all 20 case studies); all links in `llms.txt` return 200 (now including `/privacy/`). | No change needed |
+| 2 | Unique title, description, canonical, Open Graph and Twitter tags with an og:image | ✅ | 6 pages, titles 52 to 60 characters, descriptions 144 to 152, all unique; canonical `https://meridanta.com/` plus path; `og:image` = `https://meridanta.com/og-image.png` (file present, 1200×630); `twitter:card` = `summary_large_image`. The 404 page is `noindex`. | No change needed |
+| 3 | sitemap.xml, robots.txt (search and AI crawlers allowed), llms.txt and llms-full.txt | ✅ | `sitemap.xml`: 6 URLs, all return 200. `robots.txt`: 4 search crawlers and 10 AI crawlers named and allowed, 0 "Disallow: /" lines, `Sitemap:` line present. `llms.txt` (3.9 KB) and `llms-full.txt` (31 KB, includes all 20 case studies); all links in `llms.txt` return 200 (now including `/privacy/`). | No change needed |
 | 4 | JSON-LD: Organization, WebSite, Service, BreadcrumbList on the right pages | ✅ | All blocks parse as valid JSON. Home: Organization, WebSite, WebPage, 4 Services. `/qlik/`: adds BreadcrumbList, 4 Qlik Services and an ItemList of 20 case studies. Industry pages: Organization, WebSite, WebPage, BreadcrumbList. No BreadcrumbList on the home page. This is a structural check; no external schema validator was run. | **Yes:** the verification found a bug (the Qlik service URL read `/qlik//`); fixed, and the checker now rejects double slashes |
-| 5 | One h1 per page, logical heading order, alt text, a proper 404 page, the 301 redirects, direct link and refresh on every route | 🟡 | One `<h1>` per page and 0 heading-level jumps on all 5 pages. 36 images: 24 with descriptive alt text, 12 decorative (`alt=""`), 0 missing. `404.html` is "Page not found" and returns a real 404 on the test host. Direct access and refresh pass on all routes (32 checks). The 301 rules (`/services`, `/about`, `/products`, `/industries`, `/qlik/*`, http to https, www to non-www) are in `public/.htaccess`; the same list returned 301 on the Cloudflare asset handler. **The `.htaccess` itself could not be run here (no Apache), so the redirects and the real 404 status on Hostinger are confirmed only after upload.** | No: verify after upload (`docs/DEPLOY_HOSTINGER.md`) |
+| 5 | One h1 per page, logical heading order, alt text, a proper 404 page, the 301 redirects, direct link and refresh on every route | 🟡 | One `<h1>` per page and 0 heading-level jumps on all 6 pages. 39 images: 23 with descriptive alt text, 16 decorative (`alt=""`), 0 missing. `404.html` is "Page not found" and returns a real 404 on the test host. Direct access and refresh pass on all routes (32 checks). The 301 rules (`/services`, `/about`, `/products`, `/industries`, `/qlik/*`, http to https, www to non-www) are in `public/.htaccess`; the same list returned 301 on the Cloudflare asset handler. **The `.htaccess` itself could not be run here (no Apache), so the redirects and the real 404 status on Hostinger are confirmed only after upload.** | No: verify after upload (`docs/DEPLOY_HOSTINGER.md`) |
 | 6 | Performance optimizations applied; Lighthouse mobile score per route | ✅ | AVIF and WebP images (hero 157 KB to 27–66 KB), `loading="lazy"` on below-the-fold images, self-hosted font preloaded with `font-display: swap`, no Google Fonts requests, route code splitting (Qlik page 30 KB loaded only on its own page), critical CSS inlined, below-the-fold home sections render only when near the screen. Scores in section 2. | **Yes:** below-the-fold home sections now render only when near the screen |
-| 7 | Registered office and email in the footer and in the Organization JSON-LD | ✅ after the fix | Footer on all 5 pages: "Registered Office: 262 Chapman Rd, Ste 240, Newark, DE 19702, USA" and a `mailto:srivatsans@meridanta.com` link. Organization JSON-LD: `email`, `address` (PostalAddress) and `location` named "Registered Office". Also in `llms.txt` and in the contact card. | **Yes: this was not true before today.** The data was missing from the code (empty placeholders); added from your details |
+| 7 | Registered office and email in the footer and in the Organization JSON-LD | ✅ after the fix | Footer on all 6 pages: "Registered Office: 262 Chapman Rd, Ste 240, Newark, DE 19702, USA" and a `mailto:srivatsans@meridanta.com` link. Organization JSON-LD: `email`, `address` (PostalAddress) and `location` named "Registered Office". Also in `llms.txt` and in the contact card. | **Yes: this was not true before today.** The data was missing from the code (empty placeholders); added from your details |
 | 8 | Contact form: posts to `/api/contact.php` with honeypot, Turnstile and server-side validation; sends to srivatsans@meridanta.com via Resend once configured; mailto fallback (no fake success) while not configured; "Preview build" note gone | 🟡 | The form and `public/api/contact.php` are complete (honeypot, Turnstile check, validation, 5-per-hour rate limit, Resend call, 503 until `../meridanta-config.php` exists). A **feature flag** (`VITE_CONTACT_FORM_ENABLED`, default `false`) now keeps the form off until setup is done; the site then shows the email card. All three build modes were tested: off shows the card; on with a Turnstile key shows the form (9/9 mocked-server tests: 200 shows thank-you; 503, 403, network failure, a host without PHP and a wrong response body show the error with the `mailto:` link; 429 and 422 have their own messages); on without a key prints a warning and falls back to the card. No "Preview build" text anywhere. **Not verified: the PHP has never been executed (no PHP here), so email delivery is untested.** | **Yes:** feature flag and email card added. Verify the live form after setup and upload |
 
 ## 1a. Fixes after the live check (19 Nov 2026)
@@ -37,13 +37,25 @@ A check of the live https://meridanta.com/qlik/ found four problems. All are fix
 
 Still needed from you: the real social profile URLs (or leave them hidden), and Sri's review of the privacy text.
 
+## 1b. New header, hero banners, /contact page and Qlik word (23 Nov 2026)
+
+DRAFT: the wording of the banners, the page title and description of `/contact/` and the Services menu targets need Sri's review (`docs/CONTENT_REVIEW.md`, decision 10).
+
+| Area | What changed | Guarded by |
+|---|---|---|
+| Header | Full-width bar (32 px side padding), logo and name with the small tagline "AI. DATA. CLOUD. TRANSFORMING BUSINESS." under them, nav group right-aligned (Home, Services, Industries, Products & Solutions, About Us), "Let's Talk" button (the words "get in touch" are in the button's accessible name). | `npm run verify` (nav, tagline and button on all 6 pages) |
+| Services dropdown | Opens on hover, click and keyboard (aria-expanded), closes on Escape or when focus leaves; on phones it is an expandable group. Items: Consulting & Delivery, AI Solutions & Services, Data Engineering & Analytics, Qlik Center of Excellence (`/qlik/`). The three service pages do not exist yet, so those items go to the home page's Services section; the intended URLs are stored in `src/data.js` (`SERVICE_MENU`, field `future`). | `npm run qa:links` (hover, click, Tab, Enter, Escape, mobile) |
+| Hero banners | Three new banners (headline, tagline, short description, button). Only banner 1's headline is the `<h1>`; the others are `<h2>`. All text is in the HTML. The whole banner is one link (one overlay `<a>`), the button is its visible label. 520 to 540 px tall at 1440 px, sizes to its content on phones, 700 ms crossfade, 7 s autoplay, pauses on hover and focus, arrows, dots, reduced motion respected. | `npm run verify`, `qa:links`, `qa:resilience` (swipe, dots, reduced motion) |
+| /contact/ | New prerendered page (h1, intro, email card or form by the existing `VITE_CONTACT_FORM_ENABLED` flag, registered office, privacy link), `ContactPage` JSON-LD, in the sitemap, `llms.txt` and `llms-full.txt`. Home keeps a short call-to-action band. Every "Get in Touch / Talk to ... / Discuss ..." button goes to `/contact/`; `?interest=` is kept. The old `/#contact` address redirects to `/contact/` in the browser. | `npm run verify`, `check:html`, `qa:links`, `qa:contact`, `qa:crawler` |
+| Qlik logo | Removed everywhere; the plain word "Qlik" in the site's own font and colours replaces it in the accelerator "Built with" tiles and tabs, the home product cards, and the case-study diagrams (engine node and tiles). The logo files are kept, unused, in `src/assets/unused/`. The contact-page picture that had the Qlik mark and text drawn into it was removed as well. | `npm run verify` (no Qlik logo file in the build or imported by the source) |
+
 ## 2. Lighthouse mobile scores (final build, median of 3 runs)
 
 | Route | Performance | Accessibility | Best practices | SEO | LCP | CLS | Blocking time |
 |---|---|---|---|---|---|---|---|
-| `/` | 99 | 100 | 100 | 100 | 2.2 s | 0 | 0 ms |
+| `/` | 99 | 100 | 100 | 100 | 2.0 s | 0 | 9 ms |
 | `/qlik/` | 99 | 100 | 100 | 100 | 1.8 s | 0 | 16 ms |
-| `/industries/healthcare/` | 100 | 100 | 100 | 100 | 1.4 s | 0 | 0 ms |
+| `/industries/healthcare/` | 100 | 100 | 100 | 100 | 1.3 s | 0 | 19 ms |
 | `/industries/communications-media-entertainment/` | 100 | 100 | 100 | 100 | 1.4 s | 0 | 0 ms |
 
 Before the work (same method): performance 70 to 84, LCP 3.5 to 5.5 s, page weight 465 to 991 KB; now 187 to 401 KB. **Note:** the home-page performance score varies between runs (earlier today it ranged from about 75, while other programs were using the computer, to 97) because of when the page's scripts start. Confirm with https://pagespeed.web.dev after the upload.
@@ -55,33 +67,33 @@ Before the work (same method): performance 70 to 84, LCP 3.5 to 5.5 s, page weig
 | # | Item | Status | Evidence / where to check | Owner | Next step |
 |---|---|---|---|---|---|
 | 1 | Audit current React architecture. | ✅ | `docs/AUDIT.md` (stack, routes, what crawlers saw, tool comparison) | Dev | None |
-| 2 | Implement prerendering or static-site generation for critical routes. | ✅ | vite-react-ssg; 5 pages plus `404.html` built as full HTML (`docs/PHASE2_EVIDENCE.md`) | Dev | None |
+| 2 | Implement prerendering or static-site generation for critical routes. | ✅ | vite-react-ssg; 6 pages plus `404.html` built as full HTML (`docs/PHASE2_EVIDENCE.md`) | Dev | None |
 | 3 | Verify initial HTML content availability. | ✅ | Claim 1: all services, 7 capabilities, 5 accelerators, 20 case studies in the raw HTML (`npm run verify`) | Dev | None |
 | 4 | Verify direct URL access and refresh behaviour. | 🟡 | Passes on the test host (32 route checks, `docs/QA_REPORT.md`). Folder-per-route files are what Hostinger serves | Seranjivi (manual) | Verify after upload: open each route directly and press F5 (`docs/DEPLOY_HOSTINGER.md` rows 2 to 4) |
 | 5 | Configure page titles and meta descriptions. | ✅ | Claim 2: unique, in range (`src/seo.js`). Wording is also in the review pack | Dev | None |
 | 6 | Configure canonical URLs. | ✅ | Claim 2: `https://meridanta.com` plus path, trailing slash, one per page | Dev | None |
-| 7 | Implement XML sitemap. | ✅ | Claim 3: `sitemap.xml`, 5 URLs, generated from the page list | Dev | None |
+| 7 | Implement XML sitemap. | ✅ | Claim 3: `sitemap.xml`, 6 URLs, generated from the page list | Dev | None |
 | 8 | Configure robots.txt. | ✅ | Claim 3: search and AI crawlers named and allowed, sitemap line | Dev | None |
 | 9 | Review crawler access. | 🟡 | `robots.txt` allows search and AI crawlers. AI training crawlers (GPTBot, ClaudeBot, Google-Extended, Applebot-Extended, CCBot) are allowed by default | Decision | Sri: confirm or block AI training crawlers. After upload check the live `robots.txt` |
 | 10 | Validate homepage and Qlik page. | 🟡 | Technical validation done (claims 1 to 5, `docs/QA_REPORT.md`). Content review pending | Sri (content) | Review `docs/CONTENT_REVIEW.md`, Home and Qlik sections, and give feedback |
 | 11 | Begin homepage and Qlik content refinement. | ⏳ | `docs/CONTENT_REVIEW.md` section 3 has draft "who, what, for whom, proof" statements, entity wording and FAQ questions | Sri (content) | Approve, edit or reject the suggestions |
 | 12 | Implement Organization and WebSite structured data. | 🟡 | Claim 4 and `docs/JSONLD_EXAMPLES.md`. Email and registered office are included; legal name, phone and founding date are not yet known | Sri (content) | Review the values; supply legal name, phone and founding date |
 | 13 | Implement relevant Service structured data. | 🟡 | Claim 4: 4 services on the home page, 4 Qlik offerings on `/qlik/`, built from the site copy | Sri (content) | Confirm the service descriptions are the wording you want search engines to use |
-| 14 | Correct semantic heading hierarchy. | 🟡 | One `<h1>` per page and 0 heading jumps on all 5 pages; header, nav, main, footer landmarks | Sri (content) | Review heading wording in the content pack (for example the home page's first heading is "Qlik Center of Excellence") |
+| 14 | Correct semantic heading hierarchy. | 🟡 | One `<h1>` per page and 0 heading jumps on all 6 pages; header, nav, main, footer landmarks | Sri (content) | Review heading wording in the content pack (for example the home page's first heading is "Qlik Center of Excellence") |
 | 15 | Review content for crawlability. | ✅ | Claim 1 and `scripts/qa/crawler.mjs`: all content readable without JavaScript | Dev | None |
-| 16 | Verify image alt text. | ✅ | 36 images: 24 described, 12 decorative, 0 missing (`docs/IMAGE_ALT.md`) | Dev | None |
-| 17 | Review internal navigation and links. | ✅ | 169 links checked, none broken, all internal links use the canonical form (`docs/LINK_INVENTORY.md`). The 5 social icons still point to `#` until Sri supplies the profile URLs | Dev | Add the real social URLs when available |
+| 16 | Verify image alt text. | ✅ | 39 images: 23 described, 16 decorative, 0 missing (`docs/IMAGE_ALT.md`) | Dev | None |
+| 17 | Review internal navigation and links. | ✅ | 244 links checked, none broken, all internal links use the canonical form (`docs/LINK_INVENTORY.md`). Every contact call to action goes to `/contact/`. The social icons are hidden until Sri supplies the profile URLs | Dev | Add the real social URLs when available |
 | 18 | Refine homepage and Qlik service descriptions. | ⏳ | Current wording and suggestions in `docs/CONTENT_REVIEW.md` | Sri (content) | Provide the agreed wording |
 | 19 | Review About, Services, Industries, Products and Contact content. | ⏳ | `docs/CONTENT_REVIEW.md` section 2 (page by page) | Sri (content) | Review and mark Approve / Edit / Remove |
 | 20 | Review Qlik branding and product references. | ⏳ | `docs/CONTENT_REVIEW.md` section 5 (mentions, trademark notices, logos, partnership wording) | Sri (content) | Decide on partner status, the "Qlik Center of Excellence" name and logo use |
 | 21 | Implement basic performance optimizations. | ✅ | Claim 6 and `docs/PERFORMANCE.md` | Dev | None |
-| 22 | Validate mobile and desktop layouts. | ✅ | 20 layout checks (5 pages at 390, 768, 1024, 1440, 1920 px) and a 320 px width check (no horizontal scroll) | Dev | None |
+| 22 | Validate mobile and desktop layouts. | ✅ | 30 layout checks (6 pages at 390, 768, 1024, 1440, 1920 px) and a 320 px width check (no horizontal scroll) | Dev | None |
 | 23 | Test Chrome, Edge, Firefox and Safari. | 🟡 | Edge (the same engine as Chrome) fully tested. Firefox and Safari could not be installed here (`docs/QA_REPORT.md`) | Seranjivi (manual) | Test Firefox and Safari (Mac and iPhone) with the checklist in the QA report |
 | 24 | Test desktop, tablet and mobile. | 🟡 | Desktop, tablet (768 px) and phone (390 px) widths, touch input and reduced motion tested in an emulated browser | Seranjivi (manual) | Test on a real iPhone, iPad and Android phone |
 | 25 | Test all navigation links and CTAs. | ✅ | 63 click tests (header, footer, breadcrumbs, call-to-action buttons, search, mobile menu) and 27 contact-card checks all pass | Dev | None |
 | 26 | Test contact forms and email delivery. | 🟡 | The form and its server code are built and tested with mocked answers; the site currently shows the email card. Email delivery was never run (no PHP here) | Seranjivi (manual) | Verify after upload: do the Resend, Turnstile and config-file setup, switch the form on, send a real enquiry (`docs/CONTACT_SETUP.md`) |
 | 27 | Test sitemap and robots.txt. | ✅ | Claim 3: valid XML, every URL returns 200; robots lists all crawlers | Dev | None |
-| 28 | Test direct access and refresh of all public routes. | 🟡 | Same evidence as item 4 (all 4 routes, with and without trailing slash, with query strings) | Seranjivi (manual) | Verify after upload |
+| 28 | Test direct access and refresh of all public routes. | 🟡 | Same evidence as item 4 (all 5 routes, with and without trailing slash, with query strings) | Seranjivi (manual) | Verify after upload |
 | 29 | Test Core Web Vitals and page performance. | ✅ | Section 2 (lab scores on all routes: LCP 1.4 to 2.2 s, CLS 0). INP needs real-visitor data | Dev | Re-check on PageSpeed Insights after upload |
 | 30 | Check browser console for critical errors. | ✅ | 0 console messages on all pages at 1440 and 390 px, in development and production mode | Dev | None |
 | 31 | Validate structured data. | 🟡 | Structure and required fields checked in the build; no external validator was run | Seranjivi (manual) | Run Google's Rich Results Test and validator.schema.org on `/` and `/qlik/` after upload |

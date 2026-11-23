@@ -9,9 +9,9 @@ export default function ContactCard() {
   const office = addressLine();
   return (
     <div className="form-card contact-card">
-      <h3>
+      <h2>
         Email us at <a href={MAILTO}>{ENQUIRY_EMAIL}</a>
-      </h3>
+      </h2>
       <div>
         <AnimatedButton variant="dark" href={MAILTO}>Send us an email</AnimatedButton>
       </div>

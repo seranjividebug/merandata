@@ -80,6 +80,8 @@
 @keyframes cd-spin{to{transform:rotate(360deg)}}
 .cd-engine{filter:drop-shadow(0 14px 26px rgba(90,35,144,.5))}
 .cd .cd-engine-t{font-size:16px;font-weight:700}
+/* The word "Qlik" in the site's own font (stands in for the logo until permission is given) */
+.cd .cd-word{fill:var(--navy);stroke:none;font-weight:800;letter-spacing:-.02em}
 
 
 @media (max-width:1023px){

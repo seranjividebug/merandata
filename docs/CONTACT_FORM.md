@@ -101,7 +101,7 @@ How it works: a Power Automate flow starts from "When an HTTP request is receive
 ## Service of interest
 
 The form already has an optional **Area of interest** list (`INTERESTS` in `src/data.js`: AI Solutions & Services, Data Engineering & Analytics, Qlik Solutions & Accelerators, Healthcare Insights, Cloud & Modernisation, Consulting & Delivery, Other). Phase 6 makes it useful without changing the design:
-- Every primary call-to-action links to the contact form (`/#contact`), and the ones on a specific page pass the matching service, for example the Qlik page sends `?interest=qlik`, the healthcare page `?interest=healthcare`.
+- Every primary call-to-action links to the contact page (`/contact/`), and the ones on a specific page pass the matching service, for example the Qlik page sends `/contact/?interest=qlik`, the healthcare page `/contact/?interest=healthcare`. The old `/#contact` address is redirected to `/contact/` in the browser.
 - The form reads that value on load and pre-selects the matching option; the visitor can still change it.
 - The chosen service is included in the email subject, for example `Website enquiry: Qlik Solutions & Accelerators`.
 

@@ -25,7 +25,8 @@ console.log("== 3. back / forward and client-side navigation");
   const p = await b.newPage({ viewport: { width: 1280, height: 800 } }); const issues = watch(p);
   await p.goto(BASE + "/", { waitUntil: "load" }); await p.waitForTimeout(2500); // let the app hydrate
   const titleHome = await p.title();
-  await p.locator('a.hs-btn[href="/qlik"], a.hs-btn[href="/qlik/"]').first().click({ force: true }); await p.waitForTimeout(1200);
+  await p.locator(".hs-dot").nth(2).click(); await p.mouse.move(640, 760); await p.waitForTimeout(1200);
+  await p.locator(".hs-slide.is-active a.hs-hit").click(); await p.waitForTimeout(1200);
   ok(norm(new URL(p.url()).pathname) === "/qlik" && /Qlik Center of Excellence/.test(await p.title()), `hero button -> /qlik (client navigation) url=${new URL(p.url()).pathname} title="${(await p.title()).slice(0, 40)}"`);
   ok((await p.evaluate(() => scrollY)) < 50, "page starts at the top after navigating");
   await p.goBack(); await p.waitForTimeout(900);
@@ -40,7 +41,7 @@ console.log("== 3. back / forward and client-side navigation");
   await p.close();
 }
 console.log("== 4. anchors (section top should sit just under the 72px header)");
-const anchors = [["/", ["services", "industries", "solutions", "about", "contact"]], ["/qlik/", ["capabilities", "qlik-services", "accelerators", "case-studies"]]];
+const anchors = [["/", ["services", "industries", "solutions", "about"]], ["/qlik/", ["capabilities", "qlik-services", "accelerators", "case-studies"]]];
 for (const [path, ids] of anchors) for (const id of ids) {
   const p = await b.newPage({ viewport: { width: 1280, height: 800 } });
   await p.goto(BASE + path + "#" + id, { waitUntil: "load" }); await p.waitForTimeout(1800);
@@ -54,9 +55,9 @@ for (const [path, ids] of anchors) for (const id of ids) {
   await p.goto(BASE + "/qlik/#accelerator-log-scraping", { waitUntil: "load" }); await p.waitForTimeout(2000);
   ok(/Log Scraping/.test(await p.locator(".ax-panel:visible .ax-title").innerText()), "deep link #accelerator-log-scraping selects that accelerator");
   await p.goto(BASE + "/qlik/", { waitUntil: "load" }); await p.waitForTimeout(2500);
-  await p.locator("header a", { hasText: "Services" }).first().click(); await p.waitForTimeout(1500);
+  await p.locator("header nav.nav .nav-dd-btn").click(); await p.locator("header nav.nav .nav-dd-list a", { hasText: "Consulting & Delivery" }).click(); await p.waitForTimeout(1500);
   const top = await p.evaluate(() => Math.round(document.getElementById("services")?.getBoundingClientRect().top ?? 9999));
-  ok(norm(new URL(p.url()).pathname) === "/" && new URL(p.url()).hash === "#services" && top >= 0 && top < 140, `from /qlik/: header Services -> /#services (top ${top}px)`);
+  ok(norm(new URL(p.url()).pathname) === "/" && new URL(p.url()).hash === "#services" && top >= 0 && top < 140, `from /qlik/: header Services menu -> /#services (top ${top}px)`);
   await p.close();
 }
 await b.close(); console.log(`\n${fails} failure(s)`); process.exit(fails ? 1 : 0);

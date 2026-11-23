@@ -13,10 +13,11 @@ How to use it: for each row, mark **Approve**, **Edit** (write the new wording i
 | 3 | **"Qlik Center of Excellence" naming.** The name appears in the hero, navigation cards, page titles and structured data. | It can read as an official Qlik programme. Confirm Meridanta may use the name, or consider "Meridanta Qlik Center of Excellence" everywhere (it already is in the meta description). |
 | 4 | **Company facts still missing**: legal name, phone, founding date (`src/company.js`). The email and the registered office are set. | Needed for vendor due diligence and for Organization structured data. Nothing is invented; fields stay blank until you confirm them. |
 | 5 | **Contact form delivery (done in Phase 6).** The form now sends through a PHP endpoint and Resend to srivatsans@meridanta.com, and the public "Preview build" note is gone. It needs the one-time setup in `docs/CONTACT_SETUP.md` (Resend domain, Turnstile keys, private config file) before it can send. Until then visitors see an error message with an email link, never a fake success. | Confirm the setup is finished and test with a real enquiry. |
-| 6 | **Third-party logos in diagrams** (AWS, Microsoft Azure services, Oracle, IBM Db2, Power BI, Qlik, plus brands from the open-source icon set). | Each owner has brand-usage rules. See section 5. |
+| 6 | **Third-party logos in diagrams** (AWS, Microsoft Azure services, Oracle, IBM Db2, Power BI, plus brands from the open-source icon set). | Each owner has brand-usage rules. See section 5. |
 | 7 | **Metrics shown as headline numbers** (shown: for example "~40% faster response time" and "Under 5 seconds" replication latency; in the code but not shown: "40 hrs typical Qlik migration"). | Each is a quantified claim a prospect or AI assistant may repeat. Section 6 lists them. |
 | 8 | **Social profile links.** None are set, so the footer shows no social icons. | Send the real URLs (LinkedIn, X, Facebook, Instagram, YouTube) and the icons appear; they also feed the structured data. |
 | 9 | **Privacy Policy page (DRAFT – Sri to review).** A basic policy now lives at `/privacy/` and is linked from the footer and the contact section. | Wording, retention period and the statement about trackers need your confirmation (see "Privacy Policy page" in section 2). |
+| 10 | **Header, hero banners and /contact page (DRAFT – Sri to review).** New header (brand tagline "AI. Data. Cloud. Transforming Business.", Services dropdown, "Let’s Talk" button), three new hero banners, and a /contact page that replaces the home page’s contact section. | Confirm the banner wording, the title and description of /contact/, and the URLs for the three service pages in the Services menu (/services/consulting-delivery, /services/ai-solutions, /services/data-engineering-analytics). They are not built yet, so those three menu items go to the home page’s Services section for now. Also confirm whether the Healthcare banner should go to /industries/healthcare/ or /healthcare. |
 
 ## 2. Page by page
 
@@ -26,20 +27,20 @@ How to use it: for each row, mark **Approve**, **Edit** (write the new wording i
 |---|---|---|---|---|
 | Meta title (53 chars) | Meridanta \| Outcome-driven AI, Data & Cloud Solutions | | | |
 | Meta description (152 chars) | Meridanta helps organizations solve business problems with AI, data and analytics, cloud and Qlik expertise, using an AI-first, outcome-driven approach. | | | |
-| H1 | Qlik Center of Excellence | | | |
+| H1 | Turning Data into Intelligence. Intelligence into Impact. | | | |
 
 JSON-LD values:
 - Types: Organization, WebSite, WebPage, Service, Service, Service, Service
 - Organization: name "Meridanta", slogan "Technology Expertise. Business Outcomes.", areaServed United States and India, 19 knowsAbout topics, sameAs 0 profiles; no legal name, email, phone, address or founding date yet
 - Services: Consulting & Delivery; AI Solutions & Services; Data Engineering & Analytics; Qlik Center of Excellence
 
-#### Hero slides (3)
+#### Hero banners (3): DRAFT – Sri to review
 
-| Headline | Description | Approve | Edit | Remove |
-|---|---|---|---|---|
-| Qlik Center of Excellence | Deliver greater value with our Qlik-focused expertise across a complete portfolio of modern Data Integration, Data Fabric, Agentic Architecture, AI and Analytics. | | | |
-| AI-Driven Solutions & Services | Build intelligent business solutions using AI, machine learning, automation and advanced AI-powered technologies. | | | |
-| Healthcare Solutions | Enable healthcare organizations with intelligent digital solutions, data analytics and technology-driven operational improvements. | | | |
+| Headline | Tagline | Description | Button and link | Approve | Edit | Remove |
+|---|---|---|---|---|---|---|
+| Turning Data into Intelligence. Intelligence into Impact. | AI \| Data Engineering \| Analytics \| Cloud | We help enterprises modernize data ecosystems, harness AI and build intelligent solutions that drive measurable business outcomes. | Explore Our Services → /#services | | | |
+| Enabling Smarter, More Connected Healthcare. | Healthcare Data \| Analytics \| AI-driven Insights | Unifying complex healthcare data to support better insights, operational efficiency, informed decisions and improved care delivery. | Explore Healthcare Solutions → /industries/healthcare/ | | | |
+| Accelerating Enterprise Analytics with Qlik. | Qlik Consulting \| Implementation \| Center of Excellence | Specialized professional services, data integration expertise and reusable accelerators that help enterprises maximize their Qlik investments. | Explore Qlik Capabilities → /qlik/ | | | |
 
 #### Sections
 
@@ -49,7 +50,6 @@ JSON-LD values:
 | Industries | Industries We Serve | We apply AI, data, analytics, and modern technology capabilities to the needs of complex, data-driven industries. | | | |
 | Products & Solutions | Products & Solutions | Explore Meridanta’s solutions for turning complex data into useful insight and accelerating the delivery of business intelligence. | | | |
 | About | About Meridanta | Meridanta focuses on AI, Data & Analytics, and Cloud solutions that help organizations address business challenges through practical technology and disciplined delivery. Our approach brings together business understanding, engineering expertise, and outcome-oriented execution to help customers turn technology opportunities into meaningful results. | | | |
-| Contact | Let’s Discuss Your Next Opportunity | Tell us about your business challenge or technology initiative. Our team will review your inquiry and determine how we can help. | | | |
 
 #### Services (What We Do)
 
@@ -339,7 +339,7 @@ Question-style heading ideas (optional): "What We Do" -> "What does Meridanta do
 | QlikView | 0 | 25 | 0 | 0 |
 | Qlik Replicate | 0 | 20 | 0 | 0 |
 | Qlik Cloud | 0 | 5 | 0 | 0 |
-| Qlik (any) | 10 | 114 | 0 | 0 |
+| Qlik (any) | 14 | 126 | 2 | 2 |
 | Talend | 3 | 7 | 0 | 0 |
 | Power BI | 2 | 4 | 0 | 0 |
 | NPrinting | 0 | 12 | 0 | 0 |
@@ -348,7 +348,7 @@ Related phrases:
 
 | Phrase | / | /qlik/ | /industries/healthcare/ | /industries/communications-media-entertainment/ |
 |---|---|---|---|---|
-| "Center of Excellence" | 3 | 3 | 0 | 0 |
+| "Center of Excellence" | 4 | 5 | 2 | 2 |
 | "Qlik expert" | 0 | 0 | 0 | 0 |
 | "Qlik Expert" | 0 | 2 | 0 | 0 |
 
@@ -363,10 +363,10 @@ Related phrases:
 
 | Where | What is shown | Source file | Question for Sri |
 |---|---|---|---|
-| Home hero, first slide | Qlik logo (original colours on a white pill) inside the heading | `src/assets/qlik-logo.png` (the code comment calls it the official logo) | Does Meridanta have permission or a partner agreement to use it this prominently? |
-| /qlik/ case-study diagrams and accelerator tiles | Qlik, Snowflake, Databricks, Kafka, SAP, PostgreSQL, MySQL, Prometheus, Grafana, Talend (from the open-source simple-icons set) | simple-icons 16.36.0 | The icon set is open source, but the brands are still trademarks. |
-| /qlik/ case-study diagrams | Official AWS and Microsoft Azure architecture icons, Oracle, IBM Db2, Power BI, Qlik | `src/assets/logos/` (14 files) | Each vendor's brand and icon usage terms should be checked. |
-| Home and /qlik/ images | Platform and capability illustrations with brand names in the alt text (Qlik, AWS, Databricks) | `qlik-platform.webp`, `loc-qlik.webp`, `cap-*.webp` | Confirm who created them and that any brand marks inside are cleared. |
+| Everywhere (hero, accelerator "Built with" tiles, case-study diagram engine node and tiles) | **The Qlik logo is no longer shown.** It is replaced by the plain word "Qlik" in the site's own font and colours. | The logo files are kept, unused, in `src/assets/unused/` | Ask Qlik for written permission before the logo goes back. |
+| /qlik/ case-study diagrams and accelerator tiles | Snowflake, Databricks, Kafka, SAP, PostgreSQL, MySQL, Prometheus, Grafana, Talend (from the open-source simple-icons set) | simple-icons 16.36.0 | The icon set is open source, but the brands are still trademarks. |
+| /qlik/ case-study diagrams | Official AWS and Microsoft Azure architecture icons, Oracle, IBM Db2, Power BI | `src/assets/logos/` (14 files) | Each vendor's brand and icon usage terms should be checked. |
+| Home and /qlik/ images | Platform and capability illustrations with brand names in the alt text (Qlik, AWS, Databricks) | `qlik-platform.webp` (shows AWS, Databricks, Google, Iceberg, Microsoft and Snowflake marks inside the picture), `cap-*.webp`. The contact-page picture `loc-qlik.webp` (Qlik mark and text drawn into the image) was removed. | Confirm who created them and that any brand marks inside are cleared. |
 
 ### 5.4 Statements that could imply an official partnership, certification or endorsement
 
@@ -376,7 +376,7 @@ Search of all visible text for: partner, certified, certification, authorized, o
 |---|---|---|---|---|
 | /qlik/ | Certification programs | | | |
 
-Also relevant: the name "Qlik Center of Excellence", the button "Talk to a Qlik Expert" (it appears on the floating button on the /qlik pages and in the hero). No page states a partner level.
+Also relevant: the name "Qlik Center of Excellence", the button "Talk to a Qlik Expert" (it appears on the floating button on the /qlik pages and in the /qlik hero). No page states a partner level.
 
 ## 6. TODOs and unverified claims
 

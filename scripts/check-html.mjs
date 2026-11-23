@@ -120,9 +120,11 @@ for (const [url, page] of pages) {
 }
 
 // ---------- calls to action ----------
-const CTA = /^(get in touch|talk to|discuss|start with a free consultation|contact)/i;
+const CTA = /^(get in touch|let.s talk|talk to|discuss|start with a free consultation|contact|send us an email)/i;
 for (const l of links) {
-  if (CTA.test(l.label) && !/#contact$/.test(l.href)) { l.status = "CTA"; err(l.page, `call to action "${l.label}" does not lead to the contact form (${l.href})`); }
+  // "Send us an email" is a mailto: link on the contact page itself; every other call to action goes to /contact/.
+  if (/^mailto:/.test(l.href)) continue;
+  if (CTA.test(l.label) && !/^\/contact\/(\?interest=[a-z]+)?$/.test(l.href)) { l.status = "CTA"; err(l.page, `call to action "${l.label}" does not lead to the contact page (${l.href})`); }
 }
 
 // ---------- head tags and JSON-LD ----------
@@ -144,7 +146,7 @@ for (const [url, { doc }] of pages) {
   }
   ldReport.set(url, nodes);
   const ids = new Set(nodes.map((n) => n["@id"]).filter(Boolean));
-  const types = nodes.map((n) => n["@type"]);
+  const types = nodes.map((n) => (n["@type"] === "ContactPage" ? "WebPage" : n["@type"]));
   for (const t of REQUIRED_TYPES[url] ?? ["Organization", "WebPage", "BreadcrumbList"]) if (!types.includes(t)) err(url, `JSON-LD is missing ${t}`);
   const seen = new Set();
   for (const n of nodes) {

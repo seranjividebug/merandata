@@ -51,7 +51,7 @@ export function buildLlmsTxt() {
     ...featured.map((c) => link(c.title, caseUrl(c), `${c.summary} (${c.highlight.value} ${c.highlight.label})`)),
     "",
     "## Contact",
-    link("Contact form and consultation requests", "/#contact", "Tell us about your business challenge or technology initiative."),
+    link("Contact", "/contact/", "Tell us about your business challenge or technology initiative."),
     ...contactLines(),
     "",
     "## Optional",
@@ -101,7 +101,7 @@ function casesText() {
 
 /** Full plain text of every public section. */
 export function buildLlmsFullTxt() {
-  const slides = HERO_SLIDES.map((s) => `- ${s.title}: ${s.desc}`).join("\n");
+  const slides = HERO_SLIDES.map((s) => `- ${s.title} (${s.tagline}): ${s.desc}`).join("\n");
   const platform = `Technology solutions and implementation capabilities that help organizations build, modernize, and operate data and analytics environments.\n\nCapabilities:\n${bullets(PLATFORM)}\n\nTalend frameworks:\n${bullets(TALEND)}`;
   return [
     `# ${SITE.name}: full site text`,
@@ -115,7 +115,7 @@ export function buildLlmsFullTxt() {
     section("Qlik Accelerators", acceleratorsText()),
     section("Data Platforms & Cloud Solutions", platform),
     section(`Case studies (${PUBLISHED.length})`, casesText()),
-    section("Contact", `Use the contact form at ${absoluteUrl("/#contact")} to describe your business challenge or technology initiative.${contactLines().length ? "\n\n" + contactLines().join("\n") : ""}`),
+    section("Contact", `Use the contact page at ${absoluteUrl("/contact/")} to describe your business challenge or technology initiative.${contactLines().length ? "\n\n" + contactLines().join("\n") : ""}`),
     section(`Privacy Policy (${absoluteUrl("/privacy/")}, last updated ${PRIVACY_UPDATED})`, privacyText()),
     section("Trademarks", QLIK_TM),
   ].join("\n").replace(/\n{3,}/g, "\n\n").trimEnd() + "\n";

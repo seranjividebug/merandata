@@ -1,11 +1,11 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { HERO_SLIDES } from "../data";
+import { useNavigate } from "react-router-dom";
 import { useSectionLink } from "../nav";
 import { Head } from "vite-react-ssg";
 import { REDUCED, useReducedMotion } from "../utils";
 import { responsiveImage } from "../images";
 import Picture from "./Picture";
-import QlikLogo from "./QlikLogo";
 import AnimatedButton from "./AnimatedButton";
 
 const IMAGES = {
@@ -15,7 +15,7 @@ const IMAGES = {
 };
 // The image covers a box at least ~850 px wide (more on phones, where the hero is taller than it is wide).
 const HERO_SIZES = "(max-width: 700px) 1200px, max(100vw, 853px)";
-const INTERVAL = 6000;
+const INTERVAL = 7000;
 const SWIPE_PX = 50;
 
 const Arrow = ({ dir }) => (
@@ -30,6 +30,7 @@ export default function Hero() {
   const [userPaused, setUserPaused] = useState(false);
   const touchX = useRef(null);
   const sectionLink = useSectionLink();
+  const navigate = useNavigate();
   const count = HERO_SLIDES.length;
   const reduced = useReducedMotion(); // render-time value
   const playing = !REDUCED && !paused && !userPaused;
@@ -57,7 +58,7 @@ export default function Hero() {
 
   return (
     <>
-      <Head><link rel="preload" as="image" type="image/avif" imageSrcSet={IMAGES.qlik.avif} imageSizes={HERO_SIZES} fetchpriority="high" /></Head>
+      <Head><link rel="preload" as="image" type="image/avif" imageSrcSet={IMAGES[HERO_SLIDES[0].key].avif} imageSizes={HERO_SIZES} fetchpriority="high" /></Head>
     <section
       id="home"
       data-hero
@@ -76,8 +77,7 @@ export default function Hero() {
         {HERO_SLIDES.map((s, i) => {
           const active = i === index;
           const Title = i === 0 ? "h1" : "h2";
-          const link = s.to ? null : sectionLink(s.section);
-          const label = <>Explore More<span className="sr">: {s.title}</span></>;
+          const link = s.to ? { href: s.to, onClick: (e) => { if (e.defaultPrevented || e.metaKey || e.ctrlKey || e.shiftKey || e.button > 0) return; e.preventDefault(); navigate(s.to); } } : sectionLink(s.section);
           return (
             <div
               key={s.key}
@@ -99,20 +99,16 @@ export default function Hero() {
                 {...(i === 0 ? { fetchpriority: "high" } : { loading: "lazy" })}
               />
               <div className="hs-shade" aria-hidden="true" />
+              {/* One link covers the whole banner; the button below is its visible label. */}
+              <a className="hs-hit" {...link} tabIndex={active ? 0 : -1} aria-label={`${s.cta}: ${s.title}`} />
               <div className="wrap hs-copy">
                 <div className="hs-l">
-                  {s.eyebrow && <p className="hs-eyebrow">{s.eyebrow}</p>}
-                  <Title className="hs-title">
-                    {s.titleLines
-                      ? <><span className="hs-t1">{s.logo ? <><span className="sr">Qlik</span><QlikLogo className="hs-logo" decorative /></> : s.titleLines[0]}</span>{" "}<span className="hs-t2">{s.titleLines[1]}</span></>
-                      : s.title}
-                  </Title>
+                  <Title className="hs-title">{s.title}</Title>
+                  <p className="hs-tag">{s.tagline}</p>
                 </div>
                 <div className="hs-r">
                   <p className="hs-desc">{s.desc}</p>
-                  {s.to
-                    ? <AnimatedButton shine className="hs-btn" to={s.to} tabIndex={active ? 0 : -1}>{label}</AnimatedButton>
-                    : <AnimatedButton shine className="hs-btn" {...link} tabIndex={active ? 0 : -1}>{label}</AnimatedButton>}
+                  <AnimatedButton as="span" shine className="hs-btn">{s.cta}</AnimatedButton>
                 </div>
               </div>
             </div>

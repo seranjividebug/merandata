@@ -16,7 +16,7 @@ The website has a feature flag for the form, so visitors never meet a form that 
 | `VITE_CONTACT_FORM_ENABLED=true` **and** `VITE_TURNSTILE_SITE_KEY=<site key>` | The full enquiry form with the Turnstile check. |
 | `VITE_CONTACT_FORM_ENABLED=true` but the site key is empty | The email contact card, and the build prints a clear `[contact] WARNING` line. |
 
-Every call to action on the site still goes to the contact section, whichever of the two is shown.
+Every call to action on the site still goes to the /contact/ page, whichever of the two is shown.
 
 **To switch the form on** (only after steps a, b and c below are finished):
 1. Open `.env` in the project folder (copy `.env.example` if it does not exist).

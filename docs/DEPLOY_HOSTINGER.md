@@ -32,7 +32,7 @@ Use a private window and Ctrl+F5. Commands use `curl` (in any terminal); `-I` sh
 | 3 | https://meridanta.com/industries/healthcare/ | Healthcare page loads and survives a refresh. |
 | 4 | https://meridanta.com/this-page-does-not-exist | The "Page not found" page **and** `curl -I` shows `404` (not 200). |
 | 5 | https://meridanta.com/robots.txt | Plain text starting `# robots.txt for https://meridanta.com`, with the `Sitemap:` line. |
-| 6 | https://meridanta.com/sitemap.xml | XML with 4 URLs, all starting `https://meridanta.com/`. |
+| 6 | https://meridanta.com/sitemap.xml | XML with 6 URLs, all starting `https://meridanta.com/`. |
 | 7 | https://meridanta.com/llms.txt and /llms-full.txt | Plain text about Meridanta. |
 | 8 | `curl -I http://meridanta.com/` | `301` to `https://meridanta.com/`. |
 | 9 | `curl -I https://www.meridanta.com/` | `301` to `https://meridanta.com/` (one redirect). |
@@ -40,7 +40,7 @@ Use a private window and Ctrl+F5. Commands use `curl` (in any terminal); `-I` sh
 | 11 | https://meridanta.com/api/contact.php (browser) | `{"ok":false,"error":"method_not_allowed"}` (the PHP runs; it is not the home page). |
 | 12 | `curl -I https://meridanta.com/assets/<any .js file>` | `cache-control: public, max-age=31536000, immutable`. |
 | 13 | `curl -I https://meridanta.com/` | `cache-control: no-cache`. |
-| 14 | Contact section | With the form off (default): the email card shows "Email us at srivatsans@meridanta.com" and "Send us an email" opens a new email with the subject "Website enquiry". With the form on: run the tests in `CONTACT_SETUP.md` section e (at least the real enquiry). |
+| 14 | https://meridanta.com/contact/ (the contact page; also open it from the header "Let’s Talk" button) | With the form off (default): the email card shows "Email us at srivatsans@meridanta.com" and "Send us an email" opens a new email with the subject "Website enquiry". With the form on: run the tests in `CONTACT_SETUP.md` section e (at least the real enquiry). |
 | 15 | Social preview | Paste the home URL into a LinkedIn or Slack message: title, description and the 1200x630 image appear. |
 
 If a check fails, restore the backup zip (upload, extract over `public_html`) and tell me which row failed.

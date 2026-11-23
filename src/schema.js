@@ -66,7 +66,7 @@ const website = () => ({
 
 function webPage(page) {
   return {
-    "@type": "WebPage",
+    "@type": page.path === "/contact/" ? "ContactPage" : "WebPage",
     "@id": `${canonicalUrl(page.path)}#webpage`,
     url: canonicalUrl(page.path),
     name: page.title,

@@ -17,9 +17,9 @@ export default function Layout() {
   // Highlight the nav item for the home-page section in view
   useEffect(() => {
     if (pathname !== "/") { setActive(""); return undefined; }
-    const ids = [...NAV.map((n) => n.id), "contact"];
+    const ids = NAV.map((n) => n.id);
     const io = new IntersectionObserver(
-      (entries) => entries.forEach((en) => { if (en.isIntersecting) setActive(en.target.id === "contact" ? "" : en.target.id); }),
+      (entries) => entries.forEach((en) => { if (en.isIntersecting) setActive(en.target.id); }),
       { rootMargin: "-45% 0px -50% 0px" }
     );
     ids.forEach((id) => { const el = document.getElementById(id); el && io.observe(el); });

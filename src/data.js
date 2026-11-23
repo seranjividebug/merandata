@@ -14,15 +14,29 @@ export const HIGHLIGHTS = [
   { icon: "health", title: "Healthcare", tag: "Healthcare Solutions", desc: "Enable healthcare organizations with intelligent digital solutions, data analytics and technology-driven operational improvements." },
 ];
 
-// Home hero slider. Give a slide `to` for a route, or `section` for a home-page section id; change them here later.
+// Home hero slider (DRAFT – Sri to review the wording, see docs/CONTENT_REVIEW.md). One headline, one tagline, one short
+// description and one call to action per banner. Give a banner `to` for a route, or `section` for a home-page section id.
 export const HERO_SLIDES = [
-  { key: "qlik", title: "Qlik Center of Excellence", titleLines: ["Qlik", "Center of Excellence"], logo: true, to: "/qlik/", alt: "Qlik data, analytics and AI platform connecting data integration, quality, governance, dashboards, reporting and automation",
-    desc: "Deliver greater value with our Qlik-focused expertise across a complete portfolio of modern Data Integration, Data Fabric, Agentic Architecture, AI and Analytics." },
-  { key: "ai", eyebrow: "AI-DRIVEN SOLUTIONS & SERVICES", title: "AI-Driven Solutions & Services", section: "services", alt: "AI chip connected to machine learning, generative AI, NLP, agentic AI, intelligent automation and predictive insights",
-    desc: "Build intelligent business solutions using AI, machine learning, automation and advanced AI-powered technologies." },
-  { key: "healthcare", eyebrow: "HEALTHCARE SOLUTIONS", title: "Healthcare Solutions", section: "industries", alt: "Heart with medical cross connected to patient 360, pharmacy insights, clinical analytics, remote monitoring, dashboards and compliance",
-    desc: "Enable healthcare organizations with intelligent digital solutions, data analytics and technology-driven operational improvements." },
+  { key: "ai", title: "Turning Data into Intelligence. Intelligence into Impact.", tagline: "AI | Data Engineering | Analytics | Cloud", section: "services", cta: "Explore Our Services",
+    alt: "AI chip connected to machine learning, generative AI, NLP, agentic AI, intelligent automation and predictive insights",
+    desc: "We help enterprises modernize data ecosystems, harness AI and build intelligent solutions that drive measurable business outcomes." },
+  { key: "healthcare", title: "Enabling Smarter, More Connected Healthcare.", tagline: "Healthcare Data | Analytics | AI-driven Insights", to: "/industries/healthcare/", cta: "Explore Healthcare Solutions",
+    alt: "Heart with medical cross connected to patient 360, pharmacy insights, clinical analytics, remote monitoring, dashboards and compliance",
+    desc: "Unifying complex healthcare data to support better insights, operational efficiency, informed decisions and improved care delivery." },
+  { key: "qlik", title: "Accelerating Enterprise Analytics with Qlik.", tagline: "Qlik Consulting | Implementation | Center of Excellence", to: "/qlik/", cta: "Explore Qlik Capabilities",
+    alt: "Qlik data, analytics and AI platform connecting data integration, quality, governance, dashboards, reporting and automation",
+    desc: "Specialized professional services, data integration expertise and reusable accelerators that help enterprises maximize their Qlik investments." },
 ];
+
+/** Header "Services" dropdown. `to` is where each item goes today; `future` is the dedicated page Sri specified (not built yet). */
+export const SERVICE_MENU = [
+  { label: "Consulting & Delivery", to: "/#services", future: "/services/consulting-delivery", interest: "consulting" },
+  { label: "AI Solutions & Services", to: "/#services", future: "/services/ai-solutions", interest: "ai" },
+  { label: "Data Engineering & Analytics", to: "/#services", future: "/services/data-engineering-analytics", interest: "data" },
+  { label: "Qlik Center of Excellence", to: "/qlik/" },
+];
+
+export const BRAND_TAGLINE = "AI. Data. Cloud. Transforming Business.";
 
 export const SERVICES = [
   { icon: "compass", title: "Consulting & Delivery", short: "From strategy to end-to-end implementation, with outcome-based delivery.", desc: "Outcome-based, data-driven, and AI-first consulting that takes solutions from strategy through end-to-end implementation.",

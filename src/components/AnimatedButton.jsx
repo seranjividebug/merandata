@@ -16,8 +16,9 @@ const ARROW = (
  *   "ghost": transparent with a white outline (secondary, on dark); fills white on hover.
  * - shine: slow diagonal glint across the button (hero buttons only).
  * - arrow: show the arrow on the right (default true).
+ * - as="span": a button-looking label that is not interactive itself (the hero banner, where one overlay link covers the whole banner).
  */
-export default function AnimatedButton({ variant = "light", shine = false, arrow = true, className = "", children, to, href, ...rest }) {
+export default function AnimatedButton({ variant = "light", shine = false, arrow = true, className = "", children, to, href, as, ...rest }) {
   const cls = ["abtn", "abtn-" + variant, shine ? "abtn-shine" : "", className].filter(Boolean).join(" ");
   const inner = (
     <>
@@ -30,6 +31,7 @@ export default function AnimatedButton({ variant = "light", shine = false, arrow
       )}
     </>
   );
+  if (as === "span") return <span className={cls} {...rest}>{inner}</span>;
   if (to) return <Link className={cls} to={to} {...rest}>{inner}</Link>;
   if (href !== undefined) return <a className={cls} href={href} {...rest}>{inner}</a>;
   return <button className={cls} type="button" {...rest}>{inner}</button>;

@@ -57,11 +57,11 @@ const sectionRow = (d, id, label) => {
 const home = () => [
   pageHead("/", "Home"),
   "", "JSON-LD values:", ldSummary(dom["/"]), "",
-  "#### Hero slides (3)", "", "| Headline | Description | Approve | Edit | Remove |", "|---|---|---|---|---|",
-  ...data.HERO_SLIDES.map((s) => `| ${cell(s.title)} | ${cell(s.desc)} | | | |`), "",
+  "#### Hero banners (3): DRAFT – Sri to review", "", "| Headline | Tagline | Description | Button and link | Approve | Edit | Remove |", "|---|---|---|---|---|---|---|",
+  ...data.HERO_SLIDES.map((s) => `| ${cell(s.title)} | ${cell(s.tagline)} | ${cell(s.desc)} | ${cell(s.cta)} → ${cell(s.to ?? "/#" + s.section)} | | | |`), "",
   "#### Sections", "", "| Section | Headline | Intro | Approve | Edit | Remove |", "|---|---|---|---|---|---|",
   sectionRow(dom["/"], "services", "Services"), sectionRow(dom["/"], "industries", "Industries"), sectionRow(dom["/"], "solutions", "Products & Solutions"),
-  `| About | ${cell(q(dom["/"], "#about-h"))} | ${cell(company.ABOUT.join(" "))} | | | |`, sectionRow(dom["/"], "contact", "Contact"), "",
+  `| About | ${cell(q(dom["/"], "#about-h"))} | ${cell(company.ABOUT.join(" "))} | | | |`, "",
   "#### Services (What We Do)", "",
   ...data.SERVICES.map((s) => `**${s.title}.** ${s.desc}\n${bullets(s.items)}\n`),
   "#### Industries We Serve (home cards)", "",
@@ -129,10 +129,11 @@ How to use it: for each row, mark **Approve**, **Edit** (write the new wording i
 | 3 | **"Qlik Center of Excellence" naming.** The name appears in the hero, navigation cards, page titles and structured data. | It can read as an official Qlik programme. Confirm Meridanta may use the name, or consider "Meridanta Qlik Center of Excellence" everywhere (it already is in the meta description). |
 | 4 | **Company facts still missing**: legal name, phone, founding date (\`src/company.js\`). The email and the registered office are set. | Needed for vendor due diligence and for Organization structured data. Nothing is invented; fields stay blank until you confirm them. |
 | 5 | **Contact form delivery (done in Phase 6).** The form now sends through a PHP endpoint and Resend to srivatsans@meridanta.com, and the public "Preview build" note is gone. It needs the one-time setup in \`docs/CONTACT_SETUP.md\` (Resend domain, Turnstile keys, private config file) before it can send. Until then visitors see an error message with an email link, never a fake success. | Confirm the setup is finished and test with a real enquiry. |
-| 6 | **Third-party logos in diagrams** (AWS, Microsoft Azure services, Oracle, IBM Db2, Power BI, Qlik, plus brands from the open-source icon set). | Each owner has brand-usage rules. See section 5. |
+| 6 | **Third-party logos in diagrams** (AWS, Microsoft Azure services, Oracle, IBM Db2, Power BI, plus brands from the open-source icon set). | Each owner has brand-usage rules. See section 5. |
 | 7 | **Metrics shown as headline numbers** (shown: for example "~40% faster response time" and "Under 5 seconds" replication latency; in the code but not shown: "40 hrs typical Qlik migration"). | Each is a quantified claim a prospect or AI assistant may repeat. Section 6 lists them. |
 | 8 | **Social profile links.** None are set, so the footer shows no social icons. | Send the real URLs (LinkedIn, X, Facebook, Instagram, YouTube) and the icons appear; they also feed the structured data. |
 | 9 | **Privacy Policy page (DRAFT – Sri to review).** A basic policy now lives at \`/privacy/\` and is linked from the footer and the contact section. | Wording, retention period and the statement about trackers need your confirmation (see "Privacy Policy page" in section 2). |
+| 10 | **Header, hero banners and /contact page (DRAFT – Sri to review).** New header (brand tagline "AI. Data. Cloud. Transforming Business.", Services dropdown, "Let’s Talk" button), three new hero banners, and a /contact page that replaces the home page’s contact section. | Confirm the banner wording, the title and description of /contact/, and the URLs for the three service pages in the Services menu (/services/consulting-delivery, /services/ai-solutions, /services/data-engineering-analytics). They are not built yet, so those three menu items go to the home page’s Services section for now. Also confirm whether the Healthcare banner should go to /industries/healthcare/ or /healthcare. |
 
 ## 2. Page by page
 
@@ -241,10 +242,10 @@ ${coe.join("\n")}
 
 | Where | What is shown | Source file | Question for Sri |
 |---|---|---|---|
-| Home hero, first slide | Qlik logo (original colours on a white pill) inside the heading | \`src/assets/qlik-logo.png\` (the code comment calls it the official logo) | Does Meridanta have permission or a partner agreement to use it this prominently? |
-| /qlik/ case-study diagrams and accelerator tiles | Qlik, Snowflake, Databricks, Kafka, SAP, PostgreSQL, MySQL, Prometheus, Grafana, Talend (from the open-source simple-icons set) | simple-icons 16.36.0 | The icon set is open source, but the brands are still trademarks. |
-| /qlik/ case-study diagrams | Official AWS and Microsoft Azure architecture icons, Oracle, IBM Db2, Power BI, Qlik | \`src/assets/logos/\` (14 files) | Each vendor's brand and icon usage terms should be checked. |
-| Home and /qlik/ images | Platform and capability illustrations with brand names in the alt text (Qlik, AWS, Databricks) | \`qlik-platform.webp\`, \`loc-qlik.webp\`, \`cap-*.webp\` | Confirm who created them and that any brand marks inside are cleared. |
+| Everywhere (hero, accelerator "Built with" tiles, case-study diagram engine node and tiles) | **The Qlik logo is no longer shown.** It is replaced by the plain word "Qlik" in the site's own font and colours. | The logo files are kept, unused, in \`src/assets/unused/\` | Ask Qlik for written permission before the logo goes back. |
+| /qlik/ case-study diagrams and accelerator tiles | Snowflake, Databricks, Kafka, SAP, PostgreSQL, MySQL, Prometheus, Grafana, Talend (from the open-source simple-icons set) | simple-icons 16.36.0 | The icon set is open source, but the brands are still trademarks. |
+| /qlik/ case-study diagrams | Official AWS and Microsoft Azure architecture icons, Oracle, IBM Db2, Power BI | \`src/assets/logos/\` (14 files) | Each vendor's brand and icon usage terms should be checked. |
+| Home and /qlik/ images | Platform and capability illustrations with brand names in the alt text (Qlik, AWS, Databricks) | \`qlik-platform.webp\` (shows AWS, Databricks, Google, Iceberg, Microsoft and Snowflake marks inside the picture), \`cap-*.webp\`. The contact-page picture \`loc-qlik.webp\` (Qlik mark and text drawn into the image) was removed. | Confirm who created them and that any brand marks inside are cleared. |
 
 ### 5.4 Statements that could imply an official partnership, certification or endorsement
 
@@ -254,7 +255,7 @@ Search of all visible text for: partner, certified, certification, authorized, o
 |---|---|---|---|---|
 ${relationRows.join("\n") || "| (none found) | | | | |"}
 
-Also relevant: the name "Qlik Center of Excellence", the button "Talk to a Qlik Expert" (it appears on the floating button on the /qlik pages and in the hero). No page states a partner level.
+Also relevant: the name "Qlik Center of Excellence", the button "Talk to a Qlik Expert" (it appears on the floating button on the /qlik pages and in the /qlik hero). No page states a partner level.
 
 ## 6. TODOs and unverified claims
 
