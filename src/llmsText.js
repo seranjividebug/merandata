@@ -8,6 +8,7 @@ import { caseStudies, FEATURED_CASE_IDS } from "./caseStudies";
 import { QLIK_CAPABILITIES, QLIK_JOURNEY, QLIK_OFFERINGS, QLIK_OVERVIEW, QLIK_TM } from "./qlikData";
 import { ABOUT, COMPANY, addressLine } from "./company";
 import { SITE, absoluteUrl } from "./seo";
+import { SERVICE_PAGES, servicePath } from "./services";
 import { PRIVACY_UPDATED, privacyText } from "./privacyData";
 
 const TAGLINE = COMPANY.slogan;
@@ -39,6 +40,7 @@ export function buildLlmsTxt() {
     `${SERVICES_INTRO.tagline} ${SERVICES_INTRO.lines[0]}`,
     "",
     bullets(SERVICES.map((s) => `${s.title} (${s.tagline}): ${s.short}`)),
+    ...livePages().map((p) => link(`${p.title}: ${p.hero.h1}`, servicePath(p), p.seo.description)),
     "",
     "## Qlik Center of Excellence",
     link(QLIK_OVERVIEW.h1, "/qlik/", QLIK_OVERVIEW.description),
@@ -68,9 +70,17 @@ export function buildLlmsTxt() {
 
 const section = (title, body) => `\n## ${title}\n\n${body}\n`;
 
+/** Service pages that are published (drafts marked `noindex` are not listed for AI systems). */
+const livePages = () => SERVICE_PAGES.filter((p) => !p.noindex);
+
+function servicePageText(p) {
+  const caps = p.sections.map((s) => [`#### ${s.title}`, ...s.cards.map((c) => [`**${c.n} · ${c.title}.** ${c.desc}`, bullets(c.bullets)].join("\n"))].join("\n\n")).join("\n\n");
+  return [`### ${p.title} service page (${absoluteUrl(servicePath(p))})`, `**${p.hero.h1}**`, p.hero.support, ...p.hero.paragraphs, caps].filter(Boolean).join("\n\n");
+}
+
 function servicesText() {
   const intro = `**${SERVICES_INTRO.tagline}**\n\n${SERVICES_INTRO.lines.join("\n\n")}`;
-  return [intro, ...SERVICES.map((s) => `### ${s.n} · ${s.title}: ${s.tagline}\n\n${s.desc}\n\n${bullets(s.items)}`)].join("\n\n");
+  return [intro, ...SERVICES.map((s) => `### ${s.n} · ${s.title}: ${s.tagline}\n\n${s.desc}\n\n${bullets(s.items)}`), ...livePages().map(servicePageText)].join("\n\n");
 }
 
 function industriesText() {

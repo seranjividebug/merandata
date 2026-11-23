@@ -3,6 +3,7 @@
 // src/seoFiles.js (sitemap.xml, robots.txt, llms.txt, llms-full.txt), so they can never disagree.
 import { INDUSTRIES } from "./data";
 import { QLIK_OVERVIEW } from "./qlikData";
+import { SERVICE_PAGES, servicePath } from "./services";
 
 export const SITE = {
   url: "https://meridanta.com",
@@ -83,6 +84,13 @@ export const PAGES = [
   { path: "/qlik/", ...QLIK, trail: [{ label: "Qlik" }], sources: ["src/pages/QlikOverview.jsx", "src/qlikData.js", "src/accelerators.js", "src/caseStudies.js"] },
   { path: "/contact/", ...CONTACT, trail: [{ label: "Contact" }], sources: ["src/pages/ContactPage.jsx", "src/components/ContactCard.jsx", "src/components/ContactForm.jsx"] },
   { path: "/privacy/", ...PRIVACY, trail: [{ label: "Privacy Policy" }], sources: ["src/pages/Privacy.jsx", "src/privacyData.js"] },
+  ...SERVICE_PAGES.map((s) => ({
+    path: servicePath(s),
+    ...s.seo,
+    noindex: !!s.noindex, // drafts: noindex, and left out of the sitemap and llms.txt
+    trail: [{ label: "Services", to: "/#services" }, { label: s.title }],
+    sources: ["src/pages/ServicePage.jsx", "src/services.js"],
+  })),
   ...INDUSTRIES.map((d) => ({
     path: `/industries/${d.slug}/`,
     ...(INDUSTRY_SEO[d.slug] ?? industryFallback(d)),
@@ -99,6 +107,9 @@ export const NOT_FOUND_SEO = {
 /** Canonical URL policy: absolute, https, non-root paths end with a slash (matches the nested HTML files). */
 export const canonicalUrl = (path) => SITE.url + path;
 export const absoluteUrl = (path) => (path.startsWith("http") ? path : SITE.url + path);
+
+/** Pages that search engines and AI systems should index (everything except `noindex` drafts). */
+export const indexablePages = () => PAGES.filter((p) => !p.noindex);
 
 export const seoFor = (path) => PAGES.find((p) => p.path === path) ?? null;
 

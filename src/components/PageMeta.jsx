@@ -15,7 +15,8 @@ export default function PageMeta({ path, notFound = false }) {
     <Head>
       <title>{page.title}</title>
       <meta name="description" content={page.description} />
-      {notFound ? <meta name="robots" content="noindex" /> : <link rel="canonical" href={canonicalUrl(path)} />}
+      {(notFound || page.noindex) && <meta name="robots" content="noindex" />}
+      {!notFound && <link rel="canonical" href={canonicalUrl(path)} />}
       {!notFound && <meta property="og:url" content={canonicalUrl(path)} />}
       <meta property="og:type" content="website" />
       <meta property="og:site_name" content={SITE.name} />

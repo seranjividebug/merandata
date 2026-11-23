@@ -55,9 +55,9 @@ for (const [path, ids] of anchors) for (const id of ids) {
   await p.goto(BASE + "/qlik/#accelerator-log-scraping", { waitUntil: "load" }); await p.waitForTimeout(2000);
   ok(/Log Scraping/.test(await p.locator(".ax-panel:visible .ax-title").innerText()), "deep link #accelerator-log-scraping selects that accelerator");
   await p.goto(BASE + "/qlik/", { waitUntil: "load" }); await p.waitForTimeout(2500);
-  await p.locator("header nav.nav .nav-dd-btn").click(); await p.locator("header nav.nav .nav-dd-list a", { hasText: "Consulting & Delivery" }).click(); await p.waitForTimeout(1500);
-  const top = await p.evaluate(() => Math.round(document.getElementById("services")?.getBoundingClientRect().top ?? 9999));
-  ok(norm(new URL(p.url()).pathname) === "/" && new URL(p.url()).hash === "#services" && top >= 0 && top < 140, `from /qlik/: header Services menu -> /#services (top ${top}px)`);
+  await p.locator("header nav.nav .nav-dd-btn").click(); await p.locator("header nav.nav .nav-dd-list a", { hasText: "Data Engineering & Analytics" }).click(); await p.waitForTimeout(1500);
+  const top = await p.evaluate(() => Math.round(document.querySelector("h1")?.getBoundingClientRect().top ?? 9999));
+  ok(norm(new URL(p.url()).pathname) === "/services/data-engineering-analytics" && top >= 0 && top < 400 && /Engineering Data/.test(await p.locator("h1").innerText()), `from /qlik/: header Services menu -> the data engineering page (h1 top ${top}px)`);
   await p.close();
 }
 await b.close(); console.log(`\n${fails} failure(s)`); process.exit(fails ? 1 : 0);

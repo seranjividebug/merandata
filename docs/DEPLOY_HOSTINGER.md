@@ -32,7 +32,7 @@ Use a private window and Ctrl+F5. Commands use `curl` (in any terminal); `-I` sh
 | 3 | https://meridanta.com/industries/healthcare/ | Healthcare page loads and survives a refresh. |
 | 4 | https://meridanta.com/this-page-does-not-exist | The "Page not found" page **and** `curl -I` shows `404` (not 200). |
 | 5 | https://meridanta.com/robots.txt | Plain text starting `# robots.txt for https://meridanta.com`, with the `Sitemap:` line. |
-| 6 | https://meridanta.com/sitemap.xml | XML with 6 URLs, all starting `https://meridanta.com/`. |
+| 6 | https://meridanta.com/sitemap.xml | XML with 7 URLs (the two draft service pages are noindex and not listed), all starting `https://meridanta.com/`. |
 | 7 | https://meridanta.com/llms.txt and /llms-full.txt | Plain text about Meridanta. |
 | 8 | `curl -I http://meridanta.com/` | `301` to `https://meridanta.com/`. |
 | 9 | `curl -I https://www.meridanta.com/` | `301` to `https://meridanta.com/` (one redirect). |

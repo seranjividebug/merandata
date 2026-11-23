@@ -11,6 +11,9 @@ const pages = [
   ["/qlik/", { must: ["Data Replication (CDC)", "Talend ETL", "Prometheus Integration", "Qlik Log Scraping", "250 SQL Server Databases to Azure Synapse", "trademarks of their respective owners"], articles: 20 }],
   ["/industries/healthcare/", { must: ["Industry challenges", "Technology opportunities", "Our capabilities"], articles: 0 }],
   ["/industries/communications-media-entertainment/", { must: ["Industry challenges", "Technology opportunities", "Our capabilities"], articles: 0 }],
+  ["/services/data-engineering-analytics/", { must: ["Engineering Data. Enabling Intelligence. Driving Outcomes.", "Core Data Engineering & Analytics Capabilities", "Data Governance, Quality & Security", "Data platform administration and support"], articles: 0, minText: 1500 }],
+  ["/services/consulting-delivery/", { must: ["From Strategy to Successful Execution", "Enterprise and solution architecture"], articles: 0, minText: 800 }],
+  ["/services/ai-solutions/", { must: ["Applying AI to Real Business Challenges", "Natural language processing (NLP)"], articles: 0, minText: 800 }],
   ["/contact/", { must: ["Let’s Discuss Your Next Opportunity", "srivatsans@meridanta.com", "Registered Office", "privacy policy"], articles: 0, minText: 800 }],
   ["/privacy/", { must: ["What we collect", "Why we use it", "do not sell your personal information", "srivatsans@meridanta.com"], articles: 0, minText: 800 }],
 ];
@@ -52,7 +55,7 @@ console.log("== robots.txt, sitemap.xml, llms.txt, llms-full.txt");
   const parsed = !xml.querySelector("parsererror");
   let all200 = true;
   for (const u of urls) { const path = u.loc.replace(ORIGIN, ""); const { r: rr } = await get(path); if (rr.status !== 200) all200 = false; }
-  ok(r.status === 200 && parsed && urls.length === 6 && urls.every((u) => u.loc.startsWith(ORIGIN + "/") && /^\d{4}-\d{2}-\d{2}$/.test(u.lastmod || "")) && all200, `sitemap.xml ${r.status} ${r.headers.get("content-type")} valid-xml=${parsed} urls=${urls.length} all-return-200=${all200} lastmod=${urls.map((u) => u.lastmod).join(",")}`);
+  ok(r.status === 200 && parsed && urls.length === 7 && urls.every((u) => u.loc.startsWith(ORIGIN + "/") && /^\d{4}-\d{2}-\d{2}$/.test(u.lastmod || "")) && all200, `sitemap.xml ${r.status} ${r.headers.get("content-type")} valid-xml=${parsed} urls=${urls.length} all-return-200=${all200} lastmod=${urls.map((u) => u.lastmod).join(",")}`);
 }
 for (const f of ["/llms.txt", "/llms-full.txt"]) {
   const { r, text } = await get(f);

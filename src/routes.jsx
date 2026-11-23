@@ -1,5 +1,6 @@
 import { Navigate } from "react-router-dom";
 import { INDUSTRIES } from "./data";
+import { SERVICE_PAGES } from "./services";
 import Layout from "./Layout";
 import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
@@ -19,6 +20,12 @@ export const routes = [
       { path: "contact", element: <ContactPage /> },
       { path: "privacy", element: <Privacy /> },
       { path: "qlik", lazy: async () => ({ Component: (await import("./pages/QlikOverview")).default }), entry: "src/pages/QlikOverview.jsx" },
+      {
+        path: "services/:slug",
+        lazy: async () => ({ Component: (await import("./pages/ServiceRoute")).default }),
+        entry: "src/pages/ServiceRoute.jsx",
+        getStaticPaths: () => SERVICE_PAGES.map((s) => "services/" + s.slug),
+      },
       { path: "qlik/*", element: <Navigate to="/qlik/#capabilities" replace /> },
       {
         path: "industries/:slug",

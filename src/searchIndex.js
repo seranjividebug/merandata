@@ -1,6 +1,7 @@
 import { HC_FEATURES, INDUSTRIES, NAV, PLATFORM, QLIK_ACCELERATORS, SERVICES, TALEND } from "./data";
 import { QLIK_CAPABILITIES, QLIK_OFFERINGS } from "./qlikData";
 import { accelerators } from "./accelerators";
+import { SERVICE_PAGES, servicePath } from "./services";
 
 /**
  * Everything the header search can find. Built from the site data, so new services, industries and
@@ -12,7 +13,8 @@ const section = (id, title, keywords = "") => ({ title, group: "Page section", p
 export const SEARCH_INDEX = [
   ...NAV.filter((n) => n.id !== "home").map((n) => section(n.id, n.label)),
   section("contact", "Contact Us", "get in touch talk email form united states india"),
-  ...SERVICES.map((s) => ({ title: s.title, group: "Services", path: "/", hash: "services", keywords: [s.short, ...s.items].join(" ") })),
+  ...SERVICES.map((s) => ({ title: s.title, group: "Services", path: s.href ?? "/", hash: s.href ? undefined : "services", keywords: [s.tagline, s.short, ...s.items].join(" ") })),
+  ...SERVICE_PAGES.flatMap((p) => p.sections.flatMap((s) => s.cards.map((c) => ({ title: c.title, group: p.title, path: servicePath(p), hash: s.id, keywords: [c.desc, ...c.bullets].join(" ") })))),
   ...INDUSTRIES.map((d) => ({ title: d.tab, group: "Industries", path: "/industries/" + d.slug + "/", keywords: [d.cardTitle, d.cardDesc, d.tagline].filter(Boolean).join(" ") })),
   { title: "Contact", group: "Company", path: "/contact/", keywords: "contact get in touch let's talk enquiry email consultation" },
   { title: "Privacy Policy", group: "Company", path: "/privacy/", keywords: "privacy policy personal data contact details enquiry" },

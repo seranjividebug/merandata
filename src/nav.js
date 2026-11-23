@@ -1,9 +1,10 @@
 import { useCallback, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { go, scrollToEl } from "./utils";
+import { interestForServicePath } from "./services";
 
 /** The service of interest implied by the page a contact link sits on (null on pages with no single service). */
-export const interestForPath = (pathname) => (/^\/qlik(\/|$)/.test(pathname) ? "qlik" : /^\/industries\/healthcare(\/|$)/.test(pathname) ? "healthcare" : null);
+export const interestForPath = (pathname) => (/^\/qlik(\/|$)/.test(pathname) ? "qlik" : /^\/industries\/healthcare(\/|$)/.test(pathname) ? "healthcare" : interestForServicePath(pathname));
 
 /**
  * Link props for a section of the home page that work from any route.

@@ -37,7 +37,7 @@ const SECTIONS = [["Services", "#services"], ["Industries", "#industries"], ["Pr
 const HEADER_SECTIONS = SECTIONS.filter(([t]) => t !== "Services"); // "Services" in the header is a dropdown button, tested below
 
 console.log("== header, footer and call-to-action links (desktop 1440px)");
-for (const start of ["/", "/qlik/", "/industries/healthcare/"]) {
+for (const start of ["/", "/qlik/", "/industries/healthcare/", "/services/data-engineering-analytics/"]) {
   for (const [t, hash] of HEADER_SECTIONS) await click(start, `header "${t}"`, L(t), { url: "/" + hash, hash });
   await click(start, 'header "Home"', L("Home"), { url: "/", home: true });
   await click(start, "header brand logo", (p) => p.locator("header a.brand"), { url: "/", home: true });
@@ -109,7 +109,12 @@ console.log("== Services dropdown: hover, click, keyboard, Escape, mobile");
 }
 await click("/", "Products: Qlik Accelerators card", (p) => p.locator("a.spot", { hasText: "Qlik Accelerators" }), { url: "/qlik/#accelerators", hash: "#accelerators" });
 await click("/", "Products: HCInsights card", (p) => p.locator("a.spot", { hasText: "HCInsights" }), { url: "/industries/healthcare" });
-await click("/", "Services card: Explore Qlik", (p) => p.locator(".sv-link"), { url: "/qlik/" });
+await click("/", "Services card: Explore Qlik", (p) => p.locator(".sv-link", { hasText: "Qlik" }), { url: "/qlik/" });
+await click("/", "Services card: Explore Data Engineering", (p) => p.locator(".sv-link", { hasText: "Data Engineering" }), { url: "/services/data-engineering-analytics/" });
+await click("/", "header Services menu: Data Engineering", (p) => p.locator("header nav.nav .nav-dd-list a", { hasText: "Data Engineering" }), { url: "/services/data-engineering-analytics/" }, undefined, async (p) => { await p.locator("header nav.nav .nav-dd-btn").click(); await p.waitForTimeout(300); });
+await click("/services/data-engineering-analytics/", "hero Discuss Your Data Initiatives", (p) => p.locator(".sp-hero a.hero-btn"), { url: "/contact" });
+await click("/services/data-engineering-analytics/", "CTA band button", (p) => p.locator(".cta-band a"), { url: "/contact" });
+await click("/services/ai-solutions/", "breadcrumb Services", (p) => p.locator("nav.crumbs a", { hasText: "Services" }), { url: "/#services", hash: "#services" });
 await click("/", "Industries card: Learn More (healthcare)", (p) => p.locator("#industries a", { hasText: /Learn More/ }), { url: "/industries/healthcare/" }, undefined, async (p) => { await p.locator("#industries .ic-card").first().hover(); await p.waitForTimeout(700); });
 console.log(rows.splice(0).join("\n"));
 

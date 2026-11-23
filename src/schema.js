@@ -6,6 +6,7 @@ import { caseStudies, FEATURED_CASE_IDS } from "./caseStudies";
 import { COMPANY, knowsAbout, socialProfiles } from "./company";
 import { QLIK_JOURNEY, QLIK_OFFERINGS } from "./qlikData";
 import { SITE, absoluteUrl, canonicalUrl, seoFor } from "./seo";
+import { SERVICE_PAGES, servicePath } from "./services";
 
 const slug = (s) => s.toLowerCase().replace(/&/g, "and").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 const ORG_ID = `${SITE.url}/#organization`;
@@ -98,7 +99,17 @@ const service = (id, name, description, url) => ({
   areaServed: areaServed(),
 });
 
-const homeServices = () => SERVICES.map((s) => service(slug(s.title), s.title, s.desc, s.href ? absoluteUrl(s.href) : `${SITE.url}/#services`));
+// A pillar's page is only named as the service URL once the page is indexable (drafts are noindex).
+const pageUrl = (s) => (s.href && !seoFor(s.href)?.noindex ? absoluteUrl(s.href) : `${SITE.url}/#services`);
+const homeServices = () => SERVICES.map((s) => service(slug(s.title), s.title, s.desc, pageUrl(s)));
+
+/** The Service of a /services/<slug>/ page: the same @id as the home page's, so the two describe one service. */
+const servicePageService = (path) => {
+  const p = SERVICE_PAGES.find((x) => servicePath(x) === path);
+  if (!p) return null;
+  const card = SERVICES.find((s) => s.title === p.title);
+  return { ...service(slug(p.title), p.title, card ? card.desc : p.seo.description, canonicalUrl(path)), serviceType: p.title };
+};
 
 const qlikServices = () => QLIK_OFFERINGS.map((o, i) =>
   service(`qlik-${slug(o.title)}`, `Qlik Center of Excellence: ${o.title}`, QLIK_JOURNEY[i].description, `${canonicalUrl("/qlik/")}#qlik-services`));
@@ -134,6 +145,8 @@ export function schemaFor(path) {
   const graph = [organization(), website(), webPage(page)];
   if (page.trail) graph.push(breadcrumbs(page));
   if (path === "/") graph.push(...homeServices());
+  const sp = servicePageService(path);
+  if (sp) graph.push(sp);
   if (path === "/qlik/") graph.push(...qlikServices(), caseStudyList());
   if (page.faqs?.length) graph.push(faqPage(path, page.faqs));
   return clean({ "@context": "https://schema.org", "@graph": graph });

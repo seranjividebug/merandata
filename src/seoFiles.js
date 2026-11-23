@@ -1,12 +1,12 @@
 // Build-time generators for the files crawlers look for. Called from vite.config.js after the pages are rendered.
-import { ALLOW_AI_TRAINING, CRAWLERS, PAGES, SITE, absoluteUrl, canonicalUrl, seoWarnings } from "./seo";
+import { ALLOW_AI_TRAINING, CRAWLERS, SITE, absoluteUrl, canonicalUrl, indexablePages, seoWarnings } from "./seo";
 import { buildLlmsFullTxt, buildLlmsTxt } from "./llmsText";
 
 const xml = (s) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
-/** sitemap.xml for every page in PAGES. `lastmod(sources)` returns a YYYY-MM-DD date for a page. */
+/** sitemap.xml for every indexable page in PAGES (`noindex` drafts are left out). `lastmod(sources)` returns a YYYY-MM-DD date for a page. */
 export function buildSitemap(lastmod) {
-  const urls = PAGES.map((p) => `  <url>\n    <loc>${xml(canonicalUrl(p.path))}</loc>\n    <lastmod>${lastmod(p.sources)}</lastmod>\n  </url>`);
+  const urls = indexablePages().map((p) => `  <url>\n    <loc>${xml(canonicalUrl(p.path))}</loc>\n    <lastmod>${lastmod(p.sources)}</lastmod>\n  </url>`);
   return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.join("\n")}\n</urlset>\n`;
 }
 

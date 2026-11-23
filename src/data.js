@@ -28,14 +28,6 @@ export const HERO_SLIDES = [
     desc: "Specialized professional services, data integration expertise and reusable accelerators that help enterprises maximize their Qlik investments." },
 ];
 
-/** Header "Services" dropdown. `to` is where each item goes today; `future` is the dedicated page Sri specified (not built yet). */
-export const SERVICE_MENU = [
-  { label: "Consulting & Delivery", to: "/#services", future: "/services/consulting-delivery", interest: "consulting" },
-  { label: "AI Solutions & Services", to: "/#services", future: "/services/ai-solutions", interest: "ai" },
-  { label: "Data Engineering & Analytics", to: "/#services", future: "/services/data-engineering-analytics", interest: "data" },
-  { label: "Qlik Center of Excellence", to: "/qlik/" },
-];
-
 export const BRAND_TAGLINE = "AI. Data. Cloud. Transforming Business.";
 
 /** "What We Do" intro (DRAFT – Sri to review): an h2 tagline and two lines. */
@@ -49,19 +41,18 @@ export const SERVICES_INTRO = {
 };
 
 /**
- * The four pillars (DRAFT – Sri to review). `href` is the page the "Explore" link opens; the dedicated pages for
- * the first three do not exist yet, so their link is hidden until `href` is set (the planned address is in `future`).
+ * The four pillars (DRAFT – Sri to review). `href` is the page the "Explore" link opens (the service pages are in src/services.js).
  */
 export const SERVICES = [
-  { icon: "compass", n: "01", title: "Consulting & Delivery", tagline: "From Strategy to Successful Execution", future: "/services/consulting-delivery",
+  { icon: "compass", n: "01", title: "Consulting & Delivery", tagline: "From Strategy to Successful Execution", href: "/services/consulting-delivery/",
     short: "We help organizations translate business priorities into practical technology strategies, architectures and successfully delivered solutions.",
     desc: "We help organizations translate business priorities into practical technology strategies, architectures and successfully delivered solutions.",
     items: ["Technology strategy, assessment & roadmap", "Enterprise and solution architecture", "Platform evaluation and technology selection", "Proof of concepts and solution validation", "End-to-end implementation and project delivery", "Managed services, platform support and optimization"] },
-  { icon: "spark", n: "02", title: "AI Solutions & Services", tagline: "Applying AI to Real Business Challenges", future: "/services/ai-solutions",
+  { icon: "spark", n: "02", title: "AI Solutions & Services", tagline: "Applying AI to Real Business Challenges", href: "/services/ai-solutions/",
     short: "We design and implement intelligent solutions that combine enterprise data, AI technologies and automation to improve business processes and decision-making.",
     desc: "We design and implement intelligent solutions that combine enterprise data, AI technologies and automation to improve business processes and decision-making.",
     items: ["AI strategy, readiness assessment & roadmap", "Generative AI and agentic AI solutions", "Machine learning, deep learning and predictive analytics", "Natural language processing (NLP)", "Intelligent automation and AI integration", "Custom AI solutions, prototyping and development"] },
-  { icon: "db", n: "03", title: "Data Engineering & Analytics", tagline: "Building the Foundation for Intelligent Decisions", future: "/services/data-engineering-analytics",
+  { icon: "db", n: "03", title: "Data Engineering & Analytics", tagline: "Building the Foundation for Intelligent Decisions", href: "/services/data-engineering-analytics/",
     short: "We engineer modern, secure and scalable data ecosystems that connect enterprise information, enable trusted insights and power advanced analytics.",
     desc: "We engineer modern, secure and scalable data ecosystems that connect enterprise information, enable trusted insights and power advanced analytics.",
     items: ["Data strategy, architecture & modernization", "Data engineering and cloud data migration", "Data integration, data fabric and ETL/ELT", "Data governance, master data management (MDM) & quality", "Data security, privacy and regulatory alignment", "Business intelligence, reporting and advanced analytics"] },
@@ -120,5 +111,6 @@ export const INTEREST_KEYS = {
   healthcare: "Healthcare Insights",
   cloud: "Cloud & Modernisation",
   consulting: "Consulting & Delivery",
+  "data-engineering": "Data Engineering & Analytics",
 };
 export const INTERESTS = ["AI Solutions & Services", "Data Engineering & Analytics", "Qlik Solutions & Accelerators", "Healthcare Insights", "Cloud & Modernisation", "Consulting & Delivery", "Other"];

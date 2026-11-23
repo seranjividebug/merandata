@@ -7,12 +7,14 @@ import { JSDOM } from "jsdom";
 
 const server = await createServer({ configFile: false, appType: "custom", logLevel: "silent", server: { middlewareMode: true } });
 const load = (p) => server.ssrLoadModule(p);
-const [data, qlik, cases, accs, company, seo, social] = await Promise.all(["/src/data.js", "/src/qlikData.js", "/src/caseStudies.js", "/src/accelerators.js", "/src/company.js", "/src/seo.js", "/src/social.js"].map(load));
+const [data, qlik, cases, accs, company, seo, social, services] = await Promise.all(["/src/data.js", "/src/qlikData.js", "/src/caseStudies.js", "/src/accelerators.js", "/src/company.js", "/src/seo.js", "/src/social.js", "/src/services.js"].map(load));
 await server.close();
 const load2 = async () => social;
 
 const ORIGIN = "https://meridanta.com";
-const PAGES = { "/": "dist/index.html", "/qlik/": "dist/qlik/index.html", "/industries/healthcare/": "dist/industries/healthcare/index.html", "/industries/communications-media-entertainment/": "dist/industries/communications-media-entertainment/index.html", "/privacy/": "dist/privacy/index.html", "/contact/": "dist/contact/index.html" };
+const PAGES = { "/": "dist/index.html", "/qlik/": "dist/qlik/index.html", "/industries/healthcare/": "dist/industries/healthcare/index.html", "/industries/communications-media-entertainment/": "dist/industries/communications-media-entertainment/index.html", "/privacy/": "dist/privacy/index.html", "/contact/": "dist/contact/index.html", ...Object.fromEntries(services.SERVICE_PAGES.map((s) => [services.servicePath(s), `dist/services/${s.slug}/index.html`])) };
+// Drafts (noindex) are built and linked from the menu but are not in the sitemap or llms files.
+const INDEXED = Object.keys(PAGES).filter((u) => !seo.seoFor(u)?.noindex);
 const html = Object.fromEntries(Object.entries(PAGES).map(([u, f]) => [u, readFileSync(f, "utf8")]));
 const doc = Object.fromEntries(Object.entries(html).map(([u, h]) => [u, new JSDOM(h).window.document]));
 const dec = (s) => s.replace(/&amp;/g, "&").replace(/&#x27;/g, "'").replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&lt;/g, "<").replace(/&gt;/g, ">");
@@ -79,7 +81,7 @@ console.log("CLAIM 3: sitemap.xml, robots.txt (search and AI crawlers) and llms 
   ok(search.every((a) => agents.includes(a)) && ai.every((a) => agents.includes(a)), `robots.txt names ${search.length} search crawlers and ${ai.length} AI crawlers; "Disallow: /" lines: ${(robots.match(/^Disallow:\s*\/\s*$/gim) || []).length}; sitemap line: ${robots.includes("Sitemap: " + ORIGIN + "/sitemap.xml")}`);
   const sm = readFileSync("dist/sitemap.xml", "utf8");
   const locs = [...sm.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
-  ok(locs.length === Object.keys(PAGES).length && locs.every((l) => l.startsWith(ORIGIN + "/")) && Object.keys(PAGES).every((u) => locs.includes(ORIGIN + u)), `sitemap.xml: ${locs.length} URLs: ${locs.map((l) => l.replace(ORIGIN, "")).join(", ")}`);
+  ok(locs.length === INDEXED.length && locs.every((l) => l.startsWith(ORIGIN + "/")) && INDEXED.every((u) => locs.includes(ORIGIN + u)), `sitemap.xml: ${locs.length} URLs: ${locs.map((l) => l.replace(ORIGIN, "")).join(", ")}`);
   const l1 = readFileSync("dist/llms.txt", "utf8"), l2 = readFileSync("dist/llms-full.txt", "utf8");
   ok(l1.startsWith("# Meridanta") && l1.includes(ORIGIN + "/qlik/") && l1.includes("Registered Office") && l2.includes("Qlik Log Scraping") && published.every((c) => l2.includes(c.title)), `llms.txt ${l1.length} chars (starts "${l1.split("\n")[0]}"), llms-full.txt ${l2.length} chars incl. all ${published.length} case studies`);
 }
@@ -206,10 +208,10 @@ console.log("CLAIM E: header, hero banners, /contact page, Qlik shown as a word"
     const nav = [...d.querySelectorAll("header nav.nav > a, header nav.nav > .nav-dd > button")].map((e) => e.textContent.trim());
     ok(nav.join("|") === "Home|Services|Industries|Products & Solutions|About Us", `${u.padEnd(48)} header nav: ${nav.join(", ")}`);
     const dd = [...d.querySelectorAll("header nav.nav .nav-dd-list a")].map((a) => a.textContent.trim());
-    ok(dd.join("|") === data.SERVICE_MENU.map((s) => s.label).join("|") && !!d.querySelector('header nav.nav .nav-dd-btn[aria-expanded="false"][aria-controls="svc-menu"]'), `${u.padEnd(48)} Services dropdown: ${dd.length} links in the HTML, button has aria-expanded`);
+    ok(dd.join("|") === services.SERVICE_MENU.map((s) => s.label).join("|") && !!d.querySelector('header nav.nav .nav-dd-btn[aria-expanded="false"][aria-controls="svc-menu"]'), `${u.padEnd(48)} Services dropdown: ${dd.length} links in the HTML, button has aria-expanded`);
     ok(d.querySelector(".brand-tag")?.textContent.trim().toUpperCase() === data.BRAND_TAGLINE.toUpperCase(), `${u.padEnd(48)} brand tagline is text in the header`);
     const talk = d.querySelector("header a.cta-head");
-    ok(!!talk && /^\/contact\/(\?interest=[a-z]+)?$/.test(talk.getAttribute("href")) && /Let.s Talk/.test(talk.textContent), `${u.padEnd(48)} header "Let's Talk" button links to ${talk?.getAttribute("href")}`);
+    ok(!!talk && /^\/contact\/(\?interest=[a-z-]+)?$/.test(talk.getAttribute("href")) && /Let.s Talk/.test(talk.textContent), `${u.padEnd(48)} header "Let's Talk" button links to ${talk?.getAttribute("href")}`);
   }
   const slides = [...doc["/"].querySelectorAll(".hs-slide")];
   ok(slides.length === 3, "home: 3 hero banners");
@@ -232,7 +234,7 @@ console.log("CLAIM E: header, hero banners, /contact page, Qlik shown as a word"
   const bad = [];
   for (const u of Object.keys(PAGES)) for (const a of doc[u].querySelectorAll("a")) {
     const h = a.getAttribute("href") || "";
-    if (/#contact$/.test(h) || (/^\/contact\//.test(h) && !/^\/contact\/(\?interest=[a-z]+)?$/.test(h))) bad.push(u + " " + h);
+    if (/#contact$/.test(h) || (/^\/contact\//.test(h) && !/^\/contact\/(\?interest=[a-z-]+)?$/.test(h))) bad.push(u + " " + h);
   }
   ok(bad.length === 0, "no link still points to the old /#contact section" + (bad.length ? ": " + bad.slice(0, 3).join(", ") : ""));
   const qlikTo = doc["/qlik/"].querySelector("header a.cta-head");
@@ -248,6 +250,40 @@ console.log("CLAIM E: header, hero banners, /contact page, Qlik shown as a word"
   for (const u of Object.keys(PAGES)) for (const i of doc[u].querySelectorAll("img,image")) { if (/qlik-logo|\/qlik-[\w-]+\.png/i.test(i.getAttribute("src") || i.getAttribute("href") || "")) logoImgs.push(u); }
   ok(logoImgs.length === 0, "no page has an <img>/<image> of the Qlik logo");
   ok(/class="logo-word"[^>]*>Qlik</.test(html["/qlik/"]), '/qlik/: the word "Qlik" is drawn as text in the accelerator "Built with" tiles');
+}
+
+console.log("CLAIM F: service pages (one template, content from src/services.js)");
+{
+  const sitemap = readFileSync("dist/sitemap.xml", "utf8"), l1 = readFileSync("dist/llms.txt", "utf8"), l2 = readFileSync("dist/llms-full.txt", "utf8");
+  for (const p of services.SERVICE_PAGES) {
+    const u = services.servicePath(p), d = doc[u], t = textOf(u);
+    const label = u.padEnd(46);
+    ok(d.querySelectorAll("h1").length === 1 && d.querySelector("h1").textContent.trim() === p.hero.h1, `${label} one h1: "${p.hero.h1}"`);
+    ok(p.hero.paragraphs.every((x) => t.includes(x)) && (!p.hero.support || t.includes(p.hero.support)) && t.includes(p.hero.cta), `${label} hero paragraphs, supporting line and button text present`);
+    const cards = [...d.querySelectorAll(".sp-card")];
+    const want = p.sections.flatMap((s) => s.cards);
+    ok(cards.length === want.length && want.every((c, i) => cards[i].querySelector("h3")?.textContent.trim() === c.title && (!c.desc || cards[i].querySelector("p")?.textContent.trim() === c.desc) && c.bullets.every((b) => [...cards[i].querySelectorAll("li")].some((li) => li.textContent.trim() === b)) && cards[i].querySelectorAll("li").length === c.bullets.length),
+      `${label} ${cards.length}/${want.length} capability cards with their title, description and every bullet`);
+    ok(p.sections.every((s) => !!d.querySelector(`h2#${s.id}-h`)), `${label} section h2: ${p.sections.map((s) => s.title).join(" | ")}`);
+    const hero = d.querySelector(".sp-hero a.hero-btn"), band = d.querySelector(".cta-band a");
+    const href = "/contact/?interest=" + p.interest;
+    ok(hero?.getAttribute("href") === href && band?.getAttribute("href") === href, `${label} hero button and CTA band go to ${href}`);
+    const ld = JSON.parse(d.querySelector('script[type="application/ld+json"]').textContent)["@graph"];
+    const svc = ld.find((n) => n["@type"] === "Service");
+    ok(!!svc && svc.name === p.title && svc.url === ORIGIN + u && ld.some((n) => n["@type"] === "BreadcrumbList" && n.itemListElement.at(-1).item === ORIGIN + u), `${label} Service + BreadcrumbList JSON-LD (service url ${svc?.url})`);
+    const robots = d.querySelector('meta[name="robots"]')?.getAttribute("content");
+    const indexed = sitemap.includes(`<loc>${ORIGIN + u}</loc>`), inLlms = l1.includes(ORIGIN + u) && l2.includes(ORIGIN + u);
+    ok(p.noindex ? robots === "noindex" && !indexed && !inLlms : !robots && indexed && inLlms, `${label} ${p.noindex ? "DRAFT: noindex, not in sitemap.xml or llms files" : "indexable: in sitemap.xml, llms.txt and llms-full.txt, no robots meta"}`);
+    ok(!!d.querySelector(`header nav.nav .nav-dd-list a[href="${u}"]`), `${label} is in the Services dropdown`);
+  }
+  const de = services.servicePageBySlug("data-engineering-analytics");
+  const deCards = [...doc["/services/data-engineering-analytics/"].querySelectorAll(".sp-card")];
+  ok(deCards.length === 6 && deCards.every((c, i) => c.querySelectorAll("li").length === 5 && c.querySelector(".sp-num")?.textContent === "0" + (i + 1)) && new Set(de.sections[0].cards.map((c) => c.icon)).size === 6, "data engineering page: 6 numbered cards with 5 bullets each and 6 different icons");
+  ok(["consulting-delivery", "ai-solutions"].every((s) => services.servicePageBySlug(s).noindex === true), "consulting-delivery and ai-solutions are noindex drafts");
+  const cardsOnHome = [...doc["/"].querySelectorAll(".sv-link")].map((a) => a.getAttribute("href"));
+  ok(services.SERVICE_PAGES.every((p) => cardsOnHome.includes(services.servicePath(p))) && cardsOnHome.includes("/qlik/"), `home "Explore" links: ${cardsOnHome.join(", ")}`);
+  const homeLd = JSON.parse(doc["/"].querySelector('script[type="application/ld+json"]').textContent)["@graph"].filter((n) => n["@type"] === "Service");
+  ok(homeLd.some((n) => n.url === ORIGIN + "/services/data-engineering-analytics/") && homeLd.every((n) => !/consulting-delivery|ai-solutions/.test(n.url)), "home Service JSON-LD points to the data engineering page, not to the noindex drafts");
 }
 
 console.log(`\n${fails} failed check(s)`);

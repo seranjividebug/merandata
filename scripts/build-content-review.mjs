@@ -8,8 +8,8 @@ import { JSDOM } from "jsdom";
 
 const server = await createServer({ configFile: false, appType: "custom", logLevel: "silent", server: { middlewareMode: true } });
 const load = (p) => server.ssrLoadModule(p);
-const [data, qlik, cases, accs, seo, company, stack] = await Promise.all(
-  ["/src/data.js", "/src/qlikData.js", "/src/caseStudies.js", "/src/accelerators.js", "/src/seo.js", "/src/company.js", "/src/acceleratorStack.js"].map(load),
+const [data, qlik, cases, accs, seo, company, stack, services] = await Promise.all(
+  ["/src/data.js", "/src/qlikData.js", "/src/caseStudies.js", "/src/accelerators.js", "/src/seo.js", "/src/company.js", "/src/acceleratorStack.js", "/src/services.js"].map(load),
 );
 await server.close();
 
@@ -53,6 +53,13 @@ const sectionRow = (d, id, label) => {
   const intro = clean(s.querySelector(".head p, .lede, .lead")?.textContent);
   return `| ${label} | ${cell(h)} | ${cell(intro)} | | | |`;
 };
+
+const servicePages = () => services.SERVICE_PAGES.map((p) => [
+  `#### /services/${p.slug}/ ${p.noindex ? "**DRAFT – full content pending from Sri** (noindex, not in the sitemap or llms.txt)" : "(Sri's content, sections 1 and 2; more sections to come)"}`, "",
+  `- Title (${p.seo.title.length} characters): ${p.seo.title}`, `- Description (${p.seo.description.length} characters): ${p.seo.description}`,
+  `- h1: ${p.hero.h1}`, ...(p.hero.support ? [`- Supporting line: ${p.hero.support}`] : []), ...p.hero.paragraphs.map((x) => `- ${x}`), `- Button: ${p.hero.cta} → /contact/?interest=${p.interest}`, "",
+  ...p.sections.flatMap((s) => [`**${s.title}** (h2)`, "", ...s.cards.map((c) => `${c.n}. **${c.title}**${c.desc ? ": " + c.desc : ""}${c.bullets.length ? "\n" + bullets(c.bullets) : ""}`), ""]),
+].join("\n")).join("\n");
 
 const home = () => [
   pageHead("/", "Home"),
@@ -133,6 +140,7 @@ How to use it: for each row, mark **Approve**, **Edit** (write the new wording i
 | 7 | **Metrics shown as headline numbers** (shown: for example "~40% faster response time" and "Under 5 seconds" replication latency; in the code but not shown: "40 hrs typical Qlik migration"). | Each is a quantified claim a prospect or AI assistant may repeat. Section 6 lists them. |
 | 8 | **Social profile links.** None are set, so the footer shows no social icons. | Send the real URLs (LinkedIn, X, Facebook, Instagram, YouTube) and the icons appear; they also feed the structured data. |
 | 9 | **Privacy Policy page (DRAFT – Sri to review).** A basic policy now lives at \`/privacy/\` and is linked from the footer and the contact section. | Wording, retention period and the statement about trackers need your confirmation (see "Privacy Policy page" in section 2). |
+| 12 | **Service pages (DRAFT – Sri to review).** \`/services/data-engineering-analytics/\` carries your hero and the six capability cards (sections 1 and 2). \`/services/consulting-delivery/\` and \`/services/ai-solutions/\` are built from the "What We Do" card text and are **DRAFT – full content pending from Sri**: they are \`noindex\` and left out of the sitemap and \`llms.txt\` until approved. | Send the full content for the two drafts and the later sections of the data engineering page (they plug into \`src/services.js\`). Confirm the page titles and descriptions below. When a draft is approved, remove \`noindex: true\` for it in \`src/services.js\`. |
 | 11 | **What We Do copy (DRAFT – Sri to review).** New section tagline and two intro lines, and new tagline, description and six bullets for each of the four pillars. | **Qlik pillar: walkthrough with Nataraj pending (old vs new content).** Old Qlik card: "Expert consultants, solutions, and accelerators across Qlik Replicate, Compose, Catalog, QlikView, Qlik Sense, and Talend." with bullets on architecture consulting and roadmap, proofs of concept and benchmarking, performance and infrastructure recommendations, estimation templates, accelerators (server performance monitors, governance dashboards, meta scanner) and managed platform support. The "Explore" links for the first three pillars are hidden until their pages (/services/consulting-delivery, /services/ai-solutions, /services/data-engineering-analytics) exist. |
 | 10 | **Header, hero banners and /contact page (DRAFT – Sri to review).** New header (brand tagline "AI. Data. Cloud. Transforming Business.", Services dropdown, "Let’s Talk" button), three new hero banners, and a /contact page that replaces the home page’s contact section. | Confirm the banner wording, the title and description of /contact/, and the URLs for the three service pages in the Services menu (/services/consulting-delivery, /services/ai-solutions, /services/data-engineering-analytics). They are not built yet, so those three menu items go to the home page’s Services section for now. Also confirm whether the Healthcare banner should go to /industries/healthcare/ or /healthcare. |
 
@@ -145,6 +153,12 @@ ${qlikPage()}
 ${industryPage("healthcare")}
 
 ${industryPage("communications-media-entertainment")}
+
+### Service pages (\`/services/<slug>/\`): **DRAFT – Sri to review**
+
+All three use one template and the data in \`src/services.js\`; later sections from Sri are added there.
+
+${servicePages()}
 
 ### Privacy Policy page (\`/privacy/\`): **DRAFT – Sri to review**
 

@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import logo from "../assets/logo-112.webp";
-import { BRAND_TAGLINE, NAV, SERVICE_MENU } from "../data";
+import { BRAND_TAGLINE, NAV } from "../data";
+import { SERVICE_MENU } from "../services";
 import { useSectionLink } from "../nav";
 import { I } from "./Icons";
 import Search from "./Search";

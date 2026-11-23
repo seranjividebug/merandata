@@ -124,7 +124,7 @@ const CTA = /^(get in touch|let.s talk|talk to|discuss|start with a free consult
 for (const l of links) {
   // "Send us an email" is a mailto: link on the contact page itself; every other call to action goes to /contact/.
   if (/^mailto:/.test(l.href)) continue;
-  if (CTA.test(l.label) && !/^\/contact\/(\?interest=[a-z]+)?$/.test(l.href)) { l.status = "CTA"; err(l.page, `call to action "${l.label}" does not lead to the contact page (${l.href})`); }
+  if (CTA.test(l.label) && !/^\/contact\/(\?interest=[a-z-]+)?$/.test(l.href)) { l.status = "CTA"; err(l.page, `call to action "${l.label}" does not lead to the contact page (${l.href})`); }
 }
 
 // ---------- head tags and JSON-LD ----------

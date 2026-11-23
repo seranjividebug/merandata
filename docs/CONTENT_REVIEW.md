@@ -17,6 +17,7 @@ How to use it: for each row, mark **Approve**, **Edit** (write the new wording i
 | 7 | **Metrics shown as headline numbers** (shown: for example "~40% faster response time" and "Under 5 seconds" replication latency; in the code but not shown: "40 hrs typical Qlik migration"). | Each is a quantified claim a prospect or AI assistant may repeat. Section 6 lists them. |
 | 8 | **Social profile links.** None are set, so the footer shows no social icons. | Send the real URLs (LinkedIn, X, Facebook, Instagram, YouTube) and the icons appear; they also feed the structured data. |
 | 9 | **Privacy Policy page (DRAFT – Sri to review).** A basic policy now lives at `/privacy/` and is linked from the footer and the contact section. | Wording, retention period and the statement about trackers need your confirmation (see "Privacy Policy page" in section 2). |
+| 12 | **Service pages (DRAFT – Sri to review).** `/services/data-engineering-analytics/` carries your hero and the six capability cards (sections 1 and 2). `/services/consulting-delivery/` and `/services/ai-solutions/` are built from the "What We Do" card text and are **DRAFT – full content pending from Sri**: they are `noindex` and left out of the sitemap and `llms.txt` until approved. | Send the full content for the two drafts and the later sections of the data engineering page (they plug into `src/services.js`). Confirm the page titles and descriptions below. When a draft is approved, remove `noindex: true` for it in `src/services.js`. |
 | 11 | **What We Do copy (DRAFT – Sri to review).** New section tagline and two intro lines, and new tagline, description and six bullets for each of the four pillars. | **Qlik pillar: walkthrough with Nataraj pending (old vs new content).** Old Qlik card: "Expert consultants, solutions, and accelerators across Qlik Replicate, Compose, Catalog, QlikView, Qlik Sense, and Talend." with bullets on architecture consulting and roadmap, proofs of concept and benchmarking, performance and infrastructure recommendations, estimation templates, accelerators (server performance monitors, governance dashboards, meta scanner) and managed platform support. The "Explore" links for the first three pillars are hidden until their pages (/services/consulting-delivery, /services/ai-solutions, /services/data-engineering-analytics) exist. |
 | 10 | **Header, hero banners and /contact page (DRAFT – Sri to review).** New header (brand tagline "AI. Data. Cloud. Transforming Business.", Services dropdown, "Let’s Talk" button), three new hero banners, and a /contact page that replaces the home page’s contact section. | Confirm the banner wording, the title and description of /contact/, and the URLs for the three service pages in the Services menu (/services/consulting-delivery, /services/ai-solutions, /services/data-engineering-analytics). They are not built yet, so those three menu items go to the home page’s Services section for now. Also confirm whether the Healthcare banner should go to /industries/healthcare/ or /healthcare. |
 
@@ -66,7 +67,7 @@ From strategic consulting and architecture to implementation and managed service
 - Proof of concepts and solution validation
 - End-to-end implementation and project delivery
 - Managed services, platform support and optimization
-Explore link: not shown yet (planned page /services/consulting-delivery)
+Explore link: /services/consulting-delivery/
 
 **02 · AI Solutions & Services: Applying AI to Real Business Challenges.** We design and implement intelligent solutions that combine enterprise data, AI technologies and automation to improve business processes and decision-making.
 - AI strategy, readiness assessment & roadmap
@@ -75,7 +76,7 @@ Explore link: not shown yet (planned page /services/consulting-delivery)
 - Natural language processing (NLP)
 - Intelligent automation and AI integration
 - Custom AI solutions, prototyping and development
-Explore link: not shown yet (planned page /services/ai-solutions)
+Explore link: /services/ai-solutions/
 
 **03 · Data Engineering & Analytics: Building the Foundation for Intelligent Decisions.** We engineer modern, secure and scalable data ecosystems that connect enterprise information, enable trusted insights and power advanced analytics.
 - Data strategy, architecture & modernization
@@ -84,7 +85,7 @@ Explore link: not shown yet (planned page /services/ai-solutions)
 - Data governance, master data management (MDM) & quality
 - Data security, privacy and regulatory alignment
 - Business intelligence, reporting and advanced analytics
-Explore link: not shown yet (planned page /services/data-engineering-analytics)
+Explore link: /services/data-engineering-analytics/
 
 **04 · Qlik Center of Excellence: Maximizing the Value of Your Qlik Ecosystem.** We provide specialized Qlik and Talend professional services, helping enterprises design, implement, optimize and manage their data integration and analytics platforms.
 - Qlik architecture, consulting & implementation
@@ -265,6 +266,94 @@ Eyebrow: COMMUNICATIONS, MEDIA & ENTERTAINMENT. Lede: Data, AI and cloud solutio
 **Technology opportunities.** AI, data analytics, cloud-native platforms, and software-defined networking create new ways to transform service delivery, optimize network performance, and unlock new revenue streams. Real-time data intelligence, connected homes, emerging wireless technologies, advertising analytics, and unified customer insights help personalize engagement and monetize content and data more effectively.
 
 **Our capabilities.** Meridanta supports data management, service delivery optimization, real-time streaming analytics, network and marketing analytics, cost optimization, predictive customer-contact analytics, advertising-led data monetization, omnichannel sales, NPS, customer and employee experience, and viewership analytics, delivered with Agile and CI/CD practices that accelerate time to market.
+
+
+### Service pages (`/services/<slug>/`): **DRAFT – Sri to review**
+
+All three use one template and the data in `src/services.js`; later sections from Sri are added there.
+
+#### /services/consulting-delivery/ **DRAFT – full content pending from Sri** (noindex, not in the sitemap or llms.txt)
+
+- Title (53 characters): Technology Consulting & Delivery Services | Meridanta
+- Description (160 characters): Meridanta turns business priorities into technology strategies, architectures and delivered solutions, from roadmap and selection to implementation and support.
+- h1: From Strategy to Successful Execution
+- We help organizations translate business priorities into practical technology strategies, architectures and successfully delivered solutions.
+- Button: Talk to Our Team → /contact/?interest=consulting
+
+**Key capabilities** (h2)
+
+01. **Technology strategy, assessment & roadmap**
+02. **Enterprise and solution architecture**
+03. **Platform evaluation and technology selection**
+04. **Proof of concepts and solution validation**
+05. **End-to-end implementation and project delivery**
+06. **Managed services, platform support and optimization**
+
+#### /services/ai-solutions/ **DRAFT – full content pending from Sri** (noindex, not in the sitemap or llms.txt)
+
+- Title (51 characters): AI Solutions & Services for Enterprises | Meridanta
+- Description (156 characters): Meridanta designs and implements AI solutions that combine enterprise data, generative and agentic AI, machine learning and automation to improve decisions.
+- h1: Applying AI to Real Business Challenges
+- We design and implement intelligent solutions that combine enterprise data, AI technologies and automation to improve business processes and decision-making.
+- Button: Talk to Our Team → /contact/?interest=ai
+
+**Key capabilities** (h2)
+
+01. **AI strategy, readiness assessment & roadmap**
+02. **Generative AI and agentic AI solutions**
+03. **Machine learning, deep learning and predictive analytics**
+04. **Natural language processing (NLP)**
+05. **Intelligent automation and AI integration**
+06. **Custom AI solutions, prototyping and development**
+
+#### /services/data-engineering-analytics/ (Sri's content, sections 1 and 2; more sections to come)
+
+- Title (60 characters): Enterprise Data Engineering & Analytics Services | Meridanta
+- Description (150 characters): Meridanta builds modern, secure and scalable data platforms: data strategy, engineering, integration, governance, business intelligence and analytics.
+- h1: Engineering Data. Enabling Intelligence. Driving Outcomes.
+- Supporting line: Modern Data Platforms | Data Engineering | Integration | Governance | Business Intelligence & Analytics
+- Meridanta helps enterprises build modern, secure and scalable data ecosystems that connect information across business systems, improve data quality and accessibility, and enable trusted, insight-driven decisions.
+- From data strategy and architecture to engineering, integration, governance and advanced analytics, we help organizations turn fragmented data environments into reliable foundations for business intelligence and AI.
+- Button: Discuss Your Data Initiatives → /contact/?interest=data-engineering
+
+**Core Data Engineering & Analytics Capabilities** (h2)
+
+01. **Data Strategy & Architecture**: Establishing the right data foundation through practical strategies and architectures aligned with business objectives, technology environments and future growth.
+- Enterprise data strategy and roadmap
+- Data architecture and platform assessment
+- Modern data platform design
+- Cloud and hybrid data architecture
+- Data warehouse and data lake architecture
+02. **Data Engineering & Platform Modernization**: Building scalable and reliable data platforms that enable organizations to manage growing data volumes, improve performance and support evolving business needs.
+- Modern data engineering and pipeline development
+- Data warehouse and data lake modernization
+- Lakehouse architecture and implementation
+- Cloud data platform migration and modernization
+- Data processing and workflow orchestration
+03. **Data Integration & Management**: Connecting data across enterprise applications and systems to create consistent, accessible and trusted information across the organization.
+- Enterprise data integration and ETL/ELT
+- Application, database and API integration
+- Real-time and near-real-time data pipelines
+- Data replication and change data capture (CDC)
+- Master data management and data consolidation
+04. **Data Governance, Quality & Security**: Improving confidence in enterprise data through governance frameworks, quality controls, security practices and responsible data management.
+- Data governance frameworks and implementation
+- Data quality assessment, monitoring and remediation
+- Metadata management and data cataloging
+- Data lineage and lifecycle management
+- Data access controls, privacy and regulatory alignment
+05. **Business Intelligence & Advanced Analytics**: Transforming enterprise data into actionable insights through intuitive reporting, analytics platforms and advanced analytical capabilities.
+- Business intelligence strategy and implementation
+- Interactive dashboards and enterprise reporting
+- Self-service analytics and data visualization
+- Advanced and predictive analytics
+- KPI frameworks and performance measurement
+06. **Data Platform Operations & Optimization**: Helping organizations maintain, optimize and continuously improve their data platforms to ensure reliability, performance and operational efficiency.
+- Data platform administration and support
+- Pipeline monitoring and performance optimization
+- Platform reliability and operational management
+- Cost and resource optimization
+- Ongoing enhancements and managed services
 
 
 ### Privacy Policy page (`/privacy/`): **DRAFT – Sri to review**
