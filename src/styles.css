@@ -606,6 +606,10 @@ section.alt{background:var(--mist)}
   .cs-bullets{gap:8px}
   .cs-bullets li{font-size:14px}
 }
+/* A deck with stack:false (Data Integration): plain cards one under the other, no sticky overlap, at every width. */
+.cs-deck.is-flat{padding-bottom:0}
+.cs-deck.is-flat .cs-card{position:relative;top:auto;z-index:auto;height:auto;margin-bottom:24px;transform:none;filter:none}
+.cs-deck.is-flat .cs-card:last-child{margin-bottom:0}
 @media (prefers-reduced-motion:reduce){.cs-card{transition:none}}
 
 /* Header search */

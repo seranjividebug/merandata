@@ -24,15 +24,16 @@ const warnMissing = (name) => console.warn(`CapabilityStack: image "${name}.webp
 const STACK_MQ = "(min-height: 440px) and (prefers-reduced-motion: no-preference)";
 const DESKTOP_MQ = "(min-width: 1024px)"; // desktop cards have a fixed height in CSS
 const DECKS = [
-  { group: "Data Integration", eyebrow: "DATA INTEGRATION" },
-  { group: "Analytics", eyebrow: "ANALYTICS" },
+  // `stack: false` shows the cards one under the other, with no overlap (Data Integration). `true` slides each card over the one before.
+  { group: "Data Integration", eyebrow: "DATA INTEGRATION", stack: false },
+  { group: "Analytics", eyebrow: "ANALYTICS", stack: true },
 ];
 
 /** Sets --k on each card to the number of later cards in its deck that have reached their sticky top. */
-function useDeckDepth(deckRef) {
+function useDeckDepth(deckRef, enabled) {
   useEffect(() => {
     const deck = deckRef.current;
-    if (!deck) return undefined;
+    if (!deck || !enabled) return undefined;
     const mq = window.matchMedia(STACK_MQ);
     const cards = [...deck.children];
     let frame = 0;
@@ -79,16 +80,16 @@ function useDeckDepth(deckRef) {
       window.removeEventListener("resize", schedule);
       mq.removeEventListener("change", sync);
     };
-  }, [deckRef]);
+  }, [deckRef, enabled]);
 }
 
-function Deck({ group, items }) {
+function Deck({ group, items, stack }) {
   const deckRef = useRef(null);
-  useDeckDepth(deckRef);
+  useDeckDepth(deckRef, stack);
   return (
     <div className="cs-group">
       <h3 className="cs-group-h">{group}</h3>
-      <div className="cs-deck" ref={deckRef}>
+      <div className={"cs-deck" + (stack ? "" : " is-flat")} ref={deckRef}>
         {items.map((c, i) => (
           <article key={c.slug} className="cs-card" style={{ "--i": i, "--r": items.length - 1 - i }} aria-labelledby={`cs-${c.slug}`}>
             <h4 id={`cs-${c.slug}`} className="cs-title">{c.title}</h4>
@@ -111,7 +112,7 @@ function Deck({ group, items }) {
 export default function CapabilityStack() {
   return (
     <div className="cs-list">
-      {DECKS.map((d) => <Deck key={d.group} group={d.group} items={QLIK_CAPABILITIES.filter((c) => c.eyebrow === d.eyebrow)} />)}
+      {DECKS.map((d) => <Deck key={d.group} group={d.group} items={QLIK_CAPABILITIES.filter((c) => c.eyebrow === d.eyebrow)} stack={d.stack} />)}
     </div>
   );
 }
