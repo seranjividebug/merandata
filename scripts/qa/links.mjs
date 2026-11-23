@@ -34,7 +34,7 @@ async function click(start, label, locatorFn, expect, vp = { width: 1440, height
 
 const L = (text, scope = "header") => (p) => p.locator(`${scope} a`, { hasText: new RegExp("^\\s*" + text + "\\s*$") });
 const SECTIONS = [["Services", "#services"], ["Industries", "#industries"], ["Products & Solutions", "#solutions"], ["About Us", "#about"]];
-const HEADER_SECTIONS = [["Solutions", "#solutions"]]; // "Services" in the header is a dropdown button, tested below
+const HEADER_SECTIONS = [["About Us", "#about"], ["Solutions", "#solutions"]]; // "Services" in the header is a dropdown button, tested below
 
 console.log("== header, footer and call-to-action links (desktop 1440px)");
 for (const start of ["/", "/qlik/", "/industries/healthcare/", "/services/data-engineering-analytics/"]) {
@@ -157,7 +157,7 @@ console.log("== controls: back to top, privacy page link, search, mobile menu");
   await p.waitForTimeout(500);
   check((await p.locator("button.menu-btn").getAttribute("aria-expanded")) === "true", "mobile menu opens (aria-expanded=true)");
   const items = await p.locator("#mnav a").allInnerTexts();
-  check(items.length === 7, `mobile menu lists ${items.length} links (4 plus the 4 Services links... ): ${items.map((t) => t.trim()).join(", ")}`);
+  check(items.length === 8, `mobile menu lists ${items.length} links (4 plus the 4 Services links... ): ${items.map((t) => t.trim()).join(", ")}`);
   await p.locator("#mnav a", { hasText: "Solutions" }).click();
   await p.waitForTimeout(1500);
   const u = new URL(p.url());

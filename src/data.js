@@ -8,10 +8,11 @@ export const NAV = [
   { id: "solutions", label: "Products & Solutions" },
 ];
 
-/** Header menu (DRAFT – Sri to review): Home, Services (dropdown), Solutions. Space is left for items added later. The footer keeps the full NAV list. */
+/** Header menu (DRAFT – Sri to review): Home, Services (dropdown), About Us, Solutions. Space is left for items added later. The footer keeps the full NAV list. */
 export const HEADER_NAV = [
   { id: "home", label: "Home" },
   { id: "services", label: "Services" },
+  { id: "about", label: "About Us" },
   { id: "solutions", label: "Solutions" },
 ];
 
