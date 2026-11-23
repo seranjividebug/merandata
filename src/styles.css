@@ -112,6 +112,7 @@ button{font:inherit;color:inherit}
 .hs-copy{position:relative;z-index:2;pointer-events:none;height:100%;display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:48px;padding-block:24px 44px;padding-inline:84px}
 /* hero eyebrow, shared by the home slider and the /qlik hero */
 .hs-eyebrow,.qeyebrow{font-size:12px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--on-dark)}
+.hs-logo{display:block;box-sizing:content-box;height:26px;width:auto;padding:7px 9px;margin-bottom:14px;background:#fff;border-radius:12px;box-shadow:0 8px 24px -10px rgba(0,0,0,.55)}
 .hs-tag{margin:14px 0 0;font-size:clamp(14px,1.1vw,16px);font-weight:600;letter-spacing:.02em;line-height:1.4;color:var(--on-dark)}
 .hs-title{margin:0;font-size:clamp(28px,2.6vw,42px);font-weight:800;line-height:1.12;letter-spacing:-.02em}
 .hs-r{padding-top:0}
