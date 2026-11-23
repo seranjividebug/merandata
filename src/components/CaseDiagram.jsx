@@ -45,9 +45,6 @@ const genericKind = (label) => (/cloud|lake|warehouse/i.test(label) ? "cloud" : 
 /** One logo, drawn into a box centred on (cx, cy). Never stretched, recolored or cropped. */
 function Logo({ keyName, label, cx, cy, boxW, boxH, scale = 1 }) {
   const src = keyName ? logoSource(keyName) : { type: "text", name: label, short: "", kind: genericKind(label) };
-  if (src.type === "word") {
-    return <text className="cd-word" x={cx} y={cy} textAnchor="middle" dominantBaseline="central" style={{ fontSize: 22 * scale }}>{src.word}</text>;
-  }
   if (src.type === "file") {
     return <image href={src.url} x={cx - boxW / 2} y={cy - boxH / 2} width={boxW} height={boxH} preserveAspectRatio="xMidYMid meet"><title>{src.name}</title></image>;
   }

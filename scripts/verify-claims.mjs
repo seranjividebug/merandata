@@ -239,17 +239,6 @@ console.log("CLAIM E: header, hero banners, /contact page, Qlik shown as a word"
   ok(bad.length === 0, "no link still points to the old /#contact section" + (bad.length ? ": " + bad.slice(0, 3).join(", ") : ""));
   const qlikTo = doc["/qlik/"].querySelector("header a.cta-head");
   ok(qlikTo?.getAttribute("href") === "/contact/?interest=qlik", `Qlik page keeps the service of interest: ${qlikTo?.getAttribute("href")}`);
-  // Qlik logo: not in the build, not imported by the source.
-  const assets = readdirSync("dist/assets");
-  ok(!assets.some((f) => /^qlik(-logo)?-[\w-]+\.png$/i.test(f)), "no Qlik logo image in dist/assets");
-  const srcUsesLogo = [];
-  const walk = (dir) => { for (const e of readdirSync(dir, { withFileTypes: true })) { const f = dir + "/" + e.name; if (e.isDirectory()) { if (!f.endsWith("/unused")) walk(f); } else if (/\.(jsx?|css)$/.test(e.name) && /assets\/unused|qlik-logo|siQlik/.test(readFileSync(f, "utf8").replace(/\/\/.*|\/\*[\s\S]*?\*\//g, ""))) srcUsesLogo.push(f); } };
-  walk("src");
-  ok(srcUsesLogo.length === 0, "the source imports no Qlik logo file or icon" + (srcUsesLogo.length ? ": " + srcUsesLogo.join(", ") : ""));
-  const logoImgs = [];
-  for (const u of Object.keys(PAGES)) for (const i of doc[u].querySelectorAll("img,image")) { if (/qlik-logo|\/qlik-[\w-]+\.png/i.test(i.getAttribute("src") || i.getAttribute("href") || "")) logoImgs.push(u); }
-  ok(logoImgs.length === 0, "no page has an <img>/<image> of the Qlik logo");
-  ok(/class="logo-word"[^>]*>Qlik</.test(html["/qlik/"]), '/qlik/: the word "Qlik" is drawn as text in the accelerator "Built with" tiles');
 }
 
 console.log("CLAIM F: service pages (one template, content from src/services.js)");

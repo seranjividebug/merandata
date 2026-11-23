@@ -99,8 +99,6 @@ button{font:inherit;color:inherit}
   .mobile-nav .btn{margin:12px 28px 0;display:flex}
 }
 
-/* The word "Qlik" in the site's own font, in place of the logo */
-.logo-word{font-weight:800;letter-spacing:-.02em;line-height:1;color:var(--navy)}
 
 /* Hero slider */
 .hs{position:relative;background:var(--navy);color:#fff;overflow:hidden;height:clamp(440px,38vw,540px)}

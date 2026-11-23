@@ -14,8 +14,6 @@ export function LogoTile({ item, size = 52 }) {
     <span className="spot-tile" style={{ width: size, height: size }} aria-hidden="true">
       {src && src.type === "icon"
         ? <svg viewBox="0 0 24 24" width={size * 0.55} height={size * 0.55}><path d={src.path} fill={src.hex} /></svg>
-        : src && src.type === "word"
-        ? <span className="logo-word" style={{ fontSize: Math.max(10, size * 0.3) }}>{src.word}</span>
         : <CIcon name={item.kind || "server"} size={size * 0.46} />}
     </span>
   );

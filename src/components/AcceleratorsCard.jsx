@@ -22,15 +22,13 @@ const setHash = (id) => {
   window.history.replaceState(window.history.state, "", `${pathname}${search}#${HASH_PREFIX}${id}`);
 };
 
-/** A logo (simple-icons brands only), the word "Qlik" or a generic icon, on a white tile. */
+/** A logo (simple-icons brands only) or a generic icon, on a white tile. */
 function Tile({ item, size }) {
   const src = item.key ? logoSource(item.key, "card") : null;
   return (
     <span className="ax-tile" style={{ width: size, height: size }} aria-hidden="true">
       {src && src.type === "icon"
         ? <svg viewBox="0 0 24 24" width={size * 0.62} height={size * 0.62}><path d={src.path} fill={src.hex} /></svg>
-        : src && src.type === "word"
-        ? <span className="logo-word" style={{ fontSize: Math.max(10, size * 0.34) }}>{src.word}</span>
         : <CIcon name={item.kind || "server"} size={size * 0.55} />}
     </span>
   );

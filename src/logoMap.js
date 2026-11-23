@@ -1,4 +1,4 @@
-import { siApachekafka, siDatabricks, siGrafana, siMysql, siPostgresql, siPrometheus, siSap, siSnowflake, siTalend } from "simple-icons";
+import { siApachekafka, siDatabricks, siGrafana, siMysql, siPostgresql, siPrometheus, siQlik, siSap, siSnowflake, siTalend } from "simple-icons";
 
 /**
  * Technology logos for the case study diagram.
@@ -9,9 +9,6 @@ import { siApachekafka, siDatabricks, siGrafana, siMysql, siPostgresql, siPromet
  *   3. a text badge: generic icon + short name (never a drawn or faked logo)
  * Logos are shown in their original colors on a white tile and are never stretched, recolored,
  * rotated or cropped.
- *
- * Qlik is shown as the plain word "Qlik" (type "word", drawn in the site's own font and colours) until Qlik gives
- * written permission to use its logo. The logo files are kept, unused, in src/assets/unused.
  *
  * Files in src/assets/logos are the official AWS / Microsoft architecture icons. They are for the
  * case study detail diagram only: anywhere else call logoSource(key, "card"), which uses
@@ -27,6 +24,7 @@ const fileFor = (key) => {
 };
 
 const ICONS = {
+  qlik: siQlik,
   prometheus: siPrometheus,
   grafana: siGrafana,
   sap: siSap,
@@ -37,9 +35,6 @@ const ICONS = {
   kafka: siApachekafka,
   talend: siTalend,
 };
-
-/** Brands shown as a plain word instead of a logo. */
-const WORD_ONLY = new Set(["qlik"]);
 
 // Not in simple-icons 16.36.0: sqlserver, redshift, s3, aws, rds, oracle, db2, adls, synapse, azure,
 // eventhubs, powerbi, bedrock. All ship as files in src/assets/logos.
@@ -86,7 +81,6 @@ export function logosFor(label) {
  */
 export function logoSource(key, context = "diagram") {
   const meta = LOGOS[key];
-  if (WORD_ONLY.has(key)) return { type: "word", name: meta.name, word: meta.name };
   const icon = ICONS[key];
   const url = context === "diagram" ? fileFor(key) : null;
   if (url) return { type: "file", url, name: meta.name };
