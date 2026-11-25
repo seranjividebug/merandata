@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { QLIK_CAPABILITIES } from "../qlikData";
 
 import capDataReplication from "../assets/capabilities/cap-data-replication.webp";
@@ -21,77 +21,37 @@ const IMAGES = {
 };
 const warnMissing = (name) => console.warn(`CapabilityStack: image "${name}.webp" failed to load from src/assets/capabilities/`);
 
-const STACK_MQ = "(min-height: 440px) and (prefers-reduced-motion: no-preference)";
-const DESKTOP_MQ = "(min-width: 1024px)"; // desktop cards have a fixed height in CSS
-const DECKS = [
-  // `stack: false` shows the cards one under the other, with no overlap (Data Integration). `true` slides each card over the one before.
-  { group: "Data Integration", eyebrow: "DATA INTEGRATION", stack: false },
-  { group: "Analytics", eyebrow: "ANALYTICS", stack: true },
+// Two groups; each has a sticky heading that stays under the header while that group's cards scroll past.
+const GROUPS = [
+  { group: "Data Integration", eyebrow: "DATA INTEGRATION" },
+  { group: "Analytics", eyebrow: "ANALYTICS" },
 ];
 
-/** Sets --k on each card to the number of later cards in its deck that have reached their sticky top. */
-function useDeckDepth(deckRef, enabled) {
+/** The 1-based number of the card that is crossing the middle of the screen (shown as "2 / 4" in the sticky heading). */
+function useCurrentCard(groupRef, count) {
+  const [current, setCurrent] = useState(1);
   useEffect(() => {
-    const deck = deckRef.current;
-    if (!deck || !enabled) return undefined;
-    const mq = window.matchMedia(STACK_MQ);
-    const cards = [...deck.children];
-    let frame = 0;
-
-    const reset = () => cards.forEach((c) => c.style.removeProperty("--k"));
-
-    const update = () => {
-      frame = 0;
-      const reached = cards.map((c) => c.getBoundingClientRect().top <= (parseFloat(getComputedStyle(c).top) || 0) + 1);
-      cards.forEach((c, i) => {
-        const k = reached.slice(i + 1).filter(Boolean).length;
-        if (c.style.getPropertyValue("--k") !== String(k)) c.style.setProperty("--k", String(k));
-      });
-    };
-    const schedule = () => { if (!frame) frame = requestAnimationFrame(update); };
-
-    // Below desktop, make every card as tall as the tallest so each one fully covers the card under it.
-    const desktop = window.matchMedia(DESKTOP_MQ);
-    let lastWidth = 0;
-    const equalize = () => {
-      deck.style.removeProperty("--cs-h");
-      if (!mq.matches || desktop.matches) return;
-      const tallest = Math.max(...cards.map((c) => c.offsetHeight));
-      deck.style.setProperty("--cs-h", `${tallest}px`);
-    };
-    const sync = () => { equalize(); if (mq.matches) update(); else reset(); };
-    const ro = typeof ResizeObserver === "undefined" ? null : new ResizeObserver(([e]) => {
-      const w = Math.round(e.contentRect.width);
-      if (w !== lastWidth) { lastWidth = w; sync(); } // width only: setting the height must not retrigger this
-    });
-    ro?.observe(deck);
-
-    sync();
-    document.fonts?.ready.then(sync);
-    window.addEventListener("scroll", schedule, { passive: true });
-    window.addEventListener("resize", schedule);
-    mq.addEventListener("change", sync);
-    desktop.addEventListener("change", sync);
-    return () => {
-      ro?.disconnect();
-      desktop.removeEventListener("change", sync);
-      if (frame) cancelAnimationFrame(frame);
-      window.removeEventListener("scroll", schedule);
-      window.removeEventListener("resize", schedule);
-      mq.removeEventListener("change", sync);
-    };
-  }, [deckRef, enabled]);
+    const cards = groupRef.current ? [...groupRef.current.querySelectorAll(".cs-card")] : [];
+    if (typeof IntersectionObserver === "undefined" || !cards.length) return undefined;
+    const io = new IntersectionObserver(
+      (entries) => entries.forEach((e) => { if (e.isIntersecting) setCurrent(cards.indexOf(e.target) + 1); }),
+      { rootMargin: "-50% 0px -50% 0px", threshold: 0 }
+    );
+    cards.forEach((c) => io.observe(c));
+    return () => io.disconnect();
+  }, [groupRef, count]);
+  return current;
 }
 
-function Deck({ group, items, stack }) {
-  const deckRef = useRef(null);
-  useDeckDepth(deckRef, stack);
+function Group({ group, eyebrow, items }) {
+  const ref = useRef(null);
+  const current = useCurrentCard(ref, items.length);
   return (
-    <div className="cs-group">
-      <h3 className="cs-group-h">{group}</h3>
-      <div className={"cs-deck" + (stack ? "" : " is-flat")} ref={deckRef}>
+    <div className="cap-group" ref={ref}>
+      <h3 className="cap-group-head" data-count={`${current} / ${items.length}`}>{eyebrow}</h3>
+      <div className="cs-deck">
         {items.map((c, i) => (
-          <article key={c.slug} className="cs-card" style={{ "--i": i, "--r": items.length - 1 - i }} aria-labelledby={`cs-${c.slug}`}>
+          <article key={c.slug} className="cs-card" aria-labelledby={`cs-${c.slug}`}>
             <h4 id={`cs-${c.slug}`} className="cs-title">{c.title}</h4>
             <div className={"cs-row" + (i % 2 ? " is-flip" : "")}>
               <img className="cs-img" src={IMAGES[c.image]} width="1200" height="800" alt={c.alt} loading="lazy" decoding="async" onError={() => warnMissing(c.image)} />
@@ -112,7 +72,7 @@ function Deck({ group, items, stack }) {
 export default function CapabilityStack() {
   return (
     <div className="cs-list">
-      {DECKS.map((d) => <Deck key={d.group} group={d.group} items={QLIK_CAPABILITIES.filter((c) => c.eyebrow === d.eyebrow)} stack={d.stack} />)}
+      {GROUPS.map((d) => <Group key={d.group} {...d} items={QLIK_CAPABILITIES.filter((c) => c.eyebrow === d.eyebrow)} />)}
     </div>
   );
 }

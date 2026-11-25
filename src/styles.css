@@ -513,11 +513,14 @@ section.alt{background:var(--mist)}
 @media (max-width:900px){.three{grid-template-columns:1fr}.help{grid-template-columns:1fr}}
 @media (max-width:640px){.services.two{grid-template-columns:1fr}}
 
-/* Capability stack */
-.cs-list{display:grid;gap:56px;max-width:960px;margin:0 auto}
-.cs-group-h{margin:0 0 20px;text-align:center;font-size:12px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--plum)}
-.cs-deck{position:relative;display:block}
-.cs-card{--k:0;position:relative;margin:0 0 24px;padding:0 32px 28px;background:#0C1230;border:1px solid rgba(255,255,255,.08);border-radius:24px;box-shadow:0 18px 40px -24px rgba(12,18,48,.6);transform-origin:50% 0;transition:transform .2s ease-out,filter .2s ease-out}
+/* Qlik capabilities: normal-flow cards, one per row, with a sticky heading for each group.
+   The heading is sticky inside its own .cap-group, so it stays under the header while that group's cards scroll and is released when the group ends. */
+.cs-list{display:grid;gap:48px;width:100%;max-width:1100px;margin:0 auto}
+.cap-group{position:relative}
+.cap-group-head{position:sticky;top:calc(var(--header-h) + var(--subnav-h, 0px));z-index:5;display:flex;align-items:center;justify-content:space-between;gap:16px;margin:0 0 16px;padding:12px 0;background:var(--paper);border-bottom:1px solid var(--line);font-size:13px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--plum)}
+.cap-group-head::after{content:attr(data-count);font-size:13px;font-weight:600;letter-spacing:.04em;color:var(--muted);font-variant-numeric:tabular-nums}
+.cs-deck{display:grid;gap:24px}
+.cs-card{position:relative;width:100%;padding:0 32px 28px;background:#0C1230;border:1px solid rgba(255,255,255,.08);border-radius:24px;box-shadow:0 18px 40px -24px rgba(12,18,48,.6)}
 .cs-title{box-sizing:border-box;height:44px;margin:0 0 16px;padding-top:12px;text-align:center;font-size:20px;font-weight:700;line-height:1.2;color:#fff}
 .cs-row{display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:center}
 .cs-row.is-flip .cs-img{order:2}
@@ -527,34 +530,16 @@ section.alt{background:var(--mist)}
 .cs-bullets li{position:relative;padding-left:24px;font-size:15px;line-height:1.5;color:rgba(255,255,255,.85)}
 .cs-bullets li::before{content:"";position:absolute;left:0;top:.5em;width:10px;height:10px;border-radius:50%;background:var(--on-dark)}
 @media (max-width:767px){
-  .cs-card{margin-bottom:24px;padding:0 20px 24px}
+  .cap-group-head{font-size:14px}
+  .cap-group-head::after{font-size:14px}
+  .cs-card{padding:0 20px 24px}
   .cs-row{grid-template-columns:1fr;gap:20px}
   .cs-row.is-flip .cs-img{order:0}
   .cs-img{height:auto;aspect-ratio:3/2}
-}
-/* Stacked deck (all widths): each card sticks lower than the one before and the next card slides over it.
-   Below 1024px the cards are one equal height (--cs-h, measured in CapabilityStack) so a card fully hides the one under it. */
-@media (min-height:440px) and (prefers-reduced-motion:no-preference){
-  .cs-deck{padding-bottom:80px}
-  /* margin grows by 44px per remaining card so the strips keep their offsets while the deck scrolls away */
-  .cs-card{position:sticky;top:calc(var(--header-h) + var(--subnav-h, 0px) + 24px + var(--i) * 44px);z-index:calc(var(--i) + 1);height:var(--cs-h,auto);margin-bottom:calc(48px + var(--r) * 44px);transform:scale(calc(1 - .04 * var(--k)));filter:brightness(calc(1 - .08 * var(--k)))}
-}
-@media (min-width:1024px) and (min-height:440px) and (prefers-reduced-motion:no-preference){
-  .cs-card{height:400px}
-}
-@media (max-width:767px) and (min-height:440px) and (prefers-reduced-motion:no-preference){
-  .cs-deck{padding-bottom:56px}
-  .cs-card{top:calc(var(--header-h) + var(--subnav-h, 0px) + 12px + var(--i) * 44px);margin-bottom:calc(32px + var(--r) * 44px)}
-  .cs-img{aspect-ratio:16/9}
-  .cs-intro{margin-bottom:10px;font-size:16px}
+  .cs-intro{font-size:16px;margin-bottom:10px}
   .cs-bullets{gap:8px}
   .cs-bullets li{font-size:14px}
 }
-/* A deck with stack:false (Data Integration): plain cards one under the other, no sticky overlap, at every width. */
-.cs-deck.is-flat{padding-bottom:0}
-.cs-deck.is-flat .cs-card{position:relative;top:auto;z-index:auto;height:auto;margin-bottom:24px;transform:none;filter:none}
-.cs-deck.is-flat .cs-card:last-child{margin-bottom:0}
-@media (prefers-reduced-motion:reduce){.cs-card{transition:none}}
 
 /* Header search */
 .search{position:relative;flex-shrink:0}

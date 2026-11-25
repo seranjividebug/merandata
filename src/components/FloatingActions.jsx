@@ -14,6 +14,7 @@ export default function FloatingActions() {
   const [atContact, setAtContact] = useState(false);
   const [atHero, setAtHero] = useState(false);
   const [atCases, setAtCases] = useState(false);
+  const [atCaps, setAtCaps] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > SHOW_TOP_AFTER);
@@ -50,7 +51,16 @@ export default function FloatingActions() {
     io.observe(el);
     return () => io.disconnect();
   }, [pathname]);
-  const hidden = atContact || atHero || atCases;
+  // Keep the button off the Qlik Capabilities cards while that section is on screen.
+  useEffect(() => {
+    setAtCaps(false);
+    const el = document.getElementById("capabilities");
+    if (!el) return undefined;
+    const io = new IntersectionObserver(([en]) => setAtCaps(en.isIntersecting));
+    io.observe(el);
+    return () => io.disconnect();
+  }, [pathname]);
+  const hidden = atContact || atHero || atCases || atCaps;
   const label = /^\/qlik(\/|$)/.test(pathname) ? "Talk to a Qlik Expert" : "Talk to an Expert";
 
   const toTop = (e) => {
