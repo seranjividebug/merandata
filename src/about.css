@@ -1,24 +1,63 @@
-/* About Meridanta: compact dark band. Statement and copy on the left, the three principles as a short list on the right. */
-section.about-dark{position:relative;overflow:hidden;isolation:isolate;color:#fff;
-  background:radial-gradient(ellipse 55% 65% at 88% 12%,rgba(90,35,144,.5),transparent 62%),radial-gradient(ellipse 55% 60% at 4% 92%,rgba(30,42,107,.75),transparent 62%),var(--navy)}
-section.about-dark::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
-  background-image:radial-gradient(rgba(255,255,255,.075) 1px,transparent 1.3px);background-size:26px 26px;
-  -webkit-mask-image:radial-gradient(ellipse 80% 80% at 50% 45%,#000 30%,transparent 100%);mask-image:radial-gradient(ellipse 80% 80% at 50% 45%,#000 30%,transparent 100%)}
-.about-dark .head h2{color:#fff}
-.about-dark .head .rule{background:linear-gradient(90deg,#C9B3EA,#7A3A9E)}
+/* About Meridanta: a light band (it must not merge with the dark contact band and footer below it).
+   Left: statement and copy. Right: the "Approach Venn" diagram and its legend. Final state is the default;
+   .vn-armed is the animation start state and .vn-play runs it once. */
+section.about-light{position:relative;overflow:hidden;isolation:isolate;color:#1B1D2B;margin-bottom:0;
+  background:linear-gradient(135deg,#F7F3FC 0%,#FFFFFF 60%,#F2EEFA 100%)}
+section.about-light::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+  background-image:radial-gradient(rgba(66,17,111,.13) 1px,transparent 1.3px);background-size:24px 24px;
+  -webkit-mask-image:radial-gradient(ellipse 85% 85% at 50% 50%,#000 25%,transparent 100%);mask-image:radial-gradient(ellipse 85% 85% at 50% 50%,#000 25%,transparent 100%)}
+.about-light .head h2{color:#0C1230}
+.about-light .head .rule{background:linear-gradient(90deg,#42116F,#7A3A9E)}
 
-.ab-top{display:grid;grid-template-columns:1.15fr .85fr;gap:64px;align-items:center}
-.ab-big{margin-top:22px;font-size:36px;font-weight:800;letter-spacing:-.035em;line-height:1.1}
-.ab-big span{display:block;background:linear-gradient(100deg,#C9B3EA 0%,#E9A6CF 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
-.ab-p{margin-top:16px;color:rgba(255,255,255,.8);font-size:16px;line-height:1.7}
+.ab-top{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
+.ab-big{margin-top:22px;font-size:40px;font-weight:800;letter-spacing:-.035em;line-height:1.1;color:#0C1230}
+.ab-big span{display:block;background:linear-gradient(100deg,#42116F 0%,#6A2A9C 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.ab-p{margin-top:16px;color:#4A4D63;font-size:16px;line-height:1.7}
 .ab-big + .ab-p{margin-top:20px}
 .ab-actions{display:flex;flex-wrap:wrap;gap:14px;margin-top:26px}
 
-.ab-list{list-style:none;margin:0;padding:0;display:grid;gap:16px}
-.ab-list li{display:flex;align-items:center;gap:16px;padding:14px 0 14px 18px;border-left:2px solid rgba(201,179,234,.35)}
-.ab-ic{display:grid;place-items:center;flex:none;width:40px;height:40px;border-radius:12px;background:rgba(201,179,234,.14);color:var(--on-dark)}
-.ab-list h3{font-size:18px;font-weight:700;color:#fff}
-.ab-list p{margin-top:2px;color:rgba(255,255,255,.8);font-size:15.5px;line-height:1.5}
+/* Venn */
+.ab-diagram{display:flex;justify-content:center}
+.vn{width:100%;max-width:520px}
+.vn-art{width:100%;max-width:420px;aspect-ratio:460/440;margin:0 auto}
+.vn-art svg{display:block;width:100%;height:100%;overflow:visible}
+.vn-fill{fill-opacity:.14;transition:fill-opacity .25s ease}
+.vn-c{transition:opacity .25s ease}
+.vn-c.is-dim{opacity:.55}
+.vn-c.is-on .vn-fill{fill-opacity:.26}
+.vn-t{font:700 13.5px var(--font)}
+.vn-label{font:700 13px var(--font);fill:#0C1230}
+.vn-core{transform-origin:230px 243px}
+.vn-armed .vn-slide{opacity:0;transform:translate(var(--dx),var(--dy))}
+.vn-armed .vn-core{opacity:0;transform:scale(.4)}
+.vn-play .vn-slide{opacity:1;transform:none;transition:transform .7s ease-out calc(var(--i) * .12s),opacity .7s ease-out calc(var(--i) * .12s)}
+.vn-play .vn-core{opacity:1;transform:none;transition:transform .5s cubic-bezier(.2,.9,.3,1.2) .9s,opacity .4s ease .9s}
+.vn-play .vn-glow{transform-origin:230px 243px;animation:vn-pulse 2.4s ease-in-out 1.4s 2}
+@keyframes vn-pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.25);opacity:.8}}
 
-@media (max-width:1023px){.ab-top{grid-template-columns:1fr;gap:28px}}
-@media (max-width:560px){.ab-big{font-size:30px}}
+.vn-legend{list-style:none;margin:14px 0 0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.vn-item{display:grid;grid-template-columns:auto 1fr;column-gap:8px;align-items:center;padding:10px 12px;border-radius:14px;background:rgba(255,255,255,.7);border:1px solid rgba(66,17,111,.12);border-top:3px solid var(--c);transition:background-color .2s ease,box-shadow .2s ease,border-color .2s ease}
+.vn-item.is-on{background:#fff;box-shadow:0 10px 24px -14px rgba(66,17,111,.45);border-color:var(--c)}
+.vn-item-ic{display:grid;place-items:center;width:30px;height:30px;border-radius:9px;color:var(--c);background:rgba(66,17,111,.07)}
+.vn-item-ic svg{width:18px;height:18px}
+.vn-item h3{font-size:14px;font-weight:700;line-height:1.2;color:#0C1230}
+.vn-btn{all:unset;cursor:pointer;display:block}
+.vn-btn:focus-visible{outline:2px solid var(--rose);outline-offset:3px;border-radius:4px}
+.vn-item p{grid-column:1/-1;margin-top:6px;font-size:13px;line-height:1.45;color:#4A4D63}
+
+@media (max-width:1023px){
+  .ab-top{grid-template-columns:1fr;gap:28px}
+  .vn{max-width:560px}
+  .vn-art{max-width:380px}
+}
+@media (max-width:700px){
+  .ab-big{font-size:32px}
+  .vn-art{max-width:300px}
+  .vn-t{font-size:17px}
+  .vn-label{font-size:16px}
+  .vn-legend{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion:reduce){
+  .vn-glow{animation:none!important}
+  .vn-fill,.vn-c,.vn-item{transition:none}
+}
