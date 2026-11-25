@@ -53,7 +53,7 @@ await click("/qlik/", 'hero "Explore Capabilities"', (p) => p.locator("a.hero-bt
 await click("/qlik/", "accelerator talk-to-us button", (p) => p.locator(".ax-panel:visible a", { hasText: "Talk to us about this accelerator" }), { url: "/contact" });
 await click("/qlik/", "case study Discuss a similar project", (p) => p.locator(".ck-discuss"), { url: "/contact" });
 await click("/qlik/", "service journey free consultation", (p) => p.locator(".sj-cta a"), { url: "/contact" });
-await click("/qlik/", "floating CTA (after scrolling)", (p) => p.locator("a.fab-talk"), { url: "/contact" }, undefined, async (p) => { await p.evaluate(() => scrollTo(0, 3000)); await p.waitForTimeout(800); });
+await click("/qlik/", "floating CTA (after scrolling)", (p) => p.locator("a.fab-talk"), { url: "/contact" }, undefined, async (p) => { await p.evaluate(() => scrollTo(0, document.getElementById("qlik-services").getBoundingClientRect().top + scrollY)); await p.waitForTimeout(800); });
 await click("/industries/healthcare/", 'hero "Talk to Our Team"', (p) => p.locator(".qhero-ctas a", { hasText: "Talk to Our Team" }), { url: "/contact" });
 await click("/industries/healthcare/", 'hero "All industries"', (p) => p.locator(".qhero-ctas a", { hasText: "All industries" }), { url: "/#industries", hash: "#industries" });
 await click("/industries/healthcare/", "CTA band button", (p) => p.locator(".cta-band a"), { url: "/contact" });
