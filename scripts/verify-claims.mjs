@@ -278,8 +278,8 @@ console.log("CLAIM F: service pages (one template, content from src/services.js)
 console.log("CLAIM G: menu labels (Sri's design doc v3.0), one home page with compact sections, no Qlik logo");
 {
   const labels = data.NAV.map((n) => n.label);
-  ok(labels.join("|") === "Home|Services|Industries|Products & Solutions|About Us" && data.HEADER_NAV.map((n) => n.label).join("|") === labels.join("|"), "menu labels and order (header and footer): " + labels.join(" | "));
-  const want = { Home: "/", Industries: "/#industries", "Products & Solutions": "/#solutions", "About Us": "/#about" };
+  ok(labels.join("|") === "Home|Services|Industries|Product|About" && data.HEADER_NAV.map((n) => n.label).join("|") === labels.join("|"), "menu labels and order (header and footer): " + labels.join(" | "));
+  const want = { Home: "/", Industries: "/#industries", "Product": "/#solutions", "About": "/#about" };
   for (const u of Object.keys(PAGES)) {
     const d = doc[u];
     const hrefs = Object.fromEntries([...d.querySelectorAll("header nav.nav > a")].map((a) => [a.textContent.trim(), a.getAttribute("href")]));
