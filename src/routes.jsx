@@ -6,6 +6,9 @@ import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
 import Privacy from "./pages/Privacy";
 import ContactPage from "./pages/ContactPage";
+import AboutPage from "./pages/AboutPage";
+import SolutionsPage from "./pages/SolutionsPage";
+import IndustriesPage from "./pages/IndustriesPage";
 
 /**
  * Public routes. Every path returned here (including one page per INDUSTRIES entry) is prerendered
@@ -17,6 +20,9 @@ export const routes = [
     element: <Layout />,
     children: [
       { index: true, element: <Home /> },
+      { path: "about", element: <AboutPage /> },
+      { path: "solutions", element: <SolutionsPage /> },
+      { path: "industries", element: <IndustriesPage /> },
       { path: "contact", element: <ContactPage /> },
       { path: "privacy", element: <Privacy /> },
       { path: "qlik", lazy: async () => ({ Component: (await import("./pages/QlikOverview")).default }), entry: "src/pages/QlikOverview.jsx" },

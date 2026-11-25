@@ -1,7 +1,7 @@
 import { launch, BASE, watch, norm } from "./common.mjs";
 const b = await launch();
 let fails = 0; const ok = (c, msg) => { if (!c) fails++; console.log((c ? "PASS " : "FAIL ") + msg); };
-const routes = [["/", /Meridanta/, "home"], ["/qlik/", /Qlik Center of Excellence/, "qlik"], ["/qlik", /Qlik Center of Excellence/, "qlik (no trailing slash)"], ["/qlik/?utm_source=test&x=1", /Qlik Center of Excellence/, "qlik + query"], ["/industries/healthcare/", /Healthcare/, "healthcare"], ["/industries/healthcare", /Healthcare/, "healthcare (no slash)"], ["/industries/communications-media-entertainment/", /Communications, Media/, "cme"]];
+const routes = [["/", /Meridanta/, "home"], ["/qlik/", /Qlik Center of Excellence/, "qlik"], ["/qlik", /Qlik Center of Excellence/, "qlik (no trailing slash)"], ["/qlik/?utm_source=test&x=1", /Qlik Center of Excellence/, "qlik + query"], ["/industries/healthcare/", /Healthcare/, "healthcare"], ["/industries/healthcare", /Healthcare/, "healthcare (no slash)"], ["/industries/communications-media-entertainment/", /Communications, Media/, "cme"], ["/about/", /About Meridanta/, "about"], ["/solutions/", /Products & Solutions/, "solutions"], ["/industries/", /Industries We Serve/, "industries"], ["/about", /About Meridanta/, "about (no slash)"]];
 console.log("== 1. direct access and refresh");
 for (const [url, titleRe, label] of routes) {
   const p = await b.newPage({ viewport: { width: 1280, height: 800 } }); const issues = watch(p);
@@ -35,13 +35,13 @@ console.log("== 3. back / forward and client-side navigation");
   ok(norm(new URL(p.url()).pathname) === "/qlik" && /Qlik Center/.test(await p.title()), "forward -> /qlik");
   await p.locator('nav.crumbs a').first().click(); await p.waitForTimeout(900);
   ok(norm(new URL(p.url()).pathname) === "/", "breadcrumb Home -> /");
-  await p.locator("#industries a.btn-grad, #industries a[href*='healthcare']").first().click({ force: true }).catch(() => {}); await p.waitForTimeout(900);
+  await p.locator("a[href='/industries/healthcare/']").filter({ hasText: /Learn more/i }).first().click().catch(() => {}); await p.waitForTimeout(900);
   console.log("INFO after industries Learn More: " + new URL(p.url()).pathname);
   ok(!issues.length, "no console errors during navigation " + issues.join(" | "));
   await p.close();
 }
 console.log("== 4. anchors (section top should sit just under the 72px header)");
-const anchors = [["/", ["services", "industries", "solutions", "about"]], ["/qlik/", ["capabilities", "qlik-services", "accelerators", "case-studies"]]];
+const anchors = [["/", ["services"]], ["/qlik/", ["capabilities", "qlik-services", "accelerators", "case-studies"]]];
 for (const [path, ids] of anchors) for (const id of ids) {
   const p = await b.newPage({ viewport: { width: 1280, height: 800 } });
   await p.goto(BASE + path + "#" + id, { waitUntil: "load" }); await p.waitForTimeout(1800);

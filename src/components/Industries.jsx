@@ -2,7 +2,7 @@ import { useId, useState } from "react";
 import { Link } from "react-router-dom";
 import { INDUSTRIES } from "../data";
 import { useSectionLink } from "../nav";
-import { I, SectionHead } from "./Icons";
+import { I } from "./Icons";
 import { INDUSTRY_ART } from "./IndustryArt";
 
 const POINT_ICONS = [I.challenge, I.opportunity, I.capability];
@@ -87,7 +87,7 @@ export default function Industries() {
   return (
     <section id="industries" className="block cv" aria-labelledby="ind-h">
       <div className="wrap">
-        <SectionHead id="ind-h" title="Industries We Serve" intro="We apply AI, data, analytics, and modern technology capabilities to the needs of complex, data-driven industries." />
+        <h2 id="ind-h" className="sr">Industries we serve</h2>
         <div
           className={"ic-row" + (open >= 0 ? " has-open" : "")}
           onMouseLeave={() => { if (canHover()) setOpen(-1); }}

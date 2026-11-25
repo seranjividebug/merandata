@@ -8,12 +8,12 @@ import { JSDOM } from "jsdom";
 
 const server = await createServer({ configFile: false, appType: "custom", logLevel: "silent", server: { middlewareMode: true } });
 const load = (p) => server.ssrLoadModule(p);
-const [data, qlik, cases, accs, seo, company, stack, services] = await Promise.all(
-  ["/src/data.js", "/src/qlikData.js", "/src/caseStudies.js", "/src/accelerators.js", "/src/seo.js", "/src/company.js", "/src/acceleratorStack.js", "/src/services.js"].map(load),
+const [data, qlik, cases, accs, seo, company, stack, services, aboutData] = await Promise.all(
+  ["/src/data.js", "/src/qlikData.js", "/src/caseStudies.js", "/src/accelerators.js", "/src/seo.js", "/src/company.js", "/src/acceleratorStack.js", "/src/services.js", "/src/aboutData.js"].map(load),
 );
 await server.close();
 
-const PAGES = { "/": "dist/index.html", "/qlik/": "dist/qlik/index.html", "/industries/healthcare/": "dist/industries/healthcare/index.html", "/industries/communications-media-entertainment/": "dist/industries/communications-media-entertainment/index.html" };
+const PAGES = { "/": "dist/index.html", "/qlik/": "dist/qlik/index.html", "/about/": "dist/about/index.html", "/solutions/": "dist/solutions/index.html", "/industries/": "dist/industries/index.html", "/industries/healthcare/": "dist/industries/healthcare/index.html", "/industries/communications-media-entertainment/": "dist/industries/communications-media-entertainment/index.html" };
 const dom = Object.fromEntries(Object.entries(PAGES).map(([u, f]) => [u, new JSDOM(readFileSync(f, "utf8")).window.document]));
 const clean = (s) => String(s ?? "").replace(/\s+/g, " ").trim();
 const cell = (s) => clean(s).replace(/\|/g, "\\|");
@@ -67,8 +67,9 @@ const home = () => [
   "#### Hero banners (3): DRAFT – Sri to review", "", "| Headline | Tagline | Description | Button and link | Approve | Edit | Remove |", "|---|---|---|---|---|---|---|",
   ...data.HERO_SLIDES.map((s) => `| ${cell(s.title)} | ${cell(s.tagline)} | ${cell(s.desc)} | ${cell(s.cta)} → ${cell(s.to ?? "/#" + s.section)} | | | |`), "",
   "#### Sections", "", "| Section | Headline | Intro | Approve | Edit | Remove |", "|---|---|---|---|---|---|",
-  sectionRow(dom["/"], "services", "Services"), sectionRow(dom["/"], "industries", "Industries"), sectionRow(dom["/"], "solutions", "Products & Solutions"),
-  `| About | ${cell(q(dom["/"], "#about-h"))} | ${cell(company.ABOUT.join(" "))} | | | |`, "",
+  sectionRow(dom["/"], "services", "Services"),
+  ...[["tz-ind-h", "Industries (teaser)"], ["tz-sol-h", "Products & Solutions (teaser)"], ["tz-about-h", "About (teaser)"]].map(([id, label]) => `| ${label} | ${cell(clean(dom["/"].getElementById(id)?.textContent))} | ${cell(clean(dom["/"].getElementById(id)?.closest(".wrap")?.querySelector(".head p, .tz-about-copy p")?.textContent))} | | | |`), "",
+  "The full Industries, Products & Solutions and About content is on its own page (section \"Section pages\" below). The home page keeps short teasers that link to them.", "",
   "#### What We Do: DRAFT – Sri to review", "", `**${data.SERVICES_INTRO.tagline}** (h2)`, "", ...data.SERVICES_INTRO.lines.map((l) => l + "  "), "",
   ...data.SERVICES.map((s) => `**${s.n} · ${s.title}: ${s.tagline}.** ${s.desc}\n${bullets(s.items)}\nExplore link: ${s.href ?? "not shown yet (planned page " + s.future + ")"}\n`),
   "#### Industries We Serve (home cards)", "",
@@ -79,6 +80,16 @@ const home = () => [
   `- Data Platforms & Cloud Solutions: capabilities ${data.PLATFORM.join("; ")}. Talend frameworks: ${data.TALEND.join("; ")}.`, "",
   "#### About", "", `Tagline: ${company.COMPANY.slogan}`, "", ...company.ABOUT, "", bullets(data.PILLARS.map(([, t, d]) => `${t}: ${d}`)), "",
   "#### Contact", "", "Form fields: name, business email, company (optional), area of interest (optional), message. Interest options: " + data.INTERESTS.join("; ") + ".", "",
+].join("\n");
+
+const sectionPages = () => [
+  "### Section pages: /about/, /solutions/ and /industries/ (DRAFT – Sri to review)", "",
+  "The three sections that were long home-page sections are now pages. Menu labels follow your design doc: Home, Services, Industries, Products & Solutions, About Us.", "",
+  pageHead("/about/", "About Us"), "", "JSON-LD values:", ldSummary(dom["/about/"]), "",
+  `Tagline: ${company.COMPANY.slogan}`, "", ...company.ABOUT, "", bullets(data.PILLARS.map(([, t, d]) => `${t}: ${d}`)), "",
+  `Highlights: ${aboutData.ABOUT_HIGHLIGHTS.map(([, t]) => t).join("; ")}`, "",
+  pageHead("/solutions/", "Products & Solutions"), "", "JSON-LD values:", ldSummary(dom["/solutions/"]), "",
+  pageHead("/industries/", "Industries"), "", "JSON-LD values:", ldSummary(dom["/industries/"]), "",
 ].join("\n");
 
 const qlikPage = () => {
@@ -147,6 +158,8 @@ How to use it: for each row, mark **Approve**, **Edit** (write the new wording i
 ## 2. Page by page
 
 ${home()}
+
+${sectionPages()}
 
 ${qlikPage()}
 
@@ -257,10 +270,10 @@ ${coe.join("\n")}
 
 | Where | What is shown | Source file | Question for Sri |
 |---|---|---|---|
-| /qlik/ accelerator "Built with" tiles, home product cards and case-study diagrams (engine node and tiles) | The Qlik logo (the Qlik mark from the open-source simple-icons set on cards, and the logo file in the diagrams) | \\\\\`src/logoMap.js\\\\\`, \\\\\`src/assets/logos/qlik.png\\\\\` | Ask Qlik for written permission, or say if the logo should be replaced by the word "Qlik" (that was tried and reverted). |
+| Everywhere (accelerator tiles, Products & Solutions cards, case-study diagrams, hero banners, contact page) | **No Qlik logo image or icon is used.** Qlik is written as the plain word "Qlik" (accelerator tiles show the word in a round tile, diagrams show a text badge). The contact-page picture that had the Qlik mark drawn into it was removed. | \`src/logoMap.js\` | Nothing to approve for the logo. If a Qlik logo is wanted later, ask Qlik for written permission first. |
 | /qlik/ case-study diagrams and accelerator tiles | Snowflake, Databricks, Kafka, SAP, PostgreSQL, MySQL, Prometheus, Grafana, Talend (from the open-source simple-icons set) | simple-icons 16.36.0 | The icon set is open source, but the brands are still trademarks. |
 | /qlik/ case-study diagrams | Official AWS and Microsoft Azure architecture icons, Oracle, IBM Db2, Power BI | \`src/assets/logos/\` (14 files) | Each vendor's brand and icon usage terms should be checked. |
-| Home and /qlik/ images | Platform and capability illustrations with brand names in the alt text (Qlik, AWS, Databricks) | \`qlik-platform.webp\` (shows AWS, Databricks, Google, Iceberg, Microsoft and Snowflake marks inside the picture), \`cap-*.webp\`. The contact-page picture \`loc-qlik.webp\` has the Qlik mark and the words "Qlik Analytics and Integration" drawn into the image. | Confirm who created them and that any brand marks inside are cleared. |
+| Home and /qlik/ images | Platform and capability illustrations with brand names in the alt text (Qlik, AWS, Databricks) | \`qlik-platform.webp\` (shows AWS, Databricks, Google, Iceberg, Microsoft and Snowflake marks inside the picture), \`cap-*.webp\`. | Confirm who created them and that any brand marks inside are cleared. |
 
 ### 5.4 Statements that could imply an official partnership, certification or endorsement
 

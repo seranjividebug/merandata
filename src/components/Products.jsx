@@ -1,5 +1,4 @@
 import { PLATFORM, TALEND } from "../data";
-import { I, SectionHead } from "./Icons";
 import SpotlightCard, { LogoTile } from "./SpotlightCard";
 import acceleratorsImg from "../assets/accelerators/acc-prometheus.webp";
 import healthcareImg from "../assets/hero/hero-healthcare.webp";
@@ -33,9 +32,9 @@ const Chips = ({ items, label }) => (
 
 export function Products() {
   return (
-    <section id="solutions" className="block alt cv" aria-labelledby="prod-h">
+    <section id="solutions" className="block cv" aria-labelledby="prod-h">
       <div className="wrap">
-        <SectionHead id="prod-h" title="Products & Solutions" intro="Explore Meridanta’s solutions for turning complex data into useful insight and accelerating the delivery of business intelligence." />
+        <h2 id="prod-h" className="sr">Meridanta products and solutions</h2>
         <div className="spot-grid">
           <SpotlightCard
             to="/qlik/#accelerators"
@@ -58,7 +57,7 @@ export function Products() {
           />
         </div>
         <div className="prods">
-          <article className="prod wide">
+          <article id="platforms" className="prod wide">
             <div>
               <span className="badge"><i />Platforms & implementation</span>
               <h3>Data Platforms & Cloud Solutions</h3>

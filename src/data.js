@@ -1,20 +1,18 @@
 // All website copy lives here so it can be edited without touching layout code.
 
+/**
+ * Main menu, labels and order from Sri's design doc v3.0 (never shorten the labels): Home, Services (dropdown),
+ * Industries, Products & Solutions, About Us. Industries, Products & Solutions and About Us are pages (see PAGE_PATHS in nav.js).
+ * The footer "Explore" list uses the same items.
+ */
 export const NAV = [
   { id: "home", label: "Home" },
   { id: "services", label: "Services" },
-  { id: "about", label: "About" },
   { id: "industries", label: "Industries" },
   { id: "solutions", label: "Products & Solutions" },
+  { id: "about", label: "About Us" },
 ];
-
-/** Header menu (DRAFT – Sri to review): Home, Services (dropdown), Solutions, About. Space is left for items added later. The footer keeps the full NAV list. */
-export const HEADER_NAV = [
-  { id: "home", label: "Home" },
-  { id: "services", label: "Services" },
-  { id: "solutions", label: "Solutions" },
-  { id: "about", label: "About" },
-];
+export const HEADER_NAV = NAV;
 
 export const HIGHLIGHTS = [
   { icon: "bi", title: "Qlik", suffix: "Center of Excellence", href: "/qlik/", desc: "Deliver greater value with our Qlik-focused expertise across a complete portfolio of modern Data Integration, Data Fabric, Agentic Architecture, AI and Analytics platform" },
@@ -31,7 +29,7 @@ export const HERO_SLIDES = [
   { key: "healthcare", title: "Enabling Smarter, More Connected Healthcare.", tagline: "Healthcare Data | Analytics | AI-driven Insights", to: "/industries/healthcare/", cta: "Explore Healthcare Solutions",
     alt: "Heart with medical cross connected to patient 360, pharmacy insights, clinical analytics, remote monitoring, dashboards and compliance",
     desc: "Unifying complex healthcare data to support better insights, operational efficiency, informed decisions and improved care delivery." },
-  { key: "qlik", logo: true, title: "Accelerating Enterprise Analytics with Qlik.", tagline: "Qlik Consulting | Implementation | Center of Excellence", to: "/qlik/", cta: "Explore Qlik Capabilities",
+  { key: "qlik", title: "Accelerating Enterprise Analytics with Qlik.", tagline: "Qlik Consulting | Implementation | Center of Excellence", to: "/qlik/", cta: "Explore Qlik Capabilities",
     alt: "Qlik data, analytics and AI platform connecting data integration, quality, governance, dashboards, reporting and automation",
     desc: "Specialized professional services, data integration expertise and reusable accelerators that help enterprises maximize their Qlik investments." },
 ];

@@ -6,7 +6,6 @@ import { Head } from "vite-react-ssg";
 import { REDUCED, useReducedMotion } from "../utils";
 import { responsiveImage } from "../images";
 import Picture from "./Picture";
-import QlikLogo from "./QlikLogo";
 import AnimatedButton from "./AnimatedButton";
 
 const IMAGES = {
@@ -104,7 +103,6 @@ export default function Hero() {
               <a className="hs-hit" {...link} tabIndex={active ? 0 : -1} aria-label={`${s.cta}: ${s.title}`} />
               <div className="wrap hs-copy">
                 <div className="hs-l">
-                  {s.logo && <QlikLogo className="hs-logo" decorative />}
                   <Title className="hs-title">{s.title}</Title>
                   <p className="hs-tag">{s.tagline}</p>
                 </div>

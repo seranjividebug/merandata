@@ -33,16 +33,17 @@ async function click(start, label, locatorFn, expect, vp = { width: 1440, height
 }
 
 const L = (text, scope = "header") => (p) => p.locator(`${scope} a`, { hasText: new RegExp("^\\s*" + text + "\\s*$") });
-const SECTIONS = [["Services", "#services"], ["Industries", "#industries"], ["Products & Solutions", "#solutions"], ["About", "#about"]];
-const HEADER_SECTIONS = [["About", "#about"], ["Solutions", "#solutions"]]; // "Services" in the header is a dropdown button, tested below
+const PAGE_LINKS = [["Industries", "/industries"], ["Products & Solutions", "/solutions"], ["About Us", "/about"]]; // pages (they used to be home sections)
+// "Services" in the header is a dropdown button, tested below; in the footer it goes to the home What We Do section
 
 console.log("== header, footer and call-to-action links (desktop 1440px)");
 for (const start of ["/", "/qlik/", "/industries/healthcare/", "/services/data-engineering-analytics/"]) {
-  for (const [t, hash] of HEADER_SECTIONS) await click(start, `header "${t}"`, L(t), { url: "/" + hash, hash });
+  for (const [t, url] of PAGE_LINKS) await click(start, `header "${t}"`, L(t), { url });
   await click(start, 'header "Home"', L("Home"), { url: "/", home: true });
   await click(start, "header brand logo", (p) => p.locator("header a.brand"), { url: "/", home: true });
   await click(start, 'header "Let’s Talk"', (p) => p.locator("header a.cta-head"), { url: "/contact" });
-  for (const [t, hash] of SECTIONS) await click(start, `footer "${t}"`, L(t, "footer"), { url: "/" + hash, hash });
+  await click(start, 'footer "Services"', L("Services", "footer"), { url: "/#services", hash: "#services" });
+  for (const [t, url] of PAGE_LINKS) await click(start, `footer "${t}"`, L(t, "footer"), { url });
   await click(start, 'footer "Get in Touch"', L("Get in Touch", "footer"), { url: "/contact" });
 }
 
@@ -55,9 +56,9 @@ await click("/qlik/", "case study Discuss a similar project", (p) => p.locator("
 await click("/qlik/", "service journey free consultation", (p) => p.locator(".sj-cta a"), { url: "/contact" });
 await click("/qlik/", "floating CTA (after scrolling)", (p) => p.locator("a.fab-talk"), { url: "/contact" }, undefined, async (p) => { await p.evaluate(() => scrollTo(0, 3000)); await p.waitForTimeout(800); });
 await click("/industries/healthcare/", 'hero "Talk to Our Team"', (p) => p.locator(".qhero-ctas a", { hasText: "Talk to Our Team" }), { url: "/contact" });
-await click("/industries/healthcare/", 'hero "All industries"', (p) => p.locator(".qhero-ctas a", { hasText: "All industries" }), { url: "/#industries", hash: "#industries" });
+await click("/industries/healthcare/", 'hero "All industries"', (p) => p.locator(".qhero-ctas a", { hasText: "All industries" }), { url: "/industries" });
 await click("/industries/healthcare/", "CTA band button", (p) => p.locator(".cta-band a"), { url: "/contact" });
-await click("/industries/healthcare/", "breadcrumb Industries", (p) => p.locator("nav.crumbs a", { hasText: "Industries" }), { url: "/#industries", hash: "#industries" });
+await click("/industries/healthcare/", "breadcrumb Industries", (p) => p.locator("nav.crumbs a", { hasText: "Industries" }), { url: "/industries" });
 await click("/qlik/", "breadcrumb Home", (p) => p.locator("nav.crumbs a", { hasText: "Home" }), { url: "/", home: true });
 await click("/", "hero banner 1 (whole banner is the link)", (p) => p.locator(".hs-slide.is-active a.hs-hit"), { url: "/#services", hash: "#services" });
 await click("/", "hero banner 2 (click on the picture)", (p) => p.locator(".hs-slide.is-active a.hs-hit"), { url: "/industries/healthcare" }, undefined, async (p) => { await p.locator(".hs-dot").nth(1).click(); await p.mouse.move(700, 900); await p.waitForTimeout(1200); });
@@ -107,17 +108,36 @@ console.log("== Services dropdown: hover, click, keyboard, Escape, mobile");
   check((await mb.getAttribute("aria-expanded")) === "true" && (await mlist.locator("a").count()) === 4 && (await mlist.isVisible()), "mobile: Services expands to its 4 links");
   await m.close();
 }
-await click("/", "Products: Qlik Accelerators card", (p) => p.locator("a.spot", { hasText: "Qlik Accelerators" }), { url: "/qlik/#accelerators", hash: "#accelerators" });
-await click("/", "Products: HCInsights card", (p) => p.locator("a.spot", { hasText: "HCInsights" }), { url: "/industries/healthcare" });
+await click("/solutions/", "Products: Qlik Accelerators card", (p) => p.locator("a.spot", { hasText: "Qlik Accelerators" }), { url: "/qlik/#accelerators", hash: "#accelerators" });
+await click("/solutions/", "Products: HCInsights card", (p) => p.locator("a.spot", { hasText: "HCInsights" }), { url: "/industries/healthcare" });
 await click("/", "Services card: Explore Qlik", (p) => p.locator(".sv-link", { hasText: "Qlik" }), { url: "/qlik/" });
 await click("/", "Services card: Explore Data Engineering", (p) => p.locator(".sv-link", { hasText: "Data Engineering" }), { url: "/services/data-engineering-analytics/" });
 await click("/", "header Services menu: Data Engineering", (p) => p.locator("header nav.nav .nav-dd-list a", { hasText: "Data Engineering" }), { url: "/services/data-engineering-analytics/" }, undefined, async (p) => { await p.locator("header nav.nav .nav-dd-btn").click(); await p.waitForTimeout(300); });
 await click("/services/data-engineering-analytics/", "hero Discuss Your Data Initiatives", (p) => p.locator(".sp-hero a.hero-btn"), { url: "/contact" });
 await click("/services/data-engineering-analytics/", "CTA band button", (p) => p.locator(".cta-band a"), { url: "/contact" });
 await click("/services/ai-solutions/", "breadcrumb Services", (p) => p.locator("nav.crumbs a", { hasText: "Services" }), { url: "/#services", hash: "#services" });
-await click("/", "Industries card: Learn More (healthcare)", (p) => p.locator("#industries a", { hasText: /Learn More/ }), { url: "/industries/healthcare/" }, undefined, async (p) => { await p.locator("#industries .ic-card").first().hover(); await p.waitForTimeout(700); });
+await click("/industries/", "Industries card: Learn More (healthcare)", (p) => p.locator("#industries a", { hasText: /Learn More/ }), { url: "/industries/healthcare/" }, undefined, async (p) => { await p.locator("#industries .ic-card").first().hover(); await p.waitForTimeout(700); });
 console.log(rows.splice(0).join("\n"));
 
+// Home teasers (short versions of the three pages)
+await click("/", "teaser: Explore Industries", (p) => p.locator("section.tz a", { hasText: "Explore Industries" }), { url: "/industries" });
+await click("/", "teaser: Industries Learn more (healthcare)", (p) => p.locator("section.tz a[href='/industries/healthcare/']"), { url: "/industries/healthcare" });
+await click("/", "teaser: Explore Solutions", (p) => p.locator("section.tz a", { hasText: "Explore Solutions" }), { url: "/solutions" });
+await click("/", "teaser: Qlik Accelerators card", (p) => p.locator("section.tz a", { hasText: "Explore accelerators" }), { url: "/qlik/#accelerators", hash: "#accelerators" });
+await click("/", "teaser: Data Platforms card", (p) => p.locator("section.tz a", { hasText: "See platforms" }), { url: "/solutions/#platforms", hash: "#platforms" });
+await click("/", "teaser: About Meridanta", (p) => p.locator("section.tz a", { hasText: "About Meridanta" }), { url: "/about" });
+await click("/about/", "About page: Let's Talk", (p) => p.locator("#about a", { hasText: /Let.s Talk/ }), { url: "/contact" });
+await click("/about/", "About page: Explore Services", (p) => p.locator("#about a", { hasText: "Explore Services" }), { url: "/#services", hash: "#services" });
+await click("/about/", "About page: CTA band", (p) => p.locator(".cta-band a"), { url: "/contact" });
+await click("/solutions/", "Solutions page: CTA band", (p) => p.locator(".cta-band a"), { url: "/contact" });
+await click("/industries/", "Industries page: CTA band", (p) => p.locator(".cta-band a"), { url: "/contact" });
+// Old home anchors go to the new pages
+for (const [from, to] of [["/#about", "/about"], ["/#solutions", "/solutions"], ["/#industries", "/industries"]]) {
+  const pg = await b.newPage({ viewport: { width: 1440, height: 900 } });
+  await pg.goto(BASE + from, { waitUntil: "load" }); await pg.waitForTimeout(1800);
+  check(norm(new URL(pg.url()).pathname) === to, `old link ${from} redirects to ${to}: ${new URL(pg.url()).pathname}`);
+  await pg.close();
+}
 console.log("== controls: back to top, privacy page link, search, mobile menu");
 {
   const p = await b.newPage({ viewport: { width: 1440, height: 900 } });
@@ -157,11 +177,11 @@ console.log("== controls: back to top, privacy page link, search, mobile menu");
   await p.waitForTimeout(500);
   check((await p.locator("button.menu-btn").getAttribute("aria-expanded")) === "true", "mobile menu opens (aria-expanded=true)");
   const items = await p.locator("#mnav a").allInnerTexts();
-  check(items.length === 8, `mobile menu lists ${items.length} links (4 plus the 4 Services links... ): ${items.map((t) => t.trim()).join(", ")}`);
-  await p.locator("#mnav a", { hasText: /^s*Solutionss*$/ }).click();
+  check(items.length === 9, `mobile menu lists ${items.length} links (Home, Industries, Products & Solutions, About Us, the 4 Services links and Let’s Talk): ${items.map((t) => t.trim()).join(", ")}`);
+  await p.locator("#mnav a", { hasText: /^\s*Products & Solutions\s*$/ }).click();
   await p.waitForTimeout(1500);
   const u = new URL(p.url());
-  check(u.pathname === "/" && u.hash === "#solutions" && (await p.locator("button.menu-btn").getAttribute("aria-expanded")) === "false", `mobile menu link -> ${u.pathname}${u.hash}, menu closed`);
+  check(norm(u.pathname) === "/solutions" && (await p.locator("button.menu-btn").getAttribute("aria-expanded")) === "false", `mobile menu link -> ${u.pathname}${u.hash}, menu closed`);
   check(issues.length === 0, "no console issues on mobile " + issues.join("|"));
   await p.close();
 }

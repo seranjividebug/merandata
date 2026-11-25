@@ -12,7 +12,7 @@ await server.close();
 const load2 = async () => social;
 
 const ORIGIN = "https://meridanta.com";
-const PAGES = { "/": "dist/index.html", "/qlik/": "dist/qlik/index.html", "/industries/healthcare/": "dist/industries/healthcare/index.html", "/industries/communications-media-entertainment/": "dist/industries/communications-media-entertainment/index.html", "/privacy/": "dist/privacy/index.html", "/contact/": "dist/contact/index.html", ...Object.fromEntries(services.SERVICE_PAGES.map((s) => [services.servicePath(s), `dist/services/${s.slug}/index.html`])) };
+const PAGES = { "/": "dist/index.html", "/qlik/": "dist/qlik/index.html", "/industries/healthcare/": "dist/industries/healthcare/index.html", "/industries/communications-media-entertainment/": "dist/industries/communications-media-entertainment/index.html", "/privacy/": "dist/privacy/index.html", "/contact/": "dist/contact/index.html", "/about/": "dist/about/index.html", "/solutions/": "dist/solutions/index.html", "/industries/": "dist/industries/index.html", ...Object.fromEntries(services.SERVICE_PAGES.map((s) => [services.servicePath(s), `dist/services/${s.slug}/index.html`])) };
 // Drafts (noindex) are built and linked from the menu but are not in the sitemap or llms files.
 const INDEXED = Object.keys(PAGES).filter((u) => !seo.seoFor(u)?.noindex);
 const html = Object.fromEntries(Object.entries(PAGES).map(([u, f]) => [u, readFileSync(f, "utf8")]));
@@ -34,7 +34,8 @@ console.log("CLAIM 1: full content in the built HTML (not only the active slide 
     ["home: service descriptions", data.SERVICES.length, found(data.SERVICES, home, (s) => s.desc)],
     ["home: What We Do intro (tagline + 2 lines)", 3, found([data.SERVICES_INTRO.tagline, ...data.SERVICES_INTRO.lines], home, (s) => s)],
     ["home: service bullet items", data.SERVICES.flatMap((s) => s.items).length, found(data.SERVICES.flatMap((s) => s.items), home, (s) => s)],
-    ["home: industry cards", data.INDUSTRIES.length, found(data.INDUSTRIES, home, (s) => s.cardTitle)],
+    ["home: industry teaser cards", data.INDUSTRIES.length, found(data.INDUSTRIES, home, (s) => s.tab)],
+    ["/industries: industry cards (full content)", data.INDUSTRIES.length, found(data.INDUSTRIES, textOf("/industries/"), (s) => s.cardTitle)],
     ["/qlik: capabilities", qlik.QLIK_CAPABILITIES.length, found(qlik.QLIK_CAPABILITIES, q, (s) => s.title)],
     ["/qlik: capability bullets", qlik.QLIK_CAPABILITIES.flatMap((c) => c.bullets).length, found(qlik.QLIK_CAPABILITIES.flatMap((c) => c.bullets), q, (s) => s)],
     ["/qlik: service offerings", qlik.QLIK_OFFERINGS.length, found(qlik.QLIK_OFFERINGS, q, (s) => s.title)],
@@ -273,6 +274,55 @@ console.log("CLAIM F: service pages (one template, content from src/services.js)
   ok(services.SERVICE_PAGES.every((p) => cardsOnHome.includes(services.servicePath(p))) && cardsOnHome.includes("/qlik/"), `home "Explore" links: ${cardsOnHome.join(", ")}`);
   const homeLd = JSON.parse(doc["/"].querySelector('script[type="application/ld+json"]').textContent)["@graph"].filter((n) => n["@type"] === "Service");
   ok(homeLd.some((n) => n.url === ORIGIN + "/services/data-engineering-analytics/") && homeLd.every((n) => !/consulting-delivery|ai-solutions/.test(n.url)), "home Service JSON-LD points to the data engineering page, not to the noindex drafts");
+}
+
+console.log("CLAIM G: section pages (/about, /solutions, /industries), home teasers, menu, no Qlik logo");
+{
+  const sitemap = readFileSync("dist/sitemap.xml", "utf8"), l1 = readFileSync("dist/llms.txt", "utf8");
+  const PG = { "/about/": ["About Us", "About Meridanta"], "/solutions/": ["Products & Solutions", "Products & Solutions"], "/industries/": ["Industries", "Industries We Serve"] };
+  const home = doc["/"], ht = textOf("/");
+  for (const [u, [navLabel, h1]] of Object.entries(PG)) {
+    const d = doc[u], label = u.padEnd(14);
+    ok(d.querySelectorAll("h1").length === 1 && d.querySelector("h1").textContent.trim() === h1 && !!d.querySelector(".page-hero .crumbs"), `${label} one h1 "${h1}" in a compact hero with a breadcrumb`);
+    ok(d.querySelector("link[rel=canonical]")?.getAttribute("href") === ORIGIN + u && !d.querySelector('meta[name="robots"]'), `${label} canonical ${ORIGIN + u}, indexable`);
+    const ld = JSON.parse(d.querySelector('script[type="application/ld+json"]').textContent)["@graph"];
+    const bc = ld.find((n) => n["@type"] === "BreadcrumbList");
+    ok(!!bc && bc.itemListElement.at(-1).item === ORIGIN + u && bc.itemListElement.at(-1).name === navLabel, `${label} BreadcrumbList ends with "${navLabel}"`);
+    ok(sitemap.includes(`<loc>${ORIGIN + u}</loc>`) && l1.includes(ORIGIN + u), `${label} is in sitemap.xml and llms.txt`);
+    ok(d.querySelector(".cta-band a")?.getAttribute("href") === "/contact/", `${label} CTA band button goes to /contact/`);
+    const cur = [...d.querySelectorAll('header nav.nav [aria-current="true"]')].map((e) => e.textContent.trim());
+    ok(cur.length === 1 && cur[0] === navLabel, `${label} current menu item follows the page: ${cur.join(", ")}`);
+  }
+  // Menu: exact labels and order (desktop, mobile menu, footer).
+  const labels = data.NAV.map((n) => n.label);
+  ok(labels.join("|") === "Home|Services|Industries|Products & Solutions|About Us", "menu labels and order: " + labels.join(" | "));
+  for (const u of ["/", "/about/"]) {
+    const m = [...doc[u].querySelectorAll("#mnav > a:not(.btn), #mnav > .nav-dd > button")].map((e) => e.textContent.trim());
+    const foot = [...doc[u].querySelectorAll("footer a")].map((a) => a.textContent.trim());
+    ok(m.join("|") === labels.join("|") && labels.every((l) => foot.includes(l)), `${u.padEnd(8)} mobile menu and footer "Explore" use the same labels: ${m.join(", ")}`);
+  }
+  const hrefs = Object.fromEntries([...doc["/"].querySelectorAll("header nav.nav > a")].map((a) => [a.textContent.trim(), a.getAttribute("href")]));
+  ok(hrefs["Industries"] === "/industries/" && hrefs["Products & Solutions"] === "/solutions/" && hrefs["About Us"] === "/about/" && hrefs["Home"] === "/", "menu links: " + JSON.stringify(hrefs));
+  const curOf = (u) => [...doc[u].querySelectorAll('header nav.nav [aria-current="true"]')].map((e) => e.textContent.trim()).join();
+  ok(curOf("/") === "Home" && curOf("/industries/healthcare/") === "Industries" && curOf("/qlik/") === "Services" && curOf("/services/data-engineering-analytics/") === "Services", "current item: home=Home, industry page=Industries, /qlik and service pages=Services");
+  // Page content
+  const at = textOf("/about/");
+  ok(company.ABOUT.every((x) => at.includes(x)) && at.includes(company.COMPANY.slogan) && data.PILLARS.every(([, t, d]) => at.includes(t) && at.includes(d)) && !!doc["/about/"].querySelector(".ab-orbit") && doc["/about/"].querySelectorAll(".ab-chips li").length === 4, "/about/: statement, both paragraphs, 3 principles, orbit, 4 chips");
+  const st = textOf("/solutions/");
+  ok(["Qlik Accelerators", "HCInsights", "Data Platforms & Cloud Solutions"].every((x) => st.includes(x)) && [...data.PLATFORM, ...data.TALEND].every((x) => st.includes(x)) && !!doc["/solutions/"].querySelector("#platforms"), "/solutions/: both spotlight cards, platform capabilities and Talend frameworks");
+  const it = doc["/industries/"];
+  ok(data.INDUSTRIES.every((d) => it.querySelector(`a[href="/industries/${d.slug}/"]`) && it.body.textContent.includes(d.cardTitle)) && it.querySelectorAll(".ic-card").length === data.INDUSTRIES.length, "/industries/: both industry cards with links to the industry pages");
+  // Home: teasers only
+  ok(!home.querySelector("#about, #solutions, #industries, .ic-card, .spot, .ab-journey, .prods"), "home: the full About, Solutions and Industries sections are gone (no #about, #solutions, #industries)");
+  const tz = [...home.querySelectorAll("section.tz")];
+  ok(tz.length === 3 && !!home.querySelector('a[href="/industries/"]') && !!home.querySelector('a[href="/solutions/"]') && !!home.querySelector('a[href="/about/"]') && ["Explore Industries", "Explore Solutions", "About Meridanta"].every((x) => ht.includes(x)), "home: 3 teasers with links to /industries/, /solutions/ and /about/");
+  ok(tz[0].querySelectorAll(".tz-card").length === 2 && tz[1].querySelectorAll(".tz-card").length === 3 && tz[2].querySelectorAll(".tz-chips li").length === 4 && ht.includes(company.COMPANY.slogan), "home teasers: 2 industry cards, 3 solution cards, slogan and 4 chips");
+  ok(!!home.querySelector("#services") && !!home.querySelector(".cta-band"), "home still has What We Do and the contact band");
+  // No Qlik logo anywhere: no logo image or icon file in the build, none in the source.
+  const logoFiles = readdirSync("dist/assets").filter((f) => /qlik[-_]?logo|loc-qlik|^qlik\.(png|svg|webp)/i.test(f));
+  const srcLogos = ["src/logoMap.js", "src/components/Hero.jsx"].filter((f) => /siQlik|QlikLogo|qlik-logo/.test(readFileSync(f, "utf8")));
+  const imgs = Object.keys(PAGES).flatMap((u) => [...doc[u].querySelectorAll("img")].map((i) => u + " " + (i.getAttribute("src") || ""))).filter((s) => /qlik[-_]?logo|loc-qlik|logos\/qlik/i.test(s));
+  ok(logoFiles.length === 0 && srcLogos.length === 0 && imgs.length === 0 && !existsSync("src/components/QlikLogo.jsx") && !existsSync("src/assets/qlik-logo.png"), "no Qlik logo image or icon is used or shipped (the word \"Qlik\" only)" + (logoFiles.length ? ": " + logoFiles.join(", ") : ""));
 }
 
 console.log(`\n${fails} failed check(s)`);

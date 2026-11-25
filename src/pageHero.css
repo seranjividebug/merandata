@@ -1,0 +1,7 @@
+/* Compact hero for /about, /solutions and /industries (about 280px tall on desktop) */
+.qhero.page-hero{min-height:280px;display:flex;align-items:center;padding:28px 0 44px;max-height:none}
+.page-hero .wrap{width:100%}
+.page-hero-in{margin-top:18px;max-width:780px}
+.qhero.page-hero h1{max-width:none;font-size:clamp(30px,3.4vw,46px)}
+.qhero.page-hero .lede{max-width:62ch;font-size:17px}
+@media (max-width:700px){.qhero.page-hero{min-height:0;padding:20px 0 36px}.page-hero-in{margin-top:12px}}

@@ -25,7 +25,7 @@ export default function IndustryPage({ industry: d }) {
               <p className="lede">{d.cardDesc}</p>
               <div className="qhero-ctas">
                 <a className="btn btn-grad" {...link("contact")}>Talk to Our Team</a>
-                <Link className="btn btn-ghost-light" to="/#industries">All industries</Link>
+                <Link className="btn btn-ghost-light" to="/industries/">All industries</Link>
               </div>
             </div>
             <div className="ip-art"><Art /></div>

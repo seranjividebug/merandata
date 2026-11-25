@@ -146,7 +146,7 @@ for (const [url, { doc }] of pages) {
   }
   ldReport.set(url, nodes);
   const ids = new Set(nodes.map((n) => n["@id"]).filter(Boolean));
-  const types = nodes.map((n) => (n["@type"] === "ContactPage" ? "WebPage" : n["@type"]));
+  const types = nodes.map((n) => (["ContactPage", "AboutPage"].includes(n["@type"]) ? "WebPage" : n["@type"]));
   for (const t of REQUIRED_TYPES[url] ?? ["Organization", "WebPage", "BreadcrumbList"]) if (!types.includes(t)) err(url, `JSON-LD is missing ${t}`);
   const seen = new Set();
   for (const n of nodes) {
