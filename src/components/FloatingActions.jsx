@@ -51,13 +51,17 @@ export default function FloatingActions() {
     io.observe(el);
     return () => io.disconnect();
   }, [pathname]);
-  // Keep the button off the Qlik Capabilities cards while that section is on screen.
+  // Keep the button off the card sections (Qlik Capabilities, home Solutions) while they are on screen.
   useEffect(() => {
     setAtCaps(false);
-    const el = document.getElementById("capabilities");
-    if (!el) return undefined;
-    const io = new IntersectionObserver(([en]) => setAtCaps(en.isIntersecting));
-    io.observe(el);
+    const els = ["capabilities", "solutions"].map((id) => document.getElementById(id)).filter(Boolean);
+    if (!els.length) return undefined;
+    const on = new Set();
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((en) => (en.isIntersecting ? on.add(en.target) : on.delete(en.target)));
+      setAtCaps(on.size > 0);
+    });
+    els.forEach((el) => io.observe(el));
     return () => io.disconnect();
   }, [pathname]);
   const hidden = atContact || atHero || atCases || atCaps;

@@ -67,13 +67,13 @@ const home = () => [
   "#### Hero banners (3): DRAFT – Sri to review", "", "| Headline | Tagline | Description | Button and link | Approve | Edit | Remove |", "|---|---|---|---|---|---|---|",
   ...data.HERO_SLIDES.map((s) => `| ${cell(s.title)} | ${cell(s.tagline)} | ${cell(s.desc)} | ${cell(s.cta)} → ${cell(s.to ?? "/#" + s.section)} | | | |`), "",
   "#### Sections", "", "| Section | Headline | Intro | Approve | Edit | Remove |", "|---|---|---|---|---|---|",
-  sectionRow(dom["/"], "services", "Services"), sectionRow(dom["/"], "industries", "Industries"), sectionRow(dom["/"], "solutions", "Products & Solutions"),
+  sectionRow(dom["/"], "services", "Services"), sectionRow(dom["/"], "industries", "Industries"), sectionRow(dom["/"], "solutions", "Solutions"),
   `| About | ${cell(q(dom["/"], "#about-h"))} | ${cell(company.ABOUT.join(" "))} | | | |`, "",
   "#### What We Do: DRAFT – Sri to review", "", `**${data.SERVICES_INTRO.tagline}** (h2)`, "", ...data.SERVICES_INTRO.lines.map((l) => l + "  "), "",
   ...data.SERVICES.map((s) => `**${s.n} · ${s.title}: ${s.tagline}.** ${s.desc}\n${bullets(s.items)}\nExplore link: ${s.href ?? "not shown yet (planned page " + s.future + ")"}\n`),
   "#### Industries We Serve (home cards)", "",
   ...data.INDUSTRIES.map((d) => `**${d.tab}: ${d.cardTitle}.** ${d.cardDesc}\n${bullets(d.points.map(([a, b]) => `${a}: ${b}`))}\n`),
-  "#### Products & Solutions", "",
+  "#### Solutions", "",
   "- Qlik Accelerators card: \"Ready-made components that speed up Qlik monitoring, reporting and operations.\" Chips: 5 accelerators, Qlik Sense & Replicate, Monitoring, reporting, logs.",
   "- HCInsights card: \"A turnkey healthcare insights solution that unifies clinical, operational and financial data.\" Chips: 5 modules, Clinical + financial data, Power BI dashboards. (Links to the Healthcare page; there is no HCInsights page.)",
   `- Data Platforms & Cloud Solutions: capabilities ${data.PLATFORM.join("; ")}. Talend frameworks: ${data.TALEND.join("; ")}.`, "",
@@ -140,6 +140,7 @@ How to use it: for each row, mark **Approve**, **Edit** (write the new wording i
 | 7 | **Metrics shown as headline numbers** (shown: for example "~40% faster response time" and "Under 5 seconds" replication latency; in the code but not shown: "40 hrs typical Qlik migration"). | Each is a quantified claim a prospect or AI assistant may repeat. Section 6 lists them. |
 | 8 | **Social profile links.** None are set, so the footer shows no social icons. | Send the real URLs (LinkedIn, X, Facebook, Instagram, YouTube) and the icons appear; they also feed the structured data. |
 | 9 | **Privacy Policy page (DRAFT – Sri to review).** A basic policy now lives at \`/privacy/\` and is linked from the footer and the contact section. | Wording, retention period and the statement about trackers need your confirmation (see "Privacy Policy page" in section 2). |
+| 13 | **Menu and section names (DRAFT – Sri to confirm).** Renamed "Products & Solutions" to "Solutions" (Sri's design doc v3.0 says "Products & Solutions"; confirm). The menu items "Solutions" and "About" are short labels (the doc has "About Us"). Home order is now Services, Industries, Solutions, About, and the menu follows it. | Confirm the three names, or say which to restore. |
 | 12 | **Service pages (DRAFT – Sri to review).** \`/services/data-engineering-analytics/\` carries your hero and the six capability cards (sections 1 and 2). \`/services/consulting-delivery/\` and \`/services/ai-solutions/\` are built from the "What We Do" card text and are **DRAFT – full content pending from Sri**: they are \`noindex\` and left out of the sitemap and \`llms.txt\` until approved. | Send the full content for the two drafts and the later sections of the data engineering page (they plug into \`src/services.js\`). Confirm the page titles and descriptions below. When a draft is approved, remove \`noindex: true\` for it in \`src/services.js\`. |
 | 11 | **What We Do copy (DRAFT – Sri to review).** New section tagline and two intro lines, and new tagline, description and six bullets for each of the four pillars. | **Qlik pillar: walkthrough with Nataraj pending (old vs new content).** Old Qlik card: "Expert consultants, solutions, and accelerators across Qlik Replicate, Compose, Catalog, QlikView, Qlik Sense, and Talend." with bullets on architecture consulting and roadmap, proofs of concept and benchmarking, performance and infrastructure recommendations, estimation templates, accelerators (server performance monitors, governance dashboards, meta scanner) and managed platform support. The "Explore" links for the first three pillars are hidden until their pages (/services/consulting-delivery, /services/ai-solutions, /services/data-engineering-analytics) exist. |
 | 10 | **Header, hero banners and /contact page (DRAFT – Sri to review).** New header (brand tagline "AI. Data. Cloud. Transforming Business.", Services dropdown, "Let’s Talk" button), three new hero banners, and a /contact page that replaces the home page’s contact section. | Confirm the banner wording, the title and description of /contact/, and the URLs for the three service pages in the Services menu (/services/consulting-delivery, /services/ai-solutions, /services/data-engineering-analytics). They are not built yet, so those three menu items go to the home page’s Services section for now. Also confirm whether the Healthcare banner should go to /industries/healthcare/ or /healthcare. |
@@ -249,7 +250,7 @@ ${coe.join("\n")}
 ### 5.2 Trademark notices today
 
 - **/qlik/**: "${qlik.QLIK_TM}" (small print under the page).
-- **Home, Products & Solutions section**: "Qlik, Talend, and Power BI are trademarks of their respective owners. Meridanta accelerators are independently developed and do not imply endorsement."
+- **Home, Solutions section**: "Qlik, Talend, and Power BI are trademarks of their respective owners. Meridanta accelerators are independently developed and do not imply endorsement."
 - **Industry pages and footer**: no trademark notice. The footer is on every page, including pages that show Qlik, Talend and Power BI names.
 - Suggestion: one site-wide line in the footer, for example "Qlik, Qlik Sense, QlikView, Qlik Replicate, Talend, Power BI, Snowflake, Databricks, AWS, Microsoft Azure, Oracle, IBM Db2, SAP and Apache Kafka are trademarks of their respective owners. Meridanta is not affiliated with or endorsed by these companies [unless partner status is confirmed]." [SRI]
 
