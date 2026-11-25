@@ -2,7 +2,7 @@
 
 /**
  * Main menu, labels and order from Sri's design doc v3.0 (never shorten the labels): Home, Services (dropdown),
- * Industries, Products & Solutions, About Us. Industries, Products & Solutions and About Us are pages (see PAGE_PATHS in nav.js).
+ * Industries, Products & Solutions, About Us. Industries, Products & Solutions and About Us scroll to /#industries, /#solutions and /#about on the home page.
  * The footer "Explore" list uses the same items.
  */
 export const NAV = [

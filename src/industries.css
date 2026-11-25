@@ -1,0 +1,44 @@
+/* Home: Industries We Serve, compact expanding cards (about 360px). The text is in the page once; hover or tap widens a card and
+   the other one shrinks to its title. Below 1024px the cards are stacked and always fully shown. */
+.ic-row{--gap:20px;display:flex;gap:var(--gap);height:372px}
+.ic-card{position:relative;flex:1 1 0;min-width:0;overflow:hidden;border-radius:20px;background:var(--paper);border:1px solid var(--line);color:var(--ink);transition:flex-grow .45s ease,background-color .35s ease,border-color .35s ease,color .35s ease}
+.ic-card:hover{box-shadow:0 18px 40px -26px rgba(66,17,111,.5)}
+.ic-row.has-open .ic-card.is-open{flex-grow:66}
+.ic-row.has-open .ic-card.is-collapsed{flex-grow:34;background:var(--navy);border-color:var(--navy);color:#fff}
+.ic-toggle{position:absolute;inset:0;z-index:1;width:100%;border:0;padding:0;background:transparent;border-radius:inherit;cursor:pointer}
+.ic-toggle:focus-visible{outline:2px solid var(--focus);outline-offset:-4px}
+.ic-in{position:relative;z-index:2;pointer-events:none;height:100%;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-rows:minmax(0,1fr) auto;column-gap:26px;padding:18px 26px;transition:grid-template-columns .45s ease,column-gap .45s ease}
+.ic-left,.ic-right{min-width:0;display:flex;flex-direction:column}
+.ic-art{flex:none;height:130px;margin-bottom:10px;display:grid;place-items:center}
+.ic-art svg{display:block;width:100%;height:100%}
+.ic-eyebrow{margin:0 0 6px;font-size:11.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--plum)}
+.ic-title{margin:0;font-size:20px;font-weight:800;line-height:1.2;letter-spacing:-.02em}
+.ic-desc{margin:8px 0 0;font-size:14.5px;line-height:1.5;color:var(--muted);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.ic-pts{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+.ic-pt{display:grid;grid-template-columns:34px 1fr;gap:12px}
+.ic-pt .mk{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;background:var(--plum-tint);color:var(--plum)}
+.ic-pt .mk svg{width:18px;height:18px}
+.ic-pt .mk-grad{background:var(--grad);color:#fff}
+.ic-pt h4{margin:0;font-size:15px;font-weight:700}
+.ic-pt p{margin:2px 0 0;font-size:13.5px;line-height:1.45;color:var(--muted)}
+.ic-actions{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
+.ic-actions .btn{pointer-events:auto;min-height:42px;padding:0 18px;font-size:14.5px}
+.ic-actions .btn:focus-visible{outline:2px solid var(--focus);outline-offset:3px}
+
+@media (min-width:1024px){
+  /* the card that is not open shows its title only (its text stays in the page, faded out) */
+  .ic-card.is-collapsed .ic-in{grid-template-columns:minmax(0,1fr) minmax(0,0fr);column-gap:0}
+  .ic-card.is-collapsed .ic-right,.ic-card.is-collapsed .ic-desc,.ic-card.is-collapsed .ic-actions{opacity:0;pointer-events:none}
+  .ic-card.is-collapsed .ic-actions .btn{pointer-events:none}
+  .ic-card.is-collapsed .ic-eyebrow{color:var(--on-dark)}
+  .ic-right,.ic-desc,.ic-actions{transition:opacity .25s ease}
+}
+@media (max-width:1023px){
+  .ic-row{display:grid;gap:16px;height:auto}
+  .ic-toggle{display:none}
+  .ic-in{grid-template-columns:1fr;grid-template-rows:none;row-gap:16px;padding:20px 22px}
+  .ic-actions{margin-top:0}
+  .ic-art{height:100px}
+}
+@media (max-width:480px){.ic-actions .btn{flex:1 1 100%}}
+@media (prefers-reduced-motion:reduce){.ic-card,.ic-in,.ic-right,.ic-desc,.ic-actions{transition:none!important}}

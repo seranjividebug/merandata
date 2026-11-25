@@ -14,9 +14,6 @@ const pages = [
   ["/services/data-engineering-analytics/", { must: ["Engineering Data. Enabling Intelligence. Driving Outcomes.", "Core Data Engineering & Analytics Capabilities", "Data Governance, Quality & Security", "Data platform administration and support"], articles: 0, minText: 1500 }],
   ["/services/consulting-delivery/", { must: ["From Strategy to Successful Execution", "Enterprise and solution architecture"], articles: 0, minText: 800 }],
   ["/services/ai-solutions/", { must: ["Applying AI to Real Business Challenges", "Natural language processing (NLP)"], articles: 0, minText: 800 }],
-  ["/about/", { must: ["About Meridanta", "Technology Expertise. Business Outcomes.", "Business understanding", "AI-first approach", "Qlik Center of Excellence"], articles: 0, minText: 800 }],
-  ["/solutions/", { must: ["Products & Solutions", "Qlik Accelerators", "HCInsights", "Data Platforms & Cloud Solutions", "Talend frameworks"], articles: 0, minText: 800 }],
-  ["/industries/", { must: ["Industries We Serve", "Enabling Better Healthcare Outcomes", "Connecting People, Powering Experiences"], articles: 0, minText: 800 }],
   ["/contact/", { must: ["Let’s Discuss Your Next Opportunity", "srivatsans@meridanta.com", "Registered Office", "privacy policy"], articles: 0, minText: 800 }],
   ["/privacy/", { must: ["What we collect", "Why we use it", "do not sell your personal information", "srivatsans@meridanta.com"], articles: 0, minText: 800 }],
 ];
@@ -32,7 +29,7 @@ for (const [path, spec] of pages) {
   const caseArticles = text.match(/ck-(title|text)-[a-z0-9-]+/g) ? new Set(text.match(/ck-(title|text)-[a-z0-9-]+/g).map((x) => x.replace(/^ck-(title|text)-/, "").replace(/-(tab|pane).*$/, ""))).size : 0;
   const missing = spec.must.filter((t) => !body.includes(t));
   const canon = d.querySelector('link[rel="canonical"]')?.getAttribute("href");
-  const good = r.status === 200 && h1.length === 1 && !missing.length && ld.every(Boolean) && types.includes("Organization") && (types.includes("WebPage") || types.includes("AboutPage") || types.includes("ContactPage")) && canon === ORIGIN + path && (!spec.articles || caseArticles >= spec.articles) && body.length > (spec.minText || 2000);
+  const good = r.status === 200 && h1.length === 1 && !missing.length && ld.every(Boolean) && types.includes("Organization") && (types.includes("WebPage") || types.includes("ContactPage")) && canon === ORIGIN + path && (!spec.articles || caseArticles >= spec.articles) && body.length > (spec.minText || 2000);
   ok(good, `${path.padEnd(48)} ${r.status} h1="${h1[0]?.textContent.trim().slice(0, 36)}" text=${body.length} chars JSON-LD=[${[...new Set(types)].join(",")}] canonical=${canon === ORIGIN + path ? "ok" : canon}${spec.articles ? " cases=" + caseArticles : ""}${missing.length ? " MISSING: " + missing.join("; ") : ""}`);
 }
 {
@@ -58,7 +55,7 @@ console.log("== robots.txt, sitemap.xml, llms.txt, llms-full.txt");
   const parsed = !xml.querySelector("parsererror");
   let all200 = true;
   for (const u of urls) { const path = u.loc.replace(ORIGIN, ""); const { r: rr } = await get(path); if (rr.status !== 200) all200 = false; }
-  ok(r.status === 200 && parsed && urls.length === 10 && urls.every((u) => u.loc.startsWith(ORIGIN + "/") && /^\d{4}-\d{2}-\d{2}$/.test(u.lastmod || "")) && all200, `sitemap.xml ${r.status} ${r.headers.get("content-type")} valid-xml=${parsed} urls=${urls.length} all-return-200=${all200} lastmod=${urls.map((u) => u.lastmod).join(",")}`);
+  ok(r.status === 200 && parsed && urls.length === 7 && urls.every((u) => u.loc.startsWith(ORIGIN + "/") && /^\d{4}-\d{2}-\d{2}$/.test(u.lastmod || "")) && all200, `sitemap.xml ${r.status} ${r.headers.get("content-type")} valid-xml=${parsed} urls=${urls.length} all-return-200=${all200} lastmod=${urls.map((u) => u.lastmod).join(",")}`);
 }
 for (const f of ["/llms.txt", "/llms-full.txt"]) {
   const { r, text } = await get(f);

@@ -19,11 +19,24 @@ export function LogoTile({ item, size = 52 }) {
   );
 }
 
+/** Pill, title, one line and chips of a card that is not one big link (children go below the chips). */
+export function SpotBody({ pill, title, line, chips, children }) {
+  return (
+    <div className="spot-body">
+      <span className="badge"><i />{pill}</span>
+      <h3>{title}</h3>
+      <p className="spot-line">{line}</p>
+      <ul className="spot-chips">{chips.map((c) => <li key={c}>{c}</li>)}</ul>
+      {children}
+    </div>
+  );
+}
+
 /**
  * Compact spotlight card: preview on top, then pill, title, one line, stat chips and a footer link.
  * The whole card is one link. `visual` is the preview content (it sits under the bottom fade).
  */
-export default function SpotlightCard({ to, title, line, chips, cta, visual, label }) {
+export default function SpotlightCard({ to, title, line, chips, cta, visual, label, pill = "Home-grown solution" }) {
   const ref = useRef(null);
   const fine = useMedia("(hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference)");
 
@@ -45,11 +58,11 @@ export default function SpotlightCard({ to, title, line, chips, cta, visual, lab
     <Link ref={ref} to={to} className="spot" onPointerMove={onMove} onPointerLeave={onLeave}>
       <div className="spot-vis" aria-hidden="true">{visual}</div>
       <div className="spot-body">
-        <span className="badge"><i />Home-grown solution</span>
+        <span className="badge"><i />{pill}</span>
         <h3>{title}</h3>
         <p className="spot-line">{line}</p>
         <ul className="spot-chips">{chips.map((c) => <li key={c}>{c}</li>)}</ul>
-        <span className="spot-cta">{cta}<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg></span>
+        <span className="spot-cta">Explore<span className="sr"> {cta.replace(/^Explore /, "")}</span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg></span>
       </div>
     </Link>
   );

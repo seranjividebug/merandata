@@ -1,17 +1,22 @@
+import { useId, useState } from "react";
+import { Link } from "react-router-dom";
 import { PLATFORM, TALEND } from "../data";
-import SpotlightCard, { LogoTile } from "./SpotlightCard";
+import { SectionHead } from "./Icons";
+import SpotlightCard, { LogoTile, SpotBody } from "./SpotlightCard";
 import acceleratorsImg from "../assets/accelerators/acc-prometheus.webp";
 import healthcareImg from "../assets/hero/hero-healthcare.webp";
 
 // Main logo per accelerator (simple-icons brands only on the home page; generic icons otherwise).
 const ACCELERATOR_TILES = [{ key: "prometheus" }, { key: "qlik" }, { kind: "file" }, { kind: "server" }, { kind: "cloud" }];
+const PLATFORM_TILES = [{ kind: "cloud" }, { kind: "server" }, { kind: "file" }];
+const TILE = 44;
 
 const AcceleratorsVisual = (
   <>
     <img className="spot-img spot-blur" src={acceleratorsImg} alt="" width="1200" height="800" loading="lazy" decoding="async" />
     <span className="spot-tint" />
     <span className="spot-tiles">
-      {ACCELERATOR_TILES.map((t, i) => <span key={i} style={{ "--i": i, display: "contents" }}><LogoTile item={t} /></span>)}
+      {ACCELERATOR_TILES.map((t, i) => <span key={i} style={{ "--i": i, display: "contents" }}><LogoTile item={t} size={TILE} /></span>)}
     </span>
   </>
 );
@@ -26,15 +31,51 @@ const HealthcareVisual = (
   </>
 );
 
-const Chips = ({ items, label }) => (
-  <div className="chips" aria-label={label}>{items.map((t) => <span key={t} className="chip">{t}</span>)}</div>
+const PlatformVisual = (
+  <>
+    <span className="spot-tint spot-tint-solid" />
+    <span className="spot-tiles">
+      {PLATFORM_TILES.map((t, i) => <span key={i} style={{ "--i": i, display: "contents" }}><LogoTile item={t} size={TILE} /></span>)}
+    </span>
+  </>
 );
+
+const ARROW = (
+  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+);
+
+/** Data Platforms & Cloud Solutions: capability chips, and the Talend frameworks behind a "+ more" toggle (they stay in the page text). */
+function PlatformsCard() {
+  const [more, setMore] = useState(false);
+  const id = useId();
+  return (
+    <div className="spot spot-static">
+      <div className="spot-vis" aria-hidden="true">{PlatformVisual}</div>
+      <SpotBody
+        pill="Platforms & implementation"
+        title="Data Platforms & Cloud Solutions"
+        line="Build, modernize and operate data and analytics platforms."
+        chips={PLATFORM}
+      >
+        <ul id={id} className={"spot-chips spot-more" + (more ? " is-open" : "")} aria-label="Talend frameworks">
+          {TALEND.map((c) => <li key={c}>{c}</li>)}
+        </ul>
+        <div className="spot-foot">
+          <Link className="spot-cta" to="/services/data-engineering-analytics/">Explore<span className="sr"> Data Platforms and Cloud Solutions</span>{ARROW}</Link>
+          <button type="button" className="spot-toggle" aria-expanded={more} aria-controls={id} onClick={() => setMore((v) => !v)}>
+            {more ? "− less" : "+ more"}<span className="sr"> Talend frameworks</span>
+          </button>
+        </div>
+      </SpotBody>
+    </div>
+  );
+}
 
 export function Products() {
   return (
-    <section id="solutions" className="block cv" aria-labelledby="prod-h">
+    <section id="solutions" className="block alt cv" aria-labelledby="prod-h">
       <div className="wrap">
-        <h2 id="prod-h" className="sr">Meridanta products and solutions</h2>
+        <SectionHead id="prod-h" title="Products & Solutions" intro="Explore Meridanta’s solutions for turning complex data into useful insight and accelerating the delivery of business intelligence." />
         <div className="spot-grid">
           <SpotlightCard
             to="/qlik/#accelerators"
@@ -55,19 +96,7 @@ export function Products() {
             cta="Explore HCInsights"
             visual={HealthcareVisual}
           />
-        </div>
-        <div className="prods">
-          <article id="platforms" className="prod wide">
-            <div>
-              <span className="badge"><i />Platforms & implementation</span>
-              <h3>Data Platforms & Cloud Solutions</h3>
-              <p className="lead">Technology solutions and implementation capabilities that help organizations build, modernize, and operate data and analytics environments.</p>
-            </div>
-            <div>
-              <div className="group"><h4>Capabilities</h4><Chips items={PLATFORM} /></div>
-              <div className="group"><h4>Talend frameworks</h4><Chips items={TALEND} /></div>
-            </div>
-          </article>
+          <PlatformsCard />
         </div>
         <p className="tm">Qlik, Talend, and Power BI are trademarks of their respective owners. Meridanta accelerators are independently developed and do not imply endorsement.</p>
       </div>

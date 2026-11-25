@@ -18,7 +18,7 @@ const Chevron = () => (
  * the HTML (hidden with a CSS class while closed), so crawlers see them.
  * `mobile` renders the same list as an expandable group inside the mobile menu.
  */
-function ServicesMenu({ label, mobile = false, onNavigate, current }) {
+function ServicesMenu({ label, mobile = false, onNavigate }) {
   const [open, setOpen] = useState(false);
   const root = useRef(null);
   const button = useRef(null);
@@ -50,7 +50,7 @@ function ServicesMenu({ label, mobile = false, onNavigate, current }) {
 
   return (
     <div ref={root} className={"nav-dd" + (mobile ? " is-mobile" : "") + (open ? " is-open" : "")} onBlur={onBlur} {...hover}>
-      <button ref={button} type="button" className="nav-dd-btn" aria-expanded={open} aria-controls={id} aria-current={current ? "true" : undefined} onClick={toggle}>
+      <button ref={button} type="button" className="nav-dd-btn" aria-expanded={open} aria-controls={id} onClick={toggle}>
         {label}<Chevron />
       </button>
       <ul id={id} className="nav-dd-list">
@@ -83,7 +83,7 @@ export default function Header({ active }) {
 
   const close = () => setOpen(false);
   const links = (mobile) => HEADER_NAV.map((n) => (n.id === "services"
-    ? <ServicesMenu key={n.id} label={n.label} mobile={mobile} onNavigate={close} current={active === "services"} />
+    ? <ServicesMenu key={n.id} label={n.label} mobile={mobile} onNavigate={close} />
     : <a key={n.id} {...link(n.id, close)} aria-current={active === n.id ? "true" : undefined}>{n.label}</a>));
   const talk = <>Let’s Talk<span className="sr"> – get in touch</span></>;
 

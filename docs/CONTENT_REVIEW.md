@@ -49,11 +49,9 @@ JSON-LD values:
 | Section | Headline | Intro | Approve | Edit | Remove |
 |---|---|---|---|---|---|
 | Services | Technology Expertise. Practical Execution. Measurable Outcomes. | What We Do | | | |
-| Industries (teaser) | Industries We Serve | Complex, data-driven industries where AI, data and analytics make a measurable difference. | | | |
-| Products & Solutions (teaser) | Products & Solutions | Solutions for turning complex data into useful insight, faster. | | | |
-| About (teaser) | Technology Expertise. Business Outcomes. | Meridanta focuses on AI, Data & Analytics, and Cloud solutions that help organizations address business challenges through practical technology and disciplined delivery. | | | |
-
-The full Industries, Products & Solutions and About content is on its own page (section "Section pages" below). The home page keeps short teasers that link to them.
+| Industries | Industries We Serve | We apply AI, data, analytics, and modern technology capabilities to the needs of complex, data-driven industries. | | | |
+| Products & Solutions | Products & Solutions | Explore Meridanta’s solutions for turning complex data into useful insight and accelerating the delivery of business intelligence. | | | |
+| About | About Meridanta | Meridanta focuses on AI, Data & Analytics, and Cloud solutions that help organizations address business challenges through practical technology and disciplined delivery. Our approach brings together business understanding, engineering expertise, and outcome-oriented execution to help customers turn technology opportunities into meaningful results. | | | |
 
 #### What We Do: DRAFT – Sri to review
 
@@ -130,61 +128,6 @@ Our approach brings together business understanding, engineering expertise, and 
 #### Contact
 
 Form fields: name, business email, company (optional), area of interest (optional), message. Interest options: AI Solutions & Services; Data Engineering & Analytics; Qlik Solutions & Accelerators; Healthcare Insights; Cloud & Modernisation; Consulting & Delivery; Other.
-
-
-### Section pages: /about/, /solutions/ and /industries/ (DRAFT – Sri to review)
-
-The three sections that were long home-page sections are now pages. Menu labels follow your design doc: Home, Services, Industries, Products & Solutions, About Us.
-
-### About Us (`/about/`)
-
-| Item | Current value | Approve | Edit | Remove |
-|---|---|---|---|---|
-| Meta title (51 chars) | About Meridanta: AI, Data & Cloud Solutions Company | | | |
-| Meta description (156 chars) | Meridanta focuses on AI, data and analytics, and cloud solutions that turn technology into business outcomes through disciplined, outcome-oriented delivery. | | | |
-| H1 | About Meridanta | | | |
-
-JSON-LD values:
-- Types: Organization, WebSite, AboutPage, BreadcrumbList
-- Organization: name "Meridanta", slogan "Technology Expertise. Business Outcomes.", areaServed United States and India, 19 knowsAbout topics, sameAs 0 profiles; no legal name, email, phone, address or founding date yet
-- Breadcrumb: Home > About Us
-
-Tagline: Technology Expertise. Business Outcomes.
-
-Meridanta focuses on AI, Data & Analytics, and Cloud solutions that help organizations address business challenges through practical technology and disciplined delivery.
-Our approach brings together business understanding, engineering expertise, and outcome-oriented execution to help customers turn technology opportunities into meaningful results.
-
-- Business understanding: We start from the decision or process you want to improve.
-- Engineering expertise: Hands-on depth across data, analytics, AI, and cloud platforms.
-- Outcome-oriented execution: Delivery measured by results, not by recommendations alone.
-
-Highlights: AI-first approach; Qlik Center of Excellence; Data, Analytics & Cloud; Serving the United States & India
-
-### Products & Solutions (`/solutions/`)
-
-| Item | Current value | Approve | Edit | Remove |
-|---|---|---|---|---|
-| Meta title (52 chars) | Products & Solutions \| Qlik Accelerators, HCInsights | | | |
-| Meta description (156 chars) | Explore Meridanta's Qlik Accelerators, the HCInsights healthcare solution, and data platform and cloud solutions that turn complex data into useful insight. | | | |
-| H1 | Products & Solutions | | | |
-
-JSON-LD values:
-- Types: Organization, WebSite, WebPage, BreadcrumbList
-- Organization: name "Meridanta", slogan "Technology Expertise. Business Outcomes.", areaServed United States and India, 19 knowsAbout topics, sameAs 0 profiles; no legal name, email, phone, address or founding date yet
-- Breadcrumb: Home > Products & Solutions
-
-### Industries (`/industries/`)
-
-| Item | Current value | Approve | Edit | Remove |
-|---|---|---|---|---|
-| Meta title (60 chars) | Industries We Serve: Healthcare, Media & Telecom \| Meridanta | | | |
-| Meta description (153 chars) | Meridanta applies AI, data, analytics and cloud capabilities to healthcare and to communications, media and entertainment organizations. See how we help. | | | |
-| H1 | Industries We Serve | | | |
-
-JSON-LD values:
-- Types: Organization, WebSite, WebPage, BreadcrumbList
-- Organization: name "Meridanta", slogan "Technology Expertise. Business Outcomes.", areaServed United States and India, 19 knowsAbout topics, sameAs 0 profiles; no legal name, email, phone, address or founding date yet
-- Breadcrumb: Home > Industries
 
 
 ### Qlik Center of Excellence (`/qlik/`)
@@ -489,24 +432,24 @@ Question-style heading ideas (optional): "What We Do" -> "What does Meridanta do
 
 ### 5.1 Mentions per page (visible text, including text hidden behind tabs)
 
-| Brand | / | /qlik/ | /about/ | /solutions/ | /industries/ | /industries/healthcare/ | /industries/communications-media-entertainment/ |
-|---|---|---|---|---|---|---|---|
-| Qlik Sense | 1 | 28 | 0 | 1 | 0 | 0 | 0 |
-| QlikView | 1 | 25 | 0 | 0 | 0 | 0 | 0 |
-| Qlik Replicate | 1 | 20 | 0 | 0 | 0 | 0 | 0 |
-| Qlik Cloud | 0 | 5 | 0 | 0 | 0 | 0 | 0 |
-| Qlik (any) | 17 | 126 | 3 | 7 | 2 | 2 | 2 |
-| Talend | 2 | 7 | 0 | 2 | 0 | 0 | 0 |
-| Power BI | 0 | 4 | 0 | 2 | 0 | 0 | 0 |
-| NPrinting | 0 | 12 | 0 | 0 | 0 | 0 | 0 |
+| Brand | / | /qlik/ | /industries/healthcare/ | /industries/communications-media-entertainment/ |
+|---|---|---|---|---|
+| Qlik Sense | 2 | 28 | 0 | 0 |
+| QlikView | 1 | 25 | 0 | 0 |
+| Qlik Replicate | 1 | 20 | 0 | 0 |
+| Qlik Cloud | 0 | 5 | 0 | 0 |
+| Qlik (any) | 19 | 126 | 2 | 2 |
+| Talend | 4 | 7 | 0 | 0 |
+| Power BI | 2 | 4 | 0 | 0 |
+| NPrinting | 0 | 12 | 0 | 0 |
 
 Related phrases:
 
-| Phrase | / | /qlik/ | /about/ | /solutions/ | /industries/ | /industries/healthcare/ | /industries/communications-media-entertainment/ |
-|---|---|---|---|---|---|---|---|
-| "Center of Excellence" | 7 | 5 | 3 | 2 | 2 | 2 | 2 |
-| "Qlik expert" | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
-| "Qlik Expert" | 0 | 2 | 0 | 0 | 0 | 0 | 0 |
+| Phrase | / | /qlik/ | /industries/healthcare/ | /industries/communications-media-entertainment/ |
+|---|---|---|---|---|
+| "Center of Excellence" | 6 | 5 | 2 | 2 |
+| "Qlik expert" | 0 | 0 | 0 | 0 |
+| "Qlik Expert" | 0 | 2 | 0 | 0 |
 
 ### 5.2 Trademark notices today
 
@@ -519,10 +462,10 @@ Related phrases:
 
 | Where | What is shown | Source file | Question for Sri |
 |---|---|---|---|
-| Everywhere (accelerator tiles, Products & Solutions cards, case-study diagrams, hero banners, contact page) | **No Qlik logo image or icon is used.** Qlik is written as the plain word "Qlik" (accelerator tiles show the word in a round tile, diagrams show a text badge). The contact-page picture that had the Qlik mark drawn into it was removed. | `src/logoMap.js` | Nothing to approve for the logo. If a Qlik logo is wanted later, ask Qlik for written permission first. |
+| Everywhere (cards, diagrams, hero, contact page) | The plain word "Qlik" in our font. There is no Qlik logo image or icon anywhere on the site (Sri's instruction); npm run verify fails if one is added. | src/logoMap.js | Nothing to approve now. If the official logo is wanted later, ask Qlik for written permission first. |
 | /qlik/ case-study diagrams and accelerator tiles | Snowflake, Databricks, Kafka, SAP, PostgreSQL, MySQL, Prometheus, Grafana, Talend (from the open-source simple-icons set) | simple-icons 16.36.0 | The icon set is open source, but the brands are still trademarks. |
 | /qlik/ case-study diagrams | Official AWS and Microsoft Azure architecture icons, Oracle, IBM Db2, Power BI | `src/assets/logos/` (14 files) | Each vendor's brand and icon usage terms should be checked. |
-| Home and /qlik/ images | Platform and capability illustrations with brand names in the alt text (Qlik, AWS, Databricks) | `qlik-platform.webp` (shows AWS, Databricks, Google, Iceberg, Microsoft and Snowflake marks inside the picture), `cap-*.webp`. | Confirm who created them and that any brand marks inside are cleared. |
+| Home and /qlik/ images | Platform and capability illustrations with brand names in the alt text (Qlik, AWS, Databricks) | `qlik-platform.webp` (shows AWS, Databricks, Google, Iceberg, Microsoft and Snowflake marks inside the picture), `cap-*.webp`. The contact-page picture `loc-qlik.webp` has the Qlik mark and the words "Qlik Analytics and Integration" drawn into the image. | Confirm who created them and that any brand marks inside are cleared. |
 
 ### 5.4 Statements that could imply an official partnership, certification or endorsement
 

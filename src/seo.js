@@ -52,20 +52,6 @@ const PRIVACY = {
   description: "How Meridanta handles the personal details you share when you contact us: what we collect, why we use it, who can see it, and how to reach us.",
 };
 
-// DRAFT – Sri to review: the three section pages (they used to be sections of the home page).
-const ABOUT_PAGE = {
-  title: "About Meridanta: AI, Data & Cloud Solutions Company",
-  description: "Meridanta focuses on AI, data and analytics, and cloud solutions that turn technology into business outcomes through disciplined, outcome-oriented delivery.",
-};
-const SOLUTIONS_PAGE = {
-  title: "Products & Solutions | Qlik Accelerators, HCInsights",
-  description: "Explore Meridanta's Qlik Accelerators, the HCInsights healthcare solution, and data platform and cloud solutions that turn complex data into useful insight.",
-};
-const INDUSTRIES_PAGE = {
-  title: "Industries We Serve: Healthcare, Media & Telecom | Meridanta",
-  description: "Meridanta applies AI, data, analytics and cloud capabilities to healthcare and to communications, media and entertainment organizations. See how we help.",
-};
-
 // DRAFT – Sri to review.
 const CONTACT = {
   title: "Contact Meridanta: Talk to Our AI, Data & Cloud Team",
@@ -96,9 +82,6 @@ const industryFallback = (d) => ({
 export const PAGES = [
   { path: "/", ...HOME, sources: ["src/pages/Home.jsx", "src/data.js", "src/components"] },
   { path: "/qlik/", ...QLIK, trail: [{ label: "Qlik" }], sources: ["src/pages/QlikOverview.jsx", "src/qlikData.js", "src/accelerators.js", "src/caseStudies.js"] },
-  { path: "/about/", ...ABOUT_PAGE, trail: [{ label: "About Us" }], sources: ["src/pages/AboutPage.jsx", "src/components/About.jsx", "src/company.js"] },
-  { path: "/solutions/", ...SOLUTIONS_PAGE, trail: [{ label: "Products & Solutions" }], sources: ["src/pages/SolutionsPage.jsx", "src/components/Products.jsx", "src/data.js"] },
-  { path: "/industries/", ...INDUSTRIES_PAGE, trail: [{ label: "Industries" }], sources: ["src/pages/IndustriesPage.jsx", "src/components/Industries.jsx", "src/data.js"] },
   { path: "/contact/", ...CONTACT, trail: [{ label: "Contact" }], sources: ["src/pages/ContactPage.jsx", "src/components/ContactCard.jsx", "src/components/ContactForm.jsx"] },
   { path: "/privacy/", ...PRIVACY, trail: [{ label: "Privacy Policy" }], sources: ["src/pages/Privacy.jsx", "src/privacyData.js"] },
   ...SERVICE_PAGES.map((s) => ({
@@ -111,7 +94,7 @@ export const PAGES = [
   ...INDUSTRIES.map((d) => ({
     path: `/industries/${d.slug}/`,
     ...(INDUSTRY_SEO[d.slug] ?? industryFallback(d)),
-    trail: [{ label: "Industries", to: "/industries/" }, { label: d.tab }],
+    trail: [{ label: "Industries", to: "/#industries" }, { label: d.tab }],
     sources: ["src/pages/IndustryPage.jsx", "src/data.js"],
   })),
 ];

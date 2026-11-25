@@ -1,89 +1,24 @@
-/* About Meridanta: dark band with the "Meridian orbit", the principles as a journey, and highlight chips.
-   Final state is the default (server-rendered HTML, reduced motion). .ab-armed is the animation start state, .ab-play runs it once. */
-section.about-dark{position:relative;overflow:hidden;isolation:isolate;color:#fff;padding:112px 0 104px;
+/* About Meridanta: compact dark band. Statement and copy on the left, the three principles as a short list on the right. */
+section.about-dark{position:relative;overflow:hidden;isolation:isolate;color:#fff;
   background:radial-gradient(ellipse 55% 65% at 88% 12%,rgba(90,35,144,.5),transparent 62%),radial-gradient(ellipse 55% 60% at 4% 92%,rgba(30,42,107,.75),transparent 62%),var(--navy)}
 section.about-dark::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
   background-image:radial-gradient(rgba(255,255,255,.075) 1px,transparent 1.3px);background-size:26px 26px;
   -webkit-mask-image:radial-gradient(ellipse 80% 80% at 50% 45%,#000 30%,transparent 100%);mask-image:radial-gradient(ellipse 80% 80% at 50% 45%,#000 30%,transparent 100%)}
+.about-dark .head h2{color:#fff}
+.about-dark .head .rule{background:linear-gradient(90deg,#C9B3EA,#7A3A9E)}
 
-.ab-top{display:grid;grid-template-columns:48fr 52fr;gap:56px;align-items:center}
-.ab-big{margin-top:0;font-size:clamp(32px,3.4vw,44px);font-weight:800;letter-spacing:-.035em;line-height:1.08}
+.ab-top{display:grid;grid-template-columns:1.15fr .85fr;gap:64px;align-items:center}
+.ab-big{margin-top:22px;font-size:36px;font-weight:800;letter-spacing:-.035em;line-height:1.1}
 .ab-big span{display:block;background:linear-gradient(100deg,#C9B3EA 0%,#E9A6CF 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
-.ab-p{margin-top:20px;color:rgba(255,255,255,.8);font-size:17px;line-height:1.75}
-.ab-big + .ab-p{margin-top:24px}
-.about-dark .ab-big{max-width:16ch}
-.ab-actions{display:flex;flex-wrap:wrap;gap:14px;margin-top:34px}
+.ab-p{margin-top:16px;color:rgba(255,255,255,.8);font-size:16px;line-height:1.7}
+.ab-big + .ab-p{margin-top:20px}
+.ab-actions{display:flex;flex-wrap:wrap;gap:14px;margin-top:26px}
 
-/* Orbit */
-.ab-visual{display:flex;justify-content:center}
-.ab-orbit{width:100%;max-width:440px;aspect-ratio:1}
-.ab-orbit svg{display:block;width:100%;height:100%;overflow:visible}
-.ab-orbit text{fill:#fff;font:600 13.5px var(--font);opacity:.92}
-.ab-node-ic{color:#fff}
-.ab-node circle{filter:drop-shadow(0 0 12px rgba(155,123,208,.45))}
-.ab-halo{opacity:.9}
-.ab-armed .ab-arc,.ab-play .ab-arc{stroke-dasharray:1}
-.ab-armed .ab-arc{stroke-dashoffset:1}
-.ab-armed .ab-node{opacity:.18}
-.ab-play .ab-arc{stroke-dashoffset:0;transition:stroke-dashoffset .9s ease calc(var(--i) * .3s + .2s)}
-.ab-play .ab-node{opacity:1;transition:opacity .6s ease calc(var(--i) * .3s)}
-.ab-play .ab-spin{transform-origin:220px 220px;animation:ab-rot 60s linear infinite}
-.ab-play .ab-pulse,.ab-play .ab-halo{transform-origin:220px 220px;animation:ab-pulse 4.5s ease-in-out infinite}
-@keyframes ab-rot{to{transform:rotate(360deg)}}
-@keyframes ab-pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.045)}}
+.ab-list{list-style:none;margin:0;padding:0;display:grid;gap:16px}
+.ab-list li{display:flex;align-items:center;gap:16px;padding:14px 0 14px 18px;border-left:2px solid rgba(201,179,234,.35)}
+.ab-ic{display:grid;place-items:center;flex:none;width:40px;height:40px;border-radius:12px;background:rgba(201,179,234,.14);color:var(--on-dark)}
+.ab-list h3{font-size:18px;font-weight:700;color:#fff}
+.ab-list p{margin-top:2px;color:rgba(255,255,255,.8);font-size:15.5px;line-height:1.5}
 
-/* Principles as a journey */
-.ab-journey{--gap:56px;list-style:none;margin:72px 0 0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:var(--gap)}
-.ab-step{position:relative;padding:28px 26px 30px;border-radius:20px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);transition:transform .25s ease,border-color .25s ease,background-color .25s ease}
-.ab-step:hover{transform:translateY(-4px);border-color:rgba(201,179,234,.75);background:rgba(255,255,255,.085)}
-.ab-step-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
-.ab-num{font-size:46px;font-weight:800;letter-spacing:-.04em;line-height:1;background:linear-gradient(100deg,#C9B3EA 0%,#E9A6CF 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
-.ab-ic{display:grid;place-items:center;width:46px;height:46px;border-radius:14px;background:rgba(201,179,234,.14);color:var(--on-dark)}
-.ab-step h3{font-size:19px;font-weight:700;color:#fff}
-.ab-step p{margin-top:8px;color:rgba(255,255,255,.8);font-size:15.5px;line-height:1.65}
-.ab-link{position:absolute;left:100%;top:50%;width:var(--gap);height:16px;margin-top:-8px;display:flex;align-items:center;padding-left:6px}
-.ab-link i{display:block;width:calc(100% - 18px);height:2px;border-radius:2px;background:linear-gradient(90deg,#C9B3EA,#E9A6CF);transform-origin:left center}
-.ab-link::after{content:"";position:absolute;right:8px;top:50%;width:8px;height:8px;margin-top:-5px;border-top:2px solid #E9A6CF;border-right:2px solid #E9A6CF;transform:rotate(45deg)}
-.ab-armed .ab-link i{transform:scaleX(0)}
-.ab-armed .ab-link::after{opacity:0}
-.ab-play .ab-link i{transition:transform .7s ease calc(var(--i) * .7s + .15s)}
-.ab-play .ab-link::after{transition:opacity .25s ease calc(var(--i) * .7s + .75s)}
-
-/* Highlight chips */
-.ab-chips{list-style:none;margin:48px 0 0;padding:0;display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
-.ab-chips li{display:flex;align-items:center;gap:12px;padding:12px 18px 12px 12px;border-radius:999px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.04);color:rgba(255,255,255,.92);font-size:15px;font-weight:600;line-height:1.3}
-.ab-chip-ic{display:grid;place-items:center;flex:none;width:36px;height:36px;border-radius:50%;background:rgba(201,179,234,.14);color:var(--on-dark)}
-.ab-chip-ic svg{width:20px;height:20px}
-
-/* Tablet and phone */
-@media (max-width:1023px){
-  section.about-dark{padding:88px 0}
-  .ab-top{grid-template-columns:1fr;gap:40px}
-  .ab-orbit{max-width:360px}
-  .ab-journey{--gap:36px;margin-top:56px}
-  .ab-step{padding:22px 18px 24px}
-  .ab-num{font-size:38px}
-  .ab-step p{font-size:15px}
-  .ab-chips{grid-template-columns:repeat(2,1fr)}
-}
-@media (max-width:719px){
-  section.about-dark{padding:72px 0}
-  .ab-orbit{max-width:300px}
-  .ab-orbit text{font-size:15px}
-  .ab-journey{--gap:44px;grid-template-columns:1fr}
-  .ab-link{left:50%;top:100%;width:16px;height:var(--gap);margin:0 0 0 -8px;padding:0;flex-direction:column;justify-content:flex-start}
-  .ab-link i{width:2px;height:calc(100% - 12px);transform-origin:center top;margin:0 auto}
-  .ab-link::after{right:auto;left:50%;top:auto;bottom:6px;margin:0 0 0 -5px;transform:rotate(135deg)}
-  .ab-armed .ab-link i{transform:scaleY(0)}
-  .ab-chips{gap:10px}
-  .ab-chips li{border-radius:18px;font-size:14px;padding:12px;flex-direction:column;align-items:flex-start;gap:8px}
-}
-@media (prefers-reduced-motion:reduce){
-  .ab-spin,.ab-pulse,.ab-halo{animation:none!important}
-  .ab-step{transition:none}
-  .ab-step:hover{transform:none}
-}
-
-/* Dark section followed by the dark contact band (About page) */
-.about-dark + .cta-band{border-top:1px solid rgba(255,255,255,.14)}
-.qhero.page-hero + section.about-dark{border-top:1px solid rgba(255,255,255,.1)}
+@media (max-width:1023px){.ab-top{grid-template-columns:1fr;gap:28px}}
+@media (max-width:560px){.ab-big{font-size:30px}}
