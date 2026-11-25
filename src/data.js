@@ -1,15 +1,15 @@
 // All website copy lives here so it can be edited without touching layout code.
 
 /**
- * Main menu: Home, Services (dropdown), Industries, Product, About. "Product" and "About" are short labels set at Sri's request
- * (design doc v3.0 had "Products & Solutions" and "About Us"). Industries, Product and About scroll to /#industries, /#solutions and /#about.
+ * Main menu: Home, Services (dropdown), Industries, Solutions, About. "Solutions" and "About" are short labels set at Sri's request
+ * (design doc v3.0 had "Products & Solutions" and "About Us"). Industries, Solutions and About scroll to /#industries, /#solutions and /#about.
  * The footer "Explore" list uses the same items.
  */
 export const NAV = [
   { id: "home", label: "Home" },
   { id: "services", label: "Services" },
   { id: "industries", label: "Industries" },
-  { id: "solutions", label: "Product" },
+  { id: "solutions", label: "Solutions" },
   { id: "about", label: "About" },
 ];
 export const HEADER_NAV = NAV;
