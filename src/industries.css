@@ -19,7 +19,7 @@
 .ic-pt .mk{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;background:var(--plum-tint);color:var(--plum)}
 .ic-pt .mk svg{width:18px;height:18px}
 .ic-pt .mk-grad{background:var(--grad);color:#fff}
-.ic-pt h4{margin:0;font-size:15px;font-weight:700}
+.ic-pt h4{margin:0;font-size:15px;font-weight:700;color:inherit}
 .ic-pt p{margin:2px 0 0;font-size:13.5px;line-height:1.45;color:var(--muted)}
 .ic-actions{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
 .ic-actions .btn{pointer-events:auto;min-height:42px;padding:0 18px;font-size:14.5px}
@@ -29,9 +29,11 @@
   /* the card that is not open shows its title only (its text stays in the page, faded out) */
   .ic-card.is-collapsed .ic-in{grid-template-columns:minmax(0,1fr) minmax(0,0fr);column-gap:0}
   .ic-card.is-collapsed .ic-right,.ic-card.is-collapsed .ic-desc,.ic-card.is-collapsed .ic-actions{opacity:0;pointer-events:none}
+  .ic-card.is-collapsed .ic-actions{visibility:hidden}
   .ic-card.is-collapsed .ic-actions .btn{pointer-events:none}
   .ic-card.is-collapsed .ic-eyebrow{color:var(--on-dark)}
-  .ic-right,.ic-desc,.ic-actions{transition:opacity .25s ease}
+  .ic-right,.ic-desc,.ic-actions{transition:opacity .25s ease,visibility 0s linear 0s}
+  .ic-card.is-collapsed .ic-actions{transition:opacity .25s ease,visibility 0s linear .25s}
 }
 @media (max-width:1023px){
   .ic-row{display:grid;gap:16px;height:auto}

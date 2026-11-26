@@ -69,7 +69,8 @@ export default function FloatingActions() {
 
   const toTop = (e) => {
     window.scrollTo({ top: 0, behavior: REDUCED ? "auto" : "smooth" });
-    e.currentTarget.blur();
+    const main = document.getElementById("main");
+    if (main) { main.setAttribute("tabindex", "-1"); main.focus({ preventScroll: true }); } else e.currentTarget.blur();
   };
 
   return (

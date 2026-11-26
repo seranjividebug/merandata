@@ -51,7 +51,7 @@ export default function Search({ onOpen }) {
 
   const optionId = (i) => `${panelId}-o${i}`;
   return (
-    <div className="search" ref={wrap}>
+    <div className="search" ref={wrap} onBlur={(e) => { if (open && !e.currentTarget.contains(e.relatedTarget)) close(false); }}>
       <button
         ref={button}
         type="button"
@@ -73,8 +73,8 @@ export default function Search({ onOpen }) {
               placeholder="Search services, industries, Qlik…"
               aria-label="Search the site"
               role="combobox"
-              aria-expanded="true"
-              aria-controls={panelId + "-list"}
+              aria-expanded={!!(query.trim() && results.length)}
+              aria-controls={query.trim() && results.length ? panelId + "-list" : undefined}
               aria-activedescendant={results[active] ? optionId(active) : undefined}
               autoComplete="off"
               value={query}

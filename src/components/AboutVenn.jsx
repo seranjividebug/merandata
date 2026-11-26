@@ -60,8 +60,8 @@ export default function AboutVenn({ pillars, phase }) {
         {pillars.map(([ic, t, d], i) => (
           <li key={t} className={"vn-item" + (active === i ? " is-on" : "")} style={{ "--c": CIRCLES[i].color }} onMouseEnter={() => setActive(i)} onMouseLeave={() => setActive(null)}>
             <span className="vn-item-ic" aria-hidden="true">{I[ic]}</span>
-            <h3><button type="button" className="vn-btn" aria-describedby={`${base}-d${i}`} onFocus={() => setActive(i)} onBlur={() => setActive(null)}>{t}</button></h3>
-            <p id={`${base}-d${i}`}>{d}</p>
+            <h3>{t}</h3>
+            <p>{d}</p>
           </li>
         ))}
       </ul>

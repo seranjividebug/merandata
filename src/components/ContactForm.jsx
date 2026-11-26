@@ -49,15 +49,18 @@ function validate(d) {
 /** The enquiry form. Shown only when the contact form is switched on (see src/contactConfig.js). */
 export default function ContactForm() {
   const [v, setV] = useState(EMPTY);
+  const resultRef = useRef(null);
   const { search } = useLocation();
   // /?interest=qlik#contact pre-selects the service, unless the visitor already chose one.
   useEffect(() => {
-    const chosen = INTEREST_KEYS[new URLSearchParams(search).get("interest")];
+    const key = new URLSearchParams(search).get("interest");
+    const chosen = Object.prototype.hasOwnProperty.call(INTEREST_KEYS, key) ? INTEREST_KEYS[key] : undefined;
     if (chosen) setV((cur) => (cur.interest ? cur : { ...cur, interest: chosen }));
   }, [search]);
   const [errs, setErrs] = useState({});
   const [touched, setTouched] = useState(false);
   const [status, setStatus] = useState("idle"); // idle | sending | sent | error | limited
+  useEffect(() => { if (status === "sent") resultRef.current?.focus(); }, [status]);
   const [token, setToken] = useState("");
   const [resetKey, setResetKey] = useState(0);
   const refs = { name: useRef(), email: useRef(), message: useRef() };
@@ -92,7 +95,7 @@ export default function ContactForm() {
   return (
     <div className="form-card">
       {status === "sent" ? (
-        <div className="success" role="status">
+        <div className="success" role="status" tabIndex={-1} ref={resultRef}>
           <div className="tick">{I.check}</div>
           <h2>Thank you{v.name ? ", " + v.name.trim().split(" ")[0] : ""}.</h2>
           <p>Your inquiry{v.interest ? " about " + v.interest : ""} has been received. Our team will review it and reply to {v.email || "you"}.</p>

@@ -19,7 +19,7 @@ const IMAGES = {
   "cap-enterprise-reporting": capEnterpriseReporting,
   "cap-automation": capAutomation,
 };
-const warnMissing = (name) => console.warn(`CapabilityStack: image "${name}.webp" failed to load from src/assets/capabilities/`);
+const warnMissing = (name) => import.meta.env.DEV && console.warn(`CapabilityStack: image "${name}.webp" failed to load from src/assets/capabilities/`);
 
 // Stacking is for tablets and desktops; phones show plain cards (no sticky).
 const STACK_MQ = "(min-width: 768px) and (min-height: 440px) and (prefers-reduced-motion: no-preference)";

@@ -34,7 +34,7 @@ export default function Hero() {
   const navigate = useNavigate();
   const count = HERO_SLIDES.length;
   const reduced = useReducedMotion(); // render-time value
-  const playing = !REDUCED && !paused && !userPaused;
+  const playing = !reduced && !paused && !userPaused;
 
   const goTo = useCallback((i) => setIndex((i + count) % count), [count]);
 

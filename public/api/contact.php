@@ -131,7 +131,10 @@ function client_ip(array $config): string
     $header = (string) $config['ip_header'];
     $value = isset($_SERVER[$header]) ? (string) $_SERVER[$header] : '';
     if (strpos($value, ',') !== false) {
-        $value = trim(explode(',', $value)[0]);
+        // A list such as X-Forwarded-For: the first entry can be written by the visitor, the last one is added by
+        // the server's own proxy, so use the last.
+        $parts = explode(',', $value);
+        $value = trim((string) end($parts));
     }
     if (filter_var($value, FILTER_VALIDATE_IP)) {
         return $value;
@@ -270,7 +273,8 @@ function validate_input(array $input): array
         $errors['message'] = 'Write between 10 and 4000 characters.';
     }
     // The page URL is only shown in the email; accept it only when it is on this site.
-    if ($clean['page'] === '' || strpos($clean['page'], SITE_ORIGIN) !== 0 || strlen($clean['page']) > 300) {
+    $onSite = $clean['page'] === SITE_ORIGIN || strpos($clean['page'], SITE_ORIGIN . '/') === 0;
+    if ($clean['page'] === '' || !$onSite || strlen($clean['page']) > 300) {
         $clean['page'] = SITE_ORIGIN . '/';
     }
     return [$clean, $errors];

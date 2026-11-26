@@ -76,7 +76,7 @@ export default function Header({ active }) {
 
   useEffect(() => {
     if (!open) return undefined;
-    const esc = (e) => e.key === "Escape" && setOpen(false);
+    const esc = (e) => { if (e.key === "Escape") { setOpen(false); document.querySelector(".menu-btn")?.focus(); } };
     window.addEventListener("keydown", esc);
     return () => window.removeEventListener("keydown", esc);
   }, [open]);

@@ -32,7 +32,8 @@ return [
 
     // Which server variable holds the visitor's IP address for the rate limit. The default REMOTE_ADDR is
     // right on most servers. If every visitor shows the same IP in the log (ip=... is always the same id),
-    // the site is behind a proxy: try 'HTTP_X_FORWARDED_FOR' or 'HTTP_X_REAL_IP'.
+    // the site is behind a proxy: try 'HTTP_X_REAL_IP' (or 'HTTP_X_FORWARDED_FOR': the last address in the list is used,
+    // because the first one can be written by the visitor).
     // 'ip_header' => 'REMOTE_ADDR',
 
     // Testing only: point these at a local mock server. Leave them out in production.

@@ -4,21 +4,13 @@ import { useSectionLink } from "../nav";
 import RailArt from "./railArt";
 import "../rail.css";
 
-const SCALE = 1; // the card keeps its size when opened; the preview attaches under it
 const INTENT_MS = 250; // hover intent delay
 
 /** Where to put the preview panel and which way the poster grows: left edge, right edge or from the middle. */
-function placement(wrap, isFirst, isLast, scale) {
+function placement(wrap) {
   const r = wrap.getBoundingClientRect();
-  const w = r.width * scale;
-  let origin = "center";
-  if (isFirst) origin = "left";
-  else if (isLast) origin = "right";
-  let left = origin === "left" ? r.left : origin === "right" ? r.right - w : r.left - (w - r.width) / 2;
-  if (left < 8) { left = r.left; origin = "left"; } else if (left + w > window.innerWidth - 8) { left = r.right - w; origin = "right"; }
-  left = Math.max(8, Math.min(left, window.innerWidth - 8 - w));
-  const top = r.top + r.height * scale;
-  return { origin, left, top, width: w };
+  const left = Math.max(8, Math.min(r.left, window.innerWidth - 8 - r.width));
+  return { left, top: r.bottom, width: r.width };
 }
 
 /**
@@ -68,8 +60,8 @@ export default function CapabilityRail({ section, tagline }) {
 
   const place = useCallback((i) => {
     const wrap = railRef.current?.querySelectorAll(".rail-pw")[i];
-    if (wrap) setPos(placement(wrap, i === 0, i === cards.length - 1, reduced ? 1 : SCALE));
-  }, [cards.length, reduced]);
+    if (wrap) setPos(placement(wrap));
+  }, []);
 
   const openAt = useCallback((i) => { place(i); setOpen(i); }, [place]);
   const close = useCallback(() => { window.clearTimeout(timer.current); setOpen(-1); }, []);
@@ -81,10 +73,14 @@ export default function CapabilityRail({ section, tagline }) {
     const again = () => { if (!frame) frame = requestAnimationFrame(() => { frame = 0; place(open); }); };
     window.addEventListener("scroll", again, { passive: true });
     window.addEventListener("resize", again);
+    const onEsc = (e) => { if (e.key === "Escape") close(); };
+    document.addEventListener("keydown", onEsc);
     railRef.current?.addEventListener("scroll", again, { passive: true });
     const rail = railRef.current;
-    return () => { window.removeEventListener("scroll", again); window.removeEventListener("resize", again); rail?.removeEventListener("scroll", again); cancelAnimationFrame(frame); };
-  }, [open, mode, place]);
+    return () => { document.removeEventListener("keydown", onEsc); window.removeEventListener("scroll", again); window.removeEventListener("resize", again); rail?.removeEventListener("scroll", again); cancelAnimationFrame(frame); };
+  }, [open, mode, place, close]);
+
+  useEffect(() => () => window.clearTimeout(timer.current), []);
 
   // Bottom sheet: lock page scroll, focus the close button, Esc closes, Tab stays inside, focus returns on close.
   useEffect(() => {
@@ -157,7 +153,6 @@ export default function CapabilityRail({ section, tagline }) {
                 <li
                   key={c.title}
                   className={"rail-item" + (isOpen ? " is-open" : "")}
-                  style={isOpen && pos && !sheet ? { "--origin": `${pos.origin} top` } : undefined}
                   onPointerEnter={(e) => {
                     if (mode !== "hover" || e.pointerType !== "mouse") return;
                     window.clearTimeout(timer.current);
@@ -185,7 +180,7 @@ export default function CapabilityRail({ section, tagline }) {
                           aria-expanded={isOpen}
                           aria-controls={pid}
                           onClick={(e) => {
-                            if (isOpen && sheet) { close(); return; }
+                            if (isOpen) { close(); return; }
                             lastFocus.current = e.currentTarget;
                             openAt(i);
                           }}

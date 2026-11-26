@@ -8,7 +8,7 @@
 .rail-arrows{margin-left:auto;display:flex;gap:10px}
 .rail-arrow{width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:var(--paper);color:var(--plum);display:grid;place-items:center;cursor:pointer;box-shadow:0 6px 16px -10px rgba(12,18,48,.4);transition:background-color .2s,border-color .2s,color .2s}
 .rail-arrow:hover{background:var(--plum);border-color:var(--plum);color:#fff}
-.rail-arrow:focus-visible,.rail-poster:focus-visible,.rail-chip:focus-visible,.rail-x:focus-visible{outline:3px solid var(--focus);outline-offset:3px}
+.rail-arrow:focus-visible,.rail-chip:focus-visible,.rail-x:focus-visible{outline:3px solid var(--focus);outline-offset:3px}
 .rail-arrow[data-off="true"]{visibility:hidden}
 
 .rail-frame{position:relative}
@@ -60,6 +60,7 @@
 
 /* Bottom sheet (touch and phones) */
 .rail-sheet-open .fab{display:none}
+.rail-sheet-open .header{z-index:0}
 .rail-backdrop{position:fixed;inset:0;z-index:59;background:rgba(5,8,25,.62)}
 .rail-pv.is-sheet{position:fixed;left:0;right:0;bottom:0;width:auto;z-index:60;max-height:80vh;padding:8px 22px calc(28px + env(safe-area-inset-bottom,0px));border-radius:20px 20px 0 0;box-shadow:0 -20px 50px rgba(0,0,0,.5);animation:rail-up .25s ease both}
 .rail-sheet-bar{position:relative;display:flex;justify-content:center;align-items:center;min-height:44px;margin-bottom:6px}
