@@ -79,11 +79,15 @@ function fromCard(slug, interest, seo) {
 }
 
 export const SERVICE_PAGES = [
-  fromCard("consulting-delivery", "consulting", {
-    name: "Consulting & Delivery",
-    title: "Technology Consulting & Delivery Services | Meridanta",
-    description: "Meridanta turns business priorities into technology strategies, architectures and delivered solutions, from roadmap and selection to implementation and support.",
-  }),
+  {
+    ...fromCard("consulting-delivery", "consulting", {
+      name: "Consulting & Delivery",
+      title: "Technology Consulting & Delivery Services | Meridanta",
+      description: "Meridanta turns business priorities into technology strategies, architectures and delivered solutions, from roadmap and selection to implementation and support.",
+    }),
+    // Hero background (src/assets/hero/hero-consulting.*, made by scripts/make-responsive-images.py).
+    heroImage: { base: "hero/hero-consulting", widths: [1024], full: 2172, height: 724, alt: "A laptop with a project plan and a ring of six steps around a growth chart: Strategy & Advisory, Solution Design, Implementation & Delivery, Testing & Quality, Operations & Support, Roadmap & Execution" },
+  },
   fromCard("ai-solutions", "ai", {
     name: "AI Solutions & Services",
     title: "AI Solutions & Services for Enterprises | Meridanta",

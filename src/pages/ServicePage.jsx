@@ -4,6 +4,8 @@ import { I } from "../components/Icons";
 import { Breadcrumb, QlikCta } from "../components/QlikBits";
 import AnimatedButton from "../components/AnimatedButton";
 import { seoFor } from "../seo";
+import Picture from "../components/Picture";
+import { responsiveImage } from "../images";
 import { servicePath } from "../services";
 
 /** One capability card: number, icon, title, description and bullets (description and bullets are optional). */
@@ -29,11 +31,16 @@ function CapabilityCard({ c }) {
 export default function ServicePage({ page }) {
   const link = useSectionLink();
   const path = servicePath(page);
-  const { hero } = page;
+  const { hero, heroImage: bg } = page;
   return (
     <>
       <PageMeta path={path} />
-      <section className="qhero sp-hero" aria-labelledby="sp-h1">
+      <section className={"qhero sp-hero" + (bg ? " has-bg" : "")} aria-labelledby="sp-h1">
+        {bg && (
+          <div className="sp-hero-bg">
+            <Picture className="sp-hero-img" image={responsiveImage(bg.base, bg.widths, bg.full)} sizes="100vw" alt={bg.alt} width={bg.full} height={bg.height} decoding="async" fetchpriority="high" />
+          </div>
+        )}
         <div className="wrap">
           <Breadcrumb trail={seoFor(path).trail} />
           <div className="sp-hero-in">
@@ -45,7 +52,7 @@ export default function ServicePage({ page }) {
               <AnimatedButton shine className="hero-btn" {...link("contact")}>{hero.cta}</AnimatedButton>
             </div>
           </div>
-          <span className="sp-hero-art" aria-hidden="true">{I[page.icon]}</span>
+          {!bg && <span className="sp-hero-art" aria-hidden="true">{I[page.icon]}</span>}
         </div>
       </section>
 

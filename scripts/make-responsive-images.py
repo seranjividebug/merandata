@@ -12,6 +12,7 @@ SOURCES = {
     "hero/hero-qlik.webp": (1024,),
     "hero/hero-ai.webp": (1024,),
     "hero/hero-healthcare.webp": (1024,),
+    "hero/hero-consulting.webp": (1024,),
     "qlik-platform.webp": (640, 1024),
 }
 
