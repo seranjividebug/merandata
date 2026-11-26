@@ -35,7 +35,7 @@ export default function ServicePage({ page }) {
   return (
     <>
       <PageMeta path={path} />
-      <section className={"qhero sp-hero" + (bg ? " has-bg" : "")} aria-labelledby="sp-h1">
+      <section className={"qhero sp-hero" + (bg ? " has-bg" : "") + (bg && bg.compact ? " is-compact" : "")} aria-labelledby="sp-h1">
         {bg && (
           <div className="sp-hero-bg">
             <Picture className="sp-hero-img" image={responsiveImage(bg.base, bg.widths, bg.full)} sizes="100vw" alt={bg.alt} width={bg.full} height={bg.height} decoding="async" fetchpriority="high" />

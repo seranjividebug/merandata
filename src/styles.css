@@ -450,6 +450,30 @@ section.alt{background:var(--mist)}
 .sp-hero.has-bg .sp-hero-in{max-width:620px}
 .sp-hero-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(12,18,48,.6) 0%,rgba(12,18,48,.35) 45%,rgba(12,18,48,0) 72%)}
 @media (max-width:767px){.sp-hero-bg::after{background:linear-gradient(180deg,rgba(12,18,48,.85) 0%,rgba(12,18,48,.68) 100%)}}
+/* Compact hero for pages with heroImage.compact (Data Engineering): smaller type, tighter spacing, picture stays on the right */
+.qhero.sp-hero.is-compact{padding:14px 0 26px;min-height:0}
+.sp-hero.is-compact .sp-hero-img{object-position:right 25%}
+.sp-hero.is-compact .crumbs ol{margin-bottom:8px;font-size:12.5px}
+.sp-hero.is-compact .sp-hero-in{max-width:640px}
+.sp-hero.is-compact .qeyebrow{font-size:12px}
+.sp-hero.is-compact h1{font-size:clamp(26px,2.4vw,36px);max-width:none;line-height:1.1;margin-top:8px}
+.sp-hero.is-compact .sp-support{margin-top:10px;font-size:13px;line-height:1.45}
+.sp-hero.is-compact .lede{margin-top:10px;font-size:15px;line-height:1.5;max-width:none}
+.sp-hero.is-compact .qhero-ctas{margin-top:16px}
+.sp-hero.is-compact .qhero-ctas .abtn.hero-btn{height:42px;min-height:42px;padding:0 20px;font-size:14px}
+@media (max-width:1180px){
+  .sp-hero.is-compact .sp-hero-in{max-width:60%}
+  .sp-hero.is-compact h1{font-size:clamp(26px,4vw,32px)}
+  .sp-hero.is-compact .sp-hero-bg::after{background:linear-gradient(90deg,rgba(12,18,48,.9) 0%,rgba(12,18,48,.75) 55%,rgba(12,18,48,.35) 100%)}
+}
+@media (max-width:767px){
+  .sp-hero.is-compact .sp-hero-in{max-width:none}
+  .qhero.sp-hero.is-compact{padding:12px 0 22px}
+  .sp-hero.is-compact h1{font-size:26px}
+  .sp-hero.is-compact .lede{font-size:14.5px}
+  .sp-hero.is-compact .sp-support{font-size:12.5px}
+  .sp-hero.is-compact .qhero-ctas .abtn.hero-btn{height:44px}
+}
 .sp-hero-art{position:absolute;right:28px;top:50%;margin-top:-90px;color:var(--on-dark);opacity:.1;pointer-events:none}
 .sp-hero-art svg{display:block;width:240px;height:240px;stroke-width:1.1}
 @media (max-width:1100px){.sp-hero-art{display:none}}
