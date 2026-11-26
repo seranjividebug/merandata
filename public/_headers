@@ -1,3 +1,17 @@
-# Cloudflare static assets: build output in /assets/ has a content hash in its file name, so it can be cached for a year.
+# Cloudflare static assets (used by the preview site; Hostinger ignores this file and uses .htaccess instead).
+
+# Build output in /assets/ has a content hash in its file name, so it can be cached for a year.
 /assets/*
   Cache-Control: public, max-age=31536000, immutable
+
+# Basic security headers (the same ones public/.htaccess sets on Hostinger).
+/*
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: SAMEORIGIN
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=()
+
+# Keep search engines off the preview copy on *.workers.dev only. This rule names the host on purpose:
+# do NOT turn it into a plain "/*" noindex rule, or a production site served from Cloudflare would disappear from search.
+https://*.workers.dev/*
+  X-Robots-Tag: noindex, nofollow

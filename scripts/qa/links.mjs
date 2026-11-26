@@ -15,7 +15,15 @@ async function click(start, label, locatorFn, expect, vp = { width: 1440, height
   if (!(await loc.count())) { check(false, `${start} ${label}: link not found`); await p.close(); return; }
   await loc.scrollIntoViewIfNeeded().catch(() => {});
   await loc.click({ timeout: 5000 }).catch(async () => { await loc.click({ force: true }); });
-  await p.waitForTimeout(2800); // long smooth scrolls (several thousand px) need about two seconds
+  // Wait until the page has stopped scrolling (a long smooth scroll takes a while, longer on a busy machine), at most 10 s.
+  await p.waitForTimeout(600);
+  for (let i = 0, last = -1, still = 0; i < 50 && still < 3; i += 1) {
+    const y = await p.evaluate(() => Math.round(scrollY));
+    still = y === last ? still + 1 : 0;
+    last = y;
+    await p.waitForTimeout(200);
+  }
+  await p.waitForTimeout(300);
   const u = new URL(p.url());
   const got = norm(u.pathname) + (u.hash || "");
   let topOk = true;

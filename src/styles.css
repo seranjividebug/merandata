@@ -178,6 +178,9 @@ section.block{padding:64px 0}
 section.alt{background:var(--mist)}
 /* Long below-the-fold sections skip layout and paint until they are near the screen (faster first paint). The "auto" size is remembered once the section has been shown. */
 .cv{content-visibility:auto;contain-intrinsic-size:auto 700px}
+/* The stacked home sections are much taller than 700px on tablets and phones; a closer first estimate avoids layout jumps while scrolling */
+@media (max-width:1023px){#industries.cv,#solutions.cv,#about.cv{contain-intrinsic-size:auto 1250px}}
+@media (max-width:767px){#industries.cv,#solutions.cv,#about.cv{contain-intrinsic-size:auto 1450px}}
 .head{max-width:720px;margin-bottom:28px}
 .head .rule{width:40px;height:4px;border-radius:4px;background:var(--grad);margin-bottom:16px}
 .head h2{font-size:clamp(26px,2.5vw,34px);font-weight:700;letter-spacing:-.02em}

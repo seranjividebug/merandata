@@ -14,13 +14,21 @@ Tested in Microsoft Edge (Chromium) through Playwright against the production bu
 | Security review (code, Apache config, dependencies, secrets) | 0 | 0 | 3 | 6 | 9 |
 | Code and accessibility review of `src/` | 0 | 0 | 9 | 13 | 22 |
 
-One more item came from running the site: Lighthouse scores the home page 96 for accessibility because of two
-contrast hits on the Industries card headings (text colour #1b1d2b measured over #0c1230). It is **not resolved**:
-in a real browser at 412px and 1440px the cards are white with dark text (computed colours checked), so it looks like a
-measurement artefact of the `content-visibility` sections, and `color:inherit` on those headings (added) did not change
-the score. The `npm audit` "high" rating is a dependency advisory and is listed under security.
+Second pass (same day): three more items came from running the site, all fixed:
+- Lighthouse scored the home page 96 for accessibility (two contrast hits on the Industries headings). Cause found with the
+  axe engine: the stacked home sections are much taller on phones and tablets than the 700px placeholder size used by
+  `content-visibility`, so a section measured wrong while off screen. Placeholder sizes are now 1250px (tablet) and 1450px (phone).
+  Home accessibility is now 100.
+- A full axe scan found the floating "Talk to an Expert" button outside any page landmark (now an `aside` labelled
+  "Quick actions") and two regions with the same name on the Consulting and AI pages (the capability list is now named
+  "<heading> cards").
+- The Cloudflare preview host sent no security headers and was open to search engines. `public/_headers` now sets the same
+  headers as `.htaccess` and a `noindex` rule for `*.workers.dev` only (comment in the file explains why it names the host).
+  Takes effect on the next preview deploy; not yet verified live.
 
-## 2. Fixed (19 of the 31)
+The `npm audit` "high" rating is a dependency advisory and is listed under security.
+
+## 2. Fixed (19 of the 31, plus the three second-pass items above)
 
 | Severity | Issue | Fix |
 |---|---|---|
@@ -63,6 +71,7 @@ the score. The `npm audit` "high" rating is a dependency advisory and is listed 
 
 | Severity | Item | Why not fixed |
 |---|---|---|
+| Low | Qlik page, "Service offerings" journey: the steps that are not the active one are shown at 35% opacity (axe: contrast 2.2:1 for their text, desktop only; Lighthouse does not flag it) | Deliberate design (spotlight on the active step). Fixing it means replacing the fade with a different de-emphasis, a design decision. |
 | Medium | No Content-Security-Policy | Needs testing on the real server with Turnstile switched on; a wrong policy would break the site. Suggested policy is in the security review notes (script-src self + inline + challenges.cloudflare.com). |
 | Medium | `CapabilityRail.jsx` is about 200 lines with several concerns; `FloatingActions.jsx` has four near-identical observers | Refactor only, no defect; risk of regressions |
 | Low | Rate limit counts invalid submissions and allows requests if its data folder is unwritable (Turnstile still applies) | Documented design |
@@ -80,25 +89,26 @@ offerings, accelerators, case studies), the Healthcare industry page, contact pa
 (desktop dropdown and mobile menu), search, floating buttons, deep links, browser back and forward, anchor links between
 pages, with JavaScript disabled, without `requestIdleCallback`, with reduced motion and with touch.
 
-## 6. Test results (final build)
+## 6. Test results (final build, second pass)
 
 | Suite | Result |
 |---|---|
 | `npm run build` | passes |
 | `npm run verify` (content and structure claims) | 178 checks passed, 0 failed |
 | `npm run check:html` | 0 errors, 0 warnings |
-| `qa:routes` | 31 checks; first run had 1 timing failure under load, 0 failures on the next two runs |
-| `qa:console` | 18 passed, 0 console messages in total |
+| axe accessibility scan (all rules) on 9 pages (home, Qlik, contact, privacy, 3 service pages, Healthcare, 404) at 412, 820 and 1440 px | 26 of 27 clean; 1 finding, see section 4 |
+| `qa:routes` | 31 passed, 0 failed |
+| `qa:console` | 18 passed, 0 console messages |
 | `qa:contact` | 27 passed |
 | `qa:form` | skipped: this build shows the email contact card (the form is switched off) |
 | `qa:resilience` | 22 passed |
 | `qa:crawler` | 14 passed |
-| `qa:layout` | 45 page and width combinations, 0 problems (no overlap, clipping, horizontal scroll or console errors) |
-| `qa:links` | 86 passed, 2 failed: both are "scroll to a section on the home page" checks that read the position before the smooth scroll had finished; re-measured by hand in 8 trials, every one settled at 80px under the header |
-| Extra browser checks for the fixes | 11 of 12 passed; the one failing check was a wrong test expectation (after Esc a card reopens only when the pointer re-enters), not a defect |
-| Lighthouse accessibility | Data Engineering 100, Consulting 100, AI Solutions 100, home **96** (see section 1, unresolved) |
+| `qa:layout` | 45 page and width combinations, 0 problems |
+| `qa:links` | 88 passed, 0 failed (the check now waits for smooth scrolling to finish; earlier two failures were that timing) |
+| Lighthouse accessibility | home 100, Qlik 100, Data Engineering 100 (Consulting and AI 100 earlier) |
+| Lighthouse best practices / SEO | 100 / 100 (Consulting is 69 for SEO on purpose: it is a `noindex` draft) |
 | Lighthouse CLS | 0 on every page measured |
-| Lighthouse performance | 97-98 on a quiet machine (Data Engineering, Consulting, AI); 32-68 in runs taken while other programs were busy (not a reliable figure; re-measure on an idle machine) |
+| Lighthouse performance | Data Engineering 93, home 82, Qlik 73 with other programs running on the machine; 97-98 earlier on a quiet machine. Re-measure on an idle machine or on the live host. |
 
 ## 7. Not tested (cannot be tested here)
 

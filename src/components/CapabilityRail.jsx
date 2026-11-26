@@ -143,7 +143,7 @@ export default function CapabilityRail({ section, tagline }) {
         </div>
       </div>
       <div className="rail-frame" data-prev={edge.prev} data-next={edge.next}>
-        <div className="rail" ref={railRef} role="region" aria-label="Key capabilities" onKeyDown={onKeyDown}>
+        <div className="rail" ref={railRef} role="region" aria-label={`${title} cards`} onKeyDown={onKeyDown}>
           <ol className="rail-track">
             {cards.map((c, i) => {
               const isOpen = open === i;
