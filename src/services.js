@@ -18,6 +18,8 @@ const DATA_ENGINEERING = {
   title: "Data Engineering & Analytics",
   interest: "data-engineering",
   icon: "db",
+  // Hero background (src/assets/hero/hero-data.*, made by scripts/make-responsive-images.py).
+  heroImage: { base: "hero/hero-data", widths: [1024], full: 2033, height: 774, alt: "A glowing database stack surrounded by icons for analytics, security, integration, automation and AI above a flowing wave of data points" },
   seo: {
     title: "Enterprise Data Engineering & Analytics Services | Meridanta",
     description: "Meridanta builds modern, secure and scalable data platforms: data strategy, engineering, integration, governance, business intelligence and analytics.",

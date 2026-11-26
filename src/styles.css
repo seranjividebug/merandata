@@ -447,7 +447,8 @@ section.alt{background:var(--mist)}
 .sp-hero-bg picture{display:block;width:100%;height:100%}
 .sp-hero-img{display:block;width:100%;height:100%;object-fit:cover;object-position:right 20%}
 .qhero.sp-hero.has-bg{min-height:clamp(380px,28vw,520px)}
-.sp-hero-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(12,18,48,.55) 0%,rgba(12,18,48,.2) 45%,rgba(12,18,48,0) 70%)}
+.sp-hero.has-bg .sp-hero-in{max-width:620px}
+.sp-hero-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(12,18,48,.6) 0%,rgba(12,18,48,.35) 45%,rgba(12,18,48,0) 72%)}
 @media (max-width:767px){.sp-hero-bg::after{background:linear-gradient(180deg,rgba(12,18,48,.85) 0%,rgba(12,18,48,.68) 100%)}}
 .sp-hero-art{position:absolute;right:28px;top:50%;margin-top:-90px;color:var(--on-dark);opacity:.1;pointer-events:none}
 .sp-hero-art svg{display:block;width:240px;height:240px;stroke-width:1.1}
