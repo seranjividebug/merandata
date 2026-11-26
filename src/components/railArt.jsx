@@ -1,5 +1,5 @@
 // Custom illustrations for the capability cards (src/components/CapabilityRail.jsx). Pure inline SVG, no images to load.
-// Each scene is drawn on a 280 x 176 canvas in navy / purple / blue with soft neon lines. The scene is picked by the
+// Each scene is drawn in the middle (280 x 176) of a wider 440 x 176 backdrop in navy / purple / blue with soft neon lines. The scene is picked by the
 // card's `art` key (src/services.js); the card text stays real HTML next to it.
 
 const CY = "#5EE7FF", PU = "#C4A1FF", BL = "#6EA8FF", PK = "#F0ABFC", W = "#FFFFFF";
@@ -272,7 +272,7 @@ export default function RailArt({ id, i, art }) {
   const Scene = SCENES[art] || SCENES[ART_KEYS[i % ART_KEYS.length]];
   const [a, b] = BACKDROPS[i % BACKDROPS.length];
   return (
-    <svg className="rail-art" viewBox="0 0 280 176" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+    <svg className="rail-art" viewBox="-80 0 440 176" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
       <defs>
         <linearGradient id={`${id}-bg`} x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor={a} /><stop offset="1" stopColor={b} /></linearGradient>
         <radialGradient id={`${id}-r1`} cx=".82" cy=".22" r=".6"><stop offset="0" stopColor="#8B5CF6" stopOpacity=".6" /><stop offset="1" stopColor="#8B5CF6" stopOpacity="0" /></radialGradient>
@@ -280,10 +280,10 @@ export default function RailArt({ id, i, art }) {
         <pattern id={`${id}-gr`} width="20" height="20" patternUnits="userSpaceOnUse"><path d="M20 0H0V20" fill="none" stroke="#fff" strokeOpacity=".06" /></pattern>
         <filter id={`${id}-f`} x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="1.8" result="b" /><feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge></filter>
       </defs>
-      <rect width="280" height="176" fill={`url(#${id}-bg)`} />
-      <rect width="280" height="176" fill={`url(#${id}-gr)`} />
-      <rect width="280" height="176" fill={`url(#${id}-r1)`} />
-      <rect width="280" height="176" fill={`url(#${id}-r2)`} />
+      <rect x="-80" width="440" height="176" fill={`url(#${id}-bg)`} />
+      <rect x="-80" width="440" height="176" fill={`url(#${id}-gr)`} />
+      <rect x="-80" width="440" height="176" fill={`url(#${id}-r1)`} />
+      <rect x="-80" width="440" height="176" fill={`url(#${id}-r2)`} />
       <g filter={`url(#${id}-f)`}><Scene /></g>
     </svg>
   );

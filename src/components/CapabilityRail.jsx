@@ -117,9 +117,9 @@ export default function CapabilityRail({ section, tagline }) {
   };
 
   const onKeyDown = (e) => {
-    if (e.key === "Escape" && mode === "hover" && open >= 0) { const n = open; close(); skipFocus.current = true; railRef.current?.querySelectorAll(".rail-poster")[n]?.focus(); skipFocus.current = false; return; }
+    if (e.key === "Escape" && mode === "hover" && open >= 0) { const n = open; close(); skipFocus.current = true; railRef.current?.querySelectorAll(".rail-go")[n]?.focus(); skipFocus.current = false; return; }
     if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
-    const posters = [...railRef.current.querySelectorAll(".rail-poster")];
+    const posters = [...railRef.current.querySelectorAll(".rail-go")];
     const at = posters.indexOf(document.activeElement);
     if (at < 0) return;
     e.preventDefault();
@@ -164,30 +164,36 @@ export default function CapabilityRail({ section, tagline }) {
                     timer.current = window.setTimeout(() => openAt(i), reduced ? 0 : INTENT_MS);
                   }}
                   onPointerLeave={(e) => { if (mode === "hover" && e.pointerType === "mouse") close(); }}
-                  onFocus={(e) => { if (mode === "hover" && !skipFocus.current && e.target.matches(":focus-visible") && e.target.classList.contains("rail-poster")) openAt(i); }}
+                  onFocus={(e) => { if (mode === "hover" && !skipFocus.current && e.target.matches(":focus-visible") && e.target.classList.contains("rail-go")) openAt(i); }}
                   onBlur={(e) => { if (mode === "hover" && !e.currentTarget.contains(e.relatedTarget)) close(); }}
                 >
                   <div className="rail-pw">
-                    <button
-                      type="button"
-                      className="rail-poster"
-                      aria-expanded={isOpen}
-                      aria-controls={pid}
-                      onClick={(e) => {
-                        if (isOpen && sheet) { close(); return; }
-                        lastFocus.current = e.currentTarget;
-                        openAt(i);
-                      }}
-                    >
-                      <span className="rail-media">
+                    <div className="rail-poster">
+                      <div className="rail-media">
                         <RailArt id={`${id}-${i}`} i={i} art={c.art} />
                         <span className="rail-num" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
-                      </span>
-                      <span className="rail-body">
-                        <span className="rail-name">{c.title}</span>
-                        <span className="rail-go" aria-hidden="true">{I.next}</span>
-                      </span>
-                    </button>
+                      </div>
+                      <div className="rail-body">
+                        <div className="rail-txt">
+                          <h3 className="rail-name">{c.title}</h3>
+                          {c.desc && <p className="rail-text">{c.desc}</p>}
+                        </div>
+                        <button
+                          type="button"
+                          className="rail-go"
+                          aria-label={`More about ${c.title}`}
+                          aria-expanded={isOpen}
+                          aria-controls={pid}
+                          onClick={(e) => {
+                            if (isOpen && sheet) { close(); return; }
+                            lastFocus.current = e.currentTarget;
+                            openAt(i);
+                          }}
+                        >
+                          {I.next}
+                        </button>
+                      </div>
+                    </div>
                   </div>
                   {sheet && isOpen && <div className="rail-backdrop" onClick={close} aria-hidden="true" />}
                   <div
@@ -206,8 +212,8 @@ export default function CapabilityRail({ section, tagline }) {
                         <button type="button" className="rail-x" aria-label="Close preview" onClick={close}>{I.close}</button>
                       </div>
                     )}
-                    <h3>{c.title}</h3>
-                    <p className="rail-desc">{c.desc || tagline}</p>
+                    <div className="rail-pv-title">{c.title}</div>
+                    {!c.desc && <p className="rail-desc">{tagline}</p>}
                     {c.bullets?.length > 0 && <ul>{c.bullets.map((b) => <li key={b}>{b}</li>)}</ul>}
                     <a className="rail-chip" tabIndex={isOpen ? 0 : -1} {...link("contact")}>Discuss <span aria-hidden="true">→</span></a>
                   </div>

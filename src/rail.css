@@ -17,35 +17,39 @@
 .rail-frame::after{right:0;background:linear-gradient(270deg,var(--paper),transparent)}
 .rail-frame[data-prev="true"]::before,.rail-frame[data-next="true"]::after{opacity:1}
 
-.rail{overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scroll-behavior:smooth;scrollbar-width:none;-webkit-overflow-scrolling:touch;
-  padding:28px var(--rail-pad) 64px;scroll-padding-inline:var(--rail-pad)}
-.rail::-webkit-scrollbar{display:none}
-.rail-track{display:flex;gap:24px;list-style:none;margin:0;padding:0;width:max-content}
-
-.rail-item{position:relative;flex:none;scroll-snap-align:start}
+/* Desktop: 3 cards per row. Tablet: 2 per row. Phones (below): a swipeable row with the next card peeking in. */
+.rail{padding:28px var(--rail-pad) 40px}
+.rail-track{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;list-style:none;margin:0;padding:0}
+.rail-item{position:relative;display:flex}
 .rail-item.is-open{z-index:20}
-.rail-pw{position:relative;width:280px;height:290px}
-.rail-poster{position:absolute;inset:0;display:flex;flex-direction:column;margin:0;padding:0;border:1px solid var(--line);border-radius:18px;overflow:hidden;background:var(--paper);color:var(--ink);text-align:left;cursor:pointer;font:inherit;
-  box-shadow:0 14px 30px -20px rgba(12,18,48,.45);transition:transform .3s ease,box-shadow .3s ease,border-color .3s,border-radius .2s}
-.rail-poster:hover,.rail-item.is-open .rail-poster{border-color:#CDB8E6}
-.rail-poster:hover{transform:translateY(-5px);box-shadow:0 26px 40px -22px rgba(66,17,111,.55)}
-.rail-item.is-open .rail-poster{transform:none;border-radius:18px 18px 0 0;box-shadow:0 20px 40px -22px rgba(66,17,111,.55)}
-.rail-media{position:relative;display:block;flex:none;height:176px;overflow:hidden;background:var(--navy)}
+.rail-pw{position:relative;flex:1;min-width:0;display:flex}
+.rail-poster{position:relative;flex:1;min-width:0;display:flex;flex-direction:column;border:1px solid var(--line);border-radius:18px;overflow:hidden;background:var(--paper);color:var(--ink);
+  box-shadow:0 14px 30px -22px rgba(12,18,48,.45);transition:box-shadow .3s ease,border-color .3s,border-radius .2s}
+.rail-poster:hover,.rail-item.is-open .rail-poster{border-color:#CDB8E6;box-shadow:0 24px 40px -24px rgba(66,17,111,.55)}
+.rail-item.is-open .rail-poster{border-radius:18px 18px 0 0}
+.rail-pw:has(.rail-go:focus-visible) .rail-poster{outline:3px solid var(--focus);outline-offset:3px}
+.rail-media{position:relative;display:block;flex:none;height:120px;overflow:hidden;background:var(--navy)}
 .rail-art{display:block;width:100%;height:100%;transition:transform .6s ease}
 .rail-poster:hover .rail-art,.rail-item.is-open .rail-art{transform:scale(1.06)}
 .rail-num{position:absolute;left:12px;top:12px;padding:3px 10px;border-radius:999px;background:rgba(12,18,48,.55);border:1px solid rgba(255,255,255,.22);color:#fff;font-size:12px;font-weight:700;letter-spacing:.06em;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
-.rail-body{flex:1;display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:14px 16px 16px 18px}
-.rail-name{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;overflow:hidden;font-size:17px;font-weight:700;line-height:1.3;letter-spacing:-.01em;color:var(--ink)}
-.rail-go{flex:none;display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--plum-tint);color:var(--plum);transition:background-color .25s,color .25s,transform .25s}
+.rail-body{flex:1;display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:14px 14px 16px 18px}
+.rail-txt{min-width:0}
+.rail-name{margin:0;font-size:17px;font-weight:700;line-height:1.3;letter-spacing:-.01em;color:var(--ink)}
+.rail-text{margin:6px 0 0;font-size:13.5px;line-height:1.5;color:var(--muted)}
+/* The arrow button also covers the whole card (::after), so the card is one click or tap target */
+.rail-go{flex:none;display:grid;place-items:center;width:30px;height:30px;padding:0;border:0;border-radius:50%;background:var(--plum-tint);color:var(--plum);cursor:pointer;transition:background-color .25s,color .25s,transform .25s}
+.rail-go::after{content:"";position:absolute;inset:0}
+.rail-go:focus-visible{outline:none}
 .rail-poster:hover .rail-go,.rail-item.is-open .rail-go{background:var(--plum);color:#fff;transform:translateX(2px)}
 
 /* Preview content: in the HTML always, visually hidden until opened */
 .rail-pv{position:absolute;width:1px;height:1px;margin:-1px;padding:0;border:0;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
 .rail-pv.is-panel,.rail-pv.is-sheet{height:auto;margin:0;clip:auto;clip-path:none;white-space:normal;overflow-y:auto;background:var(--navy-2);color:#fff}
 .rail-pv.is-panel{position:fixed;z-index:40;padding:18px 18px 20px;border-radius:0 0 18px 18px;box-shadow:0 30px 50px -14px rgba(12,18,48,.6);animation:rail-in .2s ease both}
-.rail-pv h3{margin:0 0 8px;font-size:15px;font-weight:700;line-height:1.3;color:#fff}
-/* In the desktop preview the card above already shows the title: keep the heading for screen readers and search engines, hide it visually */
-.rail-pv.is-panel h3{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
+.rail-pv-title{margin:0 0 8px;font-size:15px;font-weight:700;line-height:1.3;color:#fff}
+/* The card above already shows the title, so the desktop preview leaves it out (the sheet keeps it) */
+.rail-pv.is-panel .rail-pv-title{display:none}
+.rail-pv.is-panel ul{margin-top:0;padding-top:0;border-top:0}
 .rail-desc{margin:0;font-size:12.5px;line-height:1.5;color:#CFD2EA}
 .rail-pv ul{list-style:none;margin:12px 0 0;padding:12px 0 0;border-top:1px solid rgba(255,255,255,.14);display:grid;gap:7px}
 .rail-pv li{position:relative;padding-left:15px;font-size:12.5px;line-height:1.4;color:#E4E6F6}
@@ -61,30 +65,35 @@
 .rail-sheet-bar{position:relative;display:flex;justify-content:center;align-items:center;min-height:44px;margin-bottom:6px}
 .rail-grip{width:44px;height:5px;border-radius:3px;background:rgba(255,255,255,.28)}
 .rail-x{position:absolute;right:-10px;top:0;width:44px;height:44px;border:0;border-radius:50%;background:rgba(255,255,255,.1);color:#fff;display:grid;place-items:center;cursor:pointer}
-.is-sheet h3{font-size:21px;margin-bottom:10px}
+.is-sheet .rail-pv-title{font-size:21px;margin-bottom:10px}
 .is-sheet .rail-desc{font-size:15px}
 .is-sheet li{font-size:14.5px;padding-left:17px}
 .is-sheet .rail-chip{font-size:15px;padding:11px 22px}
 @keyframes rail-up{from{transform:translateY(40px);opacity:0}to{transform:none;opacity:1}}
 
 @media (max-width:1023px){
-  .rail-pw{width:260px;height:280px}
-  .rail-media{height:162px}
+  .rail-track{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (min-width:768px){
+  .rail-arrows{display:none}
+  .rail-frame::before,.rail-frame::after{display:none}
 }
 @media (max-width:767px){
   .rail-sec{padding-top:44px}
   .rail-head h2{font-size:24px;flex:1 0 100%}
   .rail-head{gap:12px}
-  .rail{padding-top:20px;padding-bottom:36px}
-  .rail-track{gap:16px}
-  .rail-pw{width:240px;height:264px}
-  .rail-media{height:150px}
+  .rail{overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scroll-behavior:smooth;scrollbar-width:none;-webkit-overflow-scrolling:touch;padding:20px var(--rail-pad) 32px;scroll-padding-inline:var(--rail-pad)}
+  .rail::-webkit-scrollbar{display:none}
+  .rail-track{display:flex;gap:16px;width:max-content}
+  .rail-item{flex:none;scroll-snap-align:start}
+  .rail-pw{flex:none;width:272px}
+  .rail-media{height:110px}
   .rail-name{font-size:16px}
+  .rail-text{font-size:13px}
 }
 @media (prefers-reduced-motion:reduce){
   .rail{scroll-behavior:auto}
   .rail-poster,.rail-arrow,.rail-art,.rail-go,.rail-frame::before,.rail-frame::after{transition:none}
-  .rail-poster:hover{transform:none}
   .rail-poster:hover .rail-art,.rail-item.is-open .rail-art{transform:none}
   .rail-pv.is-panel,.rail-pv.is-sheet{animation:none}
 }
