@@ -1,0 +1,83 @@
+/* Key capabilities "Top 10" rail (src/components/CapabilityRail.jsx). Dark band, horizontal scroll-snap rail,
+   big outlined numerals behind poster cards, and a preview panel (desktop hover/focus) or bottom sheet (touch). */
+.rail-sec{--rail-pad:max(28px,calc((100% - 1200px) / 2 + 28px));position:relative;z-index:3;color:#fff;padding:56px 0 8px;
+  background:linear-gradient(180deg,#080C24 0,var(--navy) 90px,var(--navy) calc(100% - 90px),#080C24 100%)}
+.rail-sec .wrap{position:relative}
+.rail-head{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.rail-head h2{margin:0;color:#fff;font-size:28px;font-weight:800;letter-spacing:-.02em;line-height:1.2}
+.rail-count{font-size:13px;font-weight:600;letter-spacing:.04em;color:#C3BEE0;padding:4px 12px;border:1px solid rgba(255,255,255,.2);border-radius:999px}
+.rail-arrows{margin-left:auto;display:flex;gap:10px}
+.rail-arrow{width:44px;height:44px;border-radius:50%;border:1px solid rgba(255,255,255,.32);background:rgba(255,255,255,.07);color:#fff;display:grid;place-items:center;cursor:pointer;transition:background-color .2s,border-color .2s}
+.rail-arrow:hover{background:rgba(255,255,255,.16);border-color:#fff}
+.rail-arrow:focus-visible,.rail-poster:focus-visible,.rail-chip:focus-visible,.rail-x:focus-visible{outline:3px solid #fff;outline-offset:3px}
+.rail-arrow[data-off="true"]{visibility:hidden}
+
+.rail-frame{position:relative}
+.rail-frame::before,.rail-frame::after{content:"";position:absolute;top:0;bottom:0;width:72px;z-index:2;pointer-events:none;opacity:0;transition:opacity .25s}
+.rail-frame::before{left:0;background:linear-gradient(90deg,var(--navy),rgba(12,18,48,0))}
+.rail-frame::after{right:0;background:linear-gradient(270deg,var(--navy),rgba(12,18,48,0))}
+.rail-frame[data-prev="true"]::before,.rail-frame[data-next="true"]::after{opacity:1}
+
+.rail{overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scroll-behavior:smooth;scrollbar-width:none;-webkit-overflow-scrolling:touch;
+  padding:36px var(--rail-pad) 104px;scroll-padding-inline:var(--rail-pad)}
+.rail::-webkit-scrollbar{display:none}
+.rail-track{display:flex;gap:26px;list-style:none;margin:0;padding:0;width:max-content}
+
+.rail-item{position:relative;flex:none;padding-left:58px;scroll-snap-align:start}
+.rail-item.is-open{z-index:20}
+.rail-num{position:absolute;left:0;bottom:-34px;z-index:0;font-size:200px;line-height:1;font-weight:800;letter-spacing:-.04em;color:transparent;-webkit-text-stroke:3px rgba(201,179,234,.6);pointer-events:none;user-select:none}
+.rail-pw{position:relative;z-index:1;width:220px;height:300px}
+.rail-poster{position:absolute;inset:0;display:block;margin:0;padding:0;border:0;border-radius:14px;overflow:hidden;background:var(--navy);color:#fff;text-align:left;cursor:pointer;font:inherit;
+  transform-origin:var(--origin,center top);transition:transform .25s ease,box-shadow .25s ease,border-radius .25s}
+.rail-item.is-open .rail-poster{transform:scale(1.25);border-radius:14px 14px 0 0;box-shadow:0 24px 50px -10px rgba(0,0,0,.7)}
+.rail-art{position:absolute;inset:0;width:100%;height:100%;display:block}
+.rail-ic{position:absolute;left:0;right:0;top:54px;display:grid;place-items:center;color:rgba(255,255,255,.9)}
+.rail-ic svg{width:64px;height:64px;stroke-width:1.4}
+.rail-title{position:absolute;left:0;right:0;bottom:0;padding:56px 16px 16px;background:linear-gradient(180deg,rgba(8,12,36,0) 0,rgba(8,12,36,.92) 62%)}
+.rail-title span{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;overflow:hidden;font-size:17px;font-weight:700;line-height:1.25}
+
+/* Preview content: in the HTML always, visually hidden until opened */
+.rail-pv{position:absolute;width:1px;height:1px;margin:-1px;padding:0;border:0;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
+.rail-pv.is-panel,.rail-pv.is-sheet{height:auto;margin:0;clip:auto;clip-path:none;white-space:normal;overflow-y:auto;background:var(--navy-2);color:#fff}
+.rail-pv.is-panel{position:fixed;z-index:40;padding:14px 16px 18px;border-radius:0 0 14px 14px;box-shadow:0 30px 50px -14px rgba(0,0,0,.7);animation:rail-in .2s ease both}
+.rail-pv h3{margin:0 0 8px;font-size:15px;font-weight:700;line-height:1.3;color:#fff}
+.rail-desc{margin:0;font-size:12.5px;line-height:1.5;color:#CFD2EA}
+.rail-pv ul{list-style:none;margin:12px 0 0;padding:12px 0 0;border-top:1px solid rgba(255,255,255,.14);display:grid;gap:7px}
+.rail-pv li{position:relative;padding-left:15px;font-size:12.5px;line-height:1.4;color:#E4E6F6}
+.rail-pv li::before{content:"";position:absolute;left:0;top:.5em;width:6px;height:6px;border-radius:1.5px;background:#B58CE0;transform:rotate(45deg)}
+.rail-chip{display:inline-flex;align-items:center;gap:6px;margin-top:14px;padding:8px 16px;border-radius:999px;background:#fff;color:var(--navy);font-size:13px;font-weight:700;text-decoration:none}
+.rail-chip:hover{background:#E9E1F6}
+@keyframes rail-in{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+
+/* Bottom sheet (touch and phones) */
+.rail-sheet-open .fab{display:none}
+.rail-backdrop{position:fixed;inset:0;z-index:59;background:rgba(5,8,25,.62)}
+.rail-pv.is-sheet{position:fixed;left:0;right:0;bottom:0;width:auto;z-index:60;max-height:80vh;padding:8px 22px calc(28px + env(safe-area-inset-bottom,0px));border-radius:20px 20px 0 0;box-shadow:0 -20px 50px rgba(0,0,0,.5);animation:rail-up .25s ease both}
+.rail-sheet-bar{position:relative;display:flex;justify-content:center;align-items:center;min-height:44px;margin-bottom:6px}
+.rail-grip{width:44px;height:5px;border-radius:3px;background:rgba(255,255,255,.28)}
+.rail-x{position:absolute;right:-10px;top:0;width:44px;height:44px;border:0;border-radius:50%;background:rgba(255,255,255,.1);color:#fff;display:grid;place-items:center;cursor:pointer}
+.is-sheet h3{font-size:21px;margin-bottom:10px}
+.is-sheet .rail-desc{font-size:15px}
+.is-sheet li{font-size:14.5px;padding-left:17px}
+.is-sheet .rail-chip{font-size:15px;padding:11px 22px}
+@keyframes rail-up{from{transform:translateY(40px);opacity:0}to{transform:none;opacity:1}}
+
+@media (max-width:767px){
+  .rail-sec{padding-top:40px}
+  .rail-head h2{font-size:24px;flex:1 0 100%}
+  .rail-head{gap:12px}
+  .rail{padding-top:24px;padding-bottom:36px}
+  .rail-track{gap:18px}
+  .rail-item{padding-left:46px}
+  .rail-num{font-size:150px;bottom:-26px;-webkit-text-stroke-width:2.5px}
+  .rail-pw{width:180px;height:250px}
+  .rail-ic{top:42px}
+  .rail-ic svg{width:56px;height:56px}
+  .rail-title span{font-size:16px}
+}
+@media (prefers-reduced-motion:reduce){
+  .rail{scroll-behavior:auto}
+  .rail-poster,.rail-arrow,.rail-frame::before,.rail-frame::after{transition:none}
+  .rail-item.is-open .rail-poster{transform:none;border-radius:14px 14px 0 0}
+  .rail-pv.is-panel,.rail-pv.is-sheet{animation:none}
+}

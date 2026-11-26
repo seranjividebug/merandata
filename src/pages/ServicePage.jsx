@@ -3,25 +3,11 @@ import PageMeta from "../components/PageMeta";
 import { I } from "../components/Icons";
 import { Breadcrumb, QlikCta } from "../components/QlikBits";
 import AnimatedButton from "../components/AnimatedButton";
+import CapabilityRail from "../components/CapabilityRail";
 import { seoFor } from "../seo";
 import Picture from "../components/Picture";
 import { responsiveImage } from "../images";
 import { servicePath } from "../services";
-
-/** One capability card: number, icon, title, description and bullets (description and bullets are optional). */
-function CapabilityCard({ c }) {
-  return (
-    <article className="sp-card">
-      <div className="sp-card-top">
-        <span className="sp-icon" aria-hidden="true">{I[c.icon]}</span>
-        <span className="sp-num" aria-hidden="true">{c.n}</span>
-      </div>
-      <h3>{c.title}</h3>
-      {c.desc && <p>{c.desc}</p>}
-      {c.bullets?.length > 0 && <ul>{c.bullets.map((b) => <li key={b}>{b}</li>)}</ul>}
-    </article>
-  );
-}
 
 /**
  * The template for every /services/<slug>/ page. All content comes from the page's entry in src/services.js: a hero,
@@ -56,19 +42,7 @@ export default function ServicePage({ page }) {
         </div>
       </section>
 
-      {page.sections.map((s, i) => (
-        <section key={s.id} id={s.id} className={"block" + (i % 2 ? "" : " alt")} aria-labelledby={`${s.id}-h`}>
-          <div className="wrap">
-            <div className="head">
-              <div className="rule" />
-              <h2 id={`${s.id}-h`}>{s.title}</h2>
-            </div>
-            <div className="sp-grid">
-              {s.cards.map((c) => <CapabilityCard key={c.title} c={c} />)}
-            </div>
-          </div>
-        </section>
-      ))}
+      {page.sections.map((s) => <CapabilityRail key={s.id} section={s} tagline={hero.h1} />)}
 
       <QlikCta title={page.cta.title} text={page.cta.text} button={page.cta.button} />
     </>

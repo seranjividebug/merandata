@@ -249,7 +249,7 @@ console.log("CLAIM F: service pages (one template, content from src/services.js)
     const label = u.padEnd(46);
     ok(d.querySelectorAll("h1").length === 1 && d.querySelector("h1").textContent.trim() === p.hero.h1, `${label} one h1: "${p.hero.h1}"`);
     ok(p.hero.paragraphs.every((x) => t.includes(x)) && (!p.hero.support || t.includes(p.hero.support)) && t.includes(p.hero.cta), `${label} hero paragraphs, supporting line and button text present`);
-    const cards = [...d.querySelectorAll(".sp-card")];
+    const cards = [...d.querySelectorAll(".rail-item")];
     const want = p.sections.flatMap((s) => s.cards);
     ok(cards.length === want.length && want.every((c, i) => cards[i].querySelector("h3")?.textContent.trim() === c.title && (!c.desc || cards[i].querySelector("p")?.textContent.trim() === c.desc) && c.bullets.every((b) => [...cards[i].querySelectorAll("li")].some((li) => li.textContent.trim() === b)) && cards[i].querySelectorAll("li").length === c.bullets.length),
       `${label} ${cards.length}/${want.length} capability cards with their title, description and every bullet`);
@@ -266,8 +266,8 @@ console.log("CLAIM F: service pages (one template, content from src/services.js)
     ok(!!d.querySelector(`header nav.nav .nav-dd-list a[href="${u}"]`), `${label} is in the Services dropdown`);
   }
   const de = services.servicePageBySlug("data-engineering-analytics");
-  const deCards = [...doc["/services/data-engineering-analytics/"].querySelectorAll(".sp-card")];
-  ok(deCards.length === 6 && deCards.every((c, i) => c.querySelectorAll("li").length === 5 && c.querySelector(".sp-num")?.textContent === "0" + (i + 1)) && new Set(de.sections[0].cards.map((c) => c.icon)).size === 6, "data engineering page: 6 numbered cards with 5 bullets each and 6 different icons");
+  const deCards = [...doc["/services/data-engineering-analytics/"].querySelectorAll(".rail-item")];
+  ok(deCards.length === 6 && deCards.every((c, i) => c.querySelectorAll("li").length === 5 && c.querySelector(".rail-num")?.textContent === String(i + 1)) && new Set(de.sections[0].cards.map((c) => c.icon)).size === 6, "data engineering page: 6 numbered cards with 5 bullets each and 6 different icons");
   ok(["consulting-delivery", "ai-solutions"].every((s) => services.servicePageBySlug(s).noindex === true), "consulting-delivery and ai-solutions are noindex drafts");
   const cardsOnHome = [...doc["/"].querySelectorAll(".sv-link")].map((a) => a.getAttribute("href"));
   ok(services.SERVICE_PAGES.every((p) => cardsOnHome.includes(services.servicePath(p))) && cardsOnHome.includes("/qlik/"), `home "Explore" links: ${cardsOnHome.join(", ")}`);
