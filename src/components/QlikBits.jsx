@@ -18,10 +18,10 @@ export function Breadcrumb({ trail, light = false }) {
   );
 }
 
-export function QlikCta({ title = "Let’s Talk About Your Qlik Roadmap.", text = "Tell us what you want to achieve with your data. A Meridanta Qlik expert will help you find the right next step.", button = "Talk to a Qlik Expert" }) {
+export function QlikCta({ title = "Let’s Talk About Your Qlik Roadmap.", text = "Tell us what you want to achieve with your data. A Meridanta Qlik expert will help you find the right next step.", button = "Talk to a Qlik Expert", light = false }) {
   const link = useSectionLink();
   return (
-    <section className="cta-band" aria-labelledby="qcta-h">
+    <section className={"cta-band" + (light ? " cta-light" : "")} aria-labelledby="qcta-h">
       <div className="wrap cta-in">
         <div>
           <h2 id="qcta-h">{title}</h2>

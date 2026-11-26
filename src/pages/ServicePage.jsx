@@ -44,7 +44,7 @@ export default function ServicePage({ page }) {
 
       {page.sections.map((s) => <CapabilityRail key={s.id} section={s} tagline={hero.h1} />)}
 
-      <QlikCta title={page.cta.title} text={page.cta.text} button={page.cta.button} />
+      <QlikCta light title={page.cta.title} text={page.cta.text} button={page.cta.button} />
     </>
   );
 }
