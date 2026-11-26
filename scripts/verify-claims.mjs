@@ -267,7 +267,7 @@ console.log("CLAIM F: service pages (one template, content from src/services.js)
   }
   const de = services.servicePageBySlug("data-engineering-analytics");
   const deCards = [...doc["/services/data-engineering-analytics/"].querySelectorAll(".rail-item")];
-  ok(deCards.length === 6 && deCards.every((c, i) => c.querySelectorAll("li").length === 5 && c.querySelector(".rail-num")?.textContent === String(i + 1)) && new Set(de.sections[0].cards.map((c) => c.icon)).size === 6, "data engineering page: 6 numbered cards with 5 bullets each and 6 different icons");
+  ok(deCards.length === 6 && deCards.every((c, i) => c.querySelectorAll("li").length === 5 && c.querySelector(".rail-num")?.textContent === "0" + (i + 1)) && new Set(de.sections[0].cards.map((c) => c.icon)).size === 6, "data engineering page: 6 numbered cards with 5 bullets each and 6 different icons");
   ok(["consulting-delivery", "ai-solutions"].every((s) => services.servicePageBySlug(s).noindex === true), "consulting-delivery and ai-solutions are noindex drafts");
   const cardsOnHome = [...doc["/"].querySelectorAll(".sv-link")].map((a) => a.getAttribute("href"));
   ok(services.SERVICE_PAGES.every((p) => cardsOnHome.includes(services.servicePath(p))) && cardsOnHome.includes("/qlik/"), `home "Explore" links: ${cardsOnHome.join(", ")}`);

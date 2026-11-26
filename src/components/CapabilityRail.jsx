@@ -1,45 +1,11 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { I } from "./Icons";
 import { useSectionLink } from "../nav";
+import RailArt from "./railArt";
 import "../rail.css";
 
-/** Poster colours (from, to), rotated per card. All sit inside the navy / plum / indigo brand range. */
-const PALETTES = [
-  ["#0C1230", "#42116F"], ["#0C1230", "#2B2F8F"], ["#42116F", "#9B4FC9"],
-  ["#101A4A", "#5A2390"], ["#1B1060", "#6C3FD0"], ["#0C1230", "#7A2E8C"],
-];
-const SCALE = 1.25; // the hovered poster grows by this much
+const SCALE = 1; // the card keeps its size when opened; the preview attaches under it
 const INTENT_MS = 250; // hover intent delay
-const PW = 220, PH = 300; // poster size on desktop (CSS has the phone size)
-
-/** Abstract poster art: gradient plus rings, grid or wave (by index). Pure SVG, no external images. */
-function PosterArt({ id, i }) {
-  const [a, b] = PALETTES[i % PALETTES.length];
-  const kind = i % 3;
-  return (
-    <svg className="rail-art" viewBox={`0 0 ${PW} ${PH}`} preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
-      <defs>
-        <linearGradient id={`${id}-g`} x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor={a} /><stop offset="1" stopColor={b} /></linearGradient>
-        {kind === 1 && (
-          <pattern id={`${id}-p`} width="22" height="22" patternUnits="userSpaceOnUse"><path d="M22 0H0V22" fill="none" stroke="#fff" strokeOpacity=".09" strokeWidth="1" /></pattern>
-        )}
-      </defs>
-      <rect width={PW} height={PH} fill={`url(#${id}-g)`} />
-      {kind === 0 && (
-        <g fill="none" stroke="#fff" strokeOpacity=".14">
-          {[40, 74, 108, 142, 176].map((r) => <circle key={r} cx={i % 2 ? 40 : 190} cy="60" r={r} />)}
-        </g>
-      )}
-      {kind === 1 && <rect width={PW} height={PH} fill={`url(#${id}-p)`} />}
-      {kind === 2 && (
-        <g fill="none" stroke="#fff" strokeOpacity=".16" strokeWidth="1.4">
-          {[0, 1, 2, 3].map((k) => <path key={k} d={`M-10 ${130 + k * 16} C 50 ${90 + k * 16}, 110 ${190 + k * 16}, 230 ${120 + k * 16}`} />)}
-        </g>
-      )}
-      <circle cx={i % 2 ? 176 : 44} cy="236" r="70" fill="#fff" fillOpacity=".05" />
-    </svg>
-  );
-}
 
 /** Where to put the preview panel and which way the poster grows: left edge, right edge or from the middle. */
 function placement(wrap, isFirst, isLast, scale) {
@@ -56,7 +22,7 @@ function placement(wrap, isFirst, isLast, scale) {
 }
 
 /**
- * "Top 10"-style rail for a service page's capabilities. Every title, description and bullet is in the page HTML
+ * Rail of illustrated cards for a service page's capabilities. Every title, description and bullet is in the page HTML
  * (the preview panels are visually hidden until opened). Desktop: hover or focus opens a preview under the poster
  * (position:fixed, so the scrolling rail never clips it and nothing shifts). Phones and touch: tapping a poster opens
  * the same preview as a bottom sheet.
@@ -201,7 +167,6 @@ export default function CapabilityRail({ section, tagline }) {
                   onFocus={(e) => { if (mode === "hover" && !skipFocus.current && e.target.matches(":focus-visible") && e.target.classList.contains("rail-poster")) openAt(i); }}
                   onBlur={(e) => { if (mode === "hover" && !e.currentTarget.contains(e.relatedTarget)) close(); }}
                 >
-                  <span className="rail-num" aria-hidden="true">{i + 1}</span>
                   <div className="rail-pw">
                     <button
                       type="button"
@@ -214,9 +179,14 @@ export default function CapabilityRail({ section, tagline }) {
                         openAt(i);
                       }}
                     >
-                      <PosterArt id={`${id}-${i}`} i={i} />
-                      <span className="rail-ic">{I[c.icon]}</span>
-                      <span className="rail-title"><span>{c.title}</span></span>
+                      <span className="rail-media">
+                        <RailArt id={`${id}-${i}`} i={i} art={c.art} />
+                        <span className="rail-num" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
+                      </span>
+                      <span className="rail-body">
+                        <span className="rail-name">{c.title}</span>
+                        <span className="rail-go" aria-hidden="true">{I.next}</span>
+                      </span>
                     </button>
                   </div>
                   {sheet && isOpen && <div className="rail-backdrop" onClick={close} aria-hidden="true" />}
