@@ -29,7 +29,7 @@ export const HERO_SLIDES = [
   { key: "healthcare", title: "Enabling Smarter, More Connected Healthcare.", tagline: "Healthcare Data | Analytics | AI-driven Insights", to: "/industries/healthcare/", cta: "Explore Healthcare Solutions",
     alt: "Heart with medical cross connected to patient 360, pharmacy insights, clinical analytics, remote monitoring, dashboards and compliance",
     desc: "Unifying complex healthcare data to support better insights, operational efficiency, informed decisions and improved care delivery." },
-  { key: "qlik", title: "Accelerating Enterprise Analytics with Qlik.", tagline: "Qlik Consulting | Implementation | Center of Excellence", to: "/qlik/", cta: "Explore Qlik Capabilities",
+  { key: "qlik", logo: true, title: "Accelerating Enterprise Analytics with Qlik.", tagline: "Qlik Consulting | Implementation | Center of Excellence", to: "/qlik/", cta: "Explore Qlik Capabilities",
     alt: "Qlik data, analytics and AI platform connecting data integration, quality, governance, dashboards, reporting and automation",
     desc: "Specialized professional services, data integration expertise and reusable accelerators that help enterprises maximize their Qlik investments." },
 ];

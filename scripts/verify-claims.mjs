@@ -275,7 +275,7 @@ console.log("CLAIM F: service pages (one template, content from src/services.js)
   ok(homeLd.some((n) => n.url === ORIGIN + "/services/data-engineering-analytics/") && homeLd.every((n) => !/consulting-delivery|ai-solutions/.test(n.url)), "home Service JSON-LD points to the data engineering page, not to the noindex drafts");
 }
 
-console.log("CLAIM G: menu labels (Sri's design doc v3.0), one home page with compact sections, no Qlik logo");
+console.log("CLAIM G: menu labels, one home page with compact sections, Qlik logo placement");
 {
   const labels = data.NAV.map((n) => n.label);
   ok(labels.join("|") === "Home|Services|Industries|Solutions|About" && data.HEADER_NAV.map((n) => n.label).join("|") === labels.join("|"), "menu labels and order (header and footer): " + labels.join(" | "));
@@ -296,13 +296,11 @@ console.log("CLAIM G: menu labels (Sri's design doc v3.0), one home page with co
   const sol = home.getElementById("solutions");
   ok(["Qlik Accelerators", "HCInsights", "Data Platforms & Cloud Solutions"].every((x) => sol.textContent.includes(x)) && data.PLATFORM.every((x) => sol.textContent.includes(x)) && data.TALEND.every((x) => sol.textContent.includes(x)) && sol.querySelectorAll(".spot").length === 3, "solutions: 3 cards in a row; the platform capabilities and the Talend frameworks are in the page text");
   ok(company.ABOUT.every((x) => home.getElementById("about").textContent.includes(x)) && home.getElementById("about").textContent.includes(company.COMPANY.slogan) && data.PILLARS.every(([, t, d]) => home.getElementById("about").textContent.includes(t) && home.getElementById("about").textContent.includes(d)), "about: statement, both paragraphs and the 3 principles are in the page text");
-  // No Qlik logo image or icon anywhere: not in the build, not in the source, not on any page.
-  const walk = (d) => readdirSync(d, { withFileTypes: true }).flatMap((e) => (e.isDirectory() ? walk(d + "/" + e.name) : [d + "/" + e.name]));
-  const LOGO = /qlik[-_]?logo|loc-qlik|(^|\/)qlik\.(png|svg|webp|avif|jpe?g)$/i;
-  const files = [...walk("dist"), ...walk("src/assets")].filter((f) => LOGO.test(f));
-  const src = ["src/logoMap.js", "src/components/Hero.jsx", "src/components/AcceleratorsCard.jsx", "src/components/SpotlightCard.jsx", "src/pages/ContactPage.jsx"].filter((f) => /siQlik|QlikLogo|qlik-logo|loc-qlik|logos\/qlik/.test(readFileSync(f, "utf8")));
-  const imgs = Object.keys(PAGES).flatMap((u) => [...doc[u].querySelectorAll("img,image,source")].map((i) => u + " " + (i.getAttribute("src") || i.getAttribute("href") || i.getAttribute("srcset") || ""))).filter((s) => LOGO.test(s) || /logos\/qlik/i.test(s));
-  ok(files.length === 0 && src.length === 0 && imgs.length === 0 && !existsSync("src/components/QlikLogo.jsx"), "no Qlik logo image or icon is used or shipped (the word \"Qlik\" only)" + [...files, ...src, ...imgs].slice(0, 3).map((x) => ": " + x).join(""));
+  // The Qlik logo is back (Sri, 26 Nov): on the Qlik hero banner, the accelerator and case-study tiles and the contact page picture.
+  const heroLogo = !!home.querySelector(".hs-slide:nth-child(3) .hs-logo, .hs-slide:last-child .hs-logo");
+  const heroLogos = home.querySelectorAll(".hs-logo").length;
+  ok(heroLogo && heroLogos === 1 && existsSync("src/assets/qlik-logo.png") && existsSync("src/assets/loc-qlik.webp") && existsSync("src/assets/logos/qlik.png"), "Qlik logo: on hero banner 3 only (" + heroLogos + " on the home hero), logo files present");
+  ok(!!doc["/contact/"].querySelector("aside.loc img.loc-img"), "/contact/: the Qlik picture is back");
 }
 
 console.log(`\n${fails} failed check(s)`);

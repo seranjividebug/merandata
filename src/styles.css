@@ -49,8 +49,8 @@ button{font:inherit;color:inherit}
 .btn-grad{background:var(--navy);color:#fff;box-shadow:0 8px 24px -12px rgba(12,18,48,.6)}
 .btn-grad:hover{background:var(--plum);box-shadow:0 10px 28px -10px rgba(66,17,111,.6)}
 /* on dark surfaces the primary button is white so it does not vanish into the navy */
-.qhero .btn-grad,.cta-band .btn-grad,.prod.feature .btn-grad{background:#fff;color:var(--navy);box-shadow:none}
-.qhero .btn-grad:hover,.cta-band .btn-grad:hover,.prod.feature .btn-grad:hover{background:#E9E1F6;color:var(--navy)}
+.qhero .btn-grad,.cta-band .btn-grad,.prod.feature .btn-grad,.loc .btn-grad{background:#fff;color:var(--navy);box-shadow:none}
+.qhero .btn-grad:hover,.cta-band .btn-grad:hover,.prod.feature .btn-grad:hover,.loc .btn-grad:hover{background:#E9E1F6;color:var(--navy)}
 .btn-ghost-light{color:#fff;border-color:rgba(255,255,255,.6)}
 .btn-ghost-light:hover{border-color:#fff;background:rgba(255,255,255,.08)}
 .btn-outline{color:var(--navy);border-color:var(--navy)}
@@ -115,6 +115,7 @@ button{font:inherit;color:inherit}
 .hs-copy{position:relative;z-index:2;pointer-events:none;height:100%;display:grid;grid-template-columns:1.2fr 1fr;align-items:center;gap:40px;padding-block:40px;padding-inline:84px}
 /* hero eyebrow, shared by the home slider and the /qlik hero */
 .hs-eyebrow,.qeyebrow{font-size:12px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--on-dark)}
+.hs-logo{display:block;box-sizing:content-box;height:26px;width:auto;padding:7px 9px;margin-bottom:14px;background:#fff;border-radius:12px;box-shadow:0 8px 24px -10px rgba(0,0,0,.55)}
 .hs-tag{margin:12px 0 0;font-size:16px;font-weight:600;letter-spacing:.02em;line-height:1.4;color:var(--on-dark)}
 .hs-title{margin:0;font-size:clamp(30px,3vw,46px);font-weight:800;line-height:1.08;letter-spacing:-.02em}
 .hs-r{padding-top:0}
@@ -367,6 +368,8 @@ section.alt{background:var(--mist)}
 .success .tick{width:56px;height:56px;border-radius:50%;background:var(--grad);color:#fff;display:grid;place-items:center}
 .success h2{font-size:26px}
 .success p{color:var(--muted);max-width:52ch}
+.loc{border-radius:24px;overflow:hidden;background:var(--navy);display:flex}
+.loc-img{display:block;width:100%;height:100%;object-fit:cover;object-position:top}
 .alert{background:#FBEAEA;color:var(--error);border-radius:12px;padding:12px 14px;font-size:14.5px;margin-bottom:18px}
 @media (max-width:900px){.contact{grid-template-columns:1fr}.form-card{padding:26px}}
 @media (max-width:560px){.grid2{grid-template-columns:1fr;gap:0}}
@@ -579,8 +582,6 @@ section.alt{background:var(--mist)}
 @media (max-width:640px){.abtn.fab-talk{min-height:44px;padding:0 18px;font-size:15px}}
 @media (prefers-reduced-motion:reduce){.abtn.fab-talk,.fab-top{transition:none}}
 
-/* Plain word shown in a small round tile where a brand has no logo (for example "Qlik") */
-.tile-word{font-size:12px;font-weight:800;letter-spacing:-.01em;color:var(--navy)}
 
 /* Current page: the Services button (it is a button, not a link) */
 .nav .nav-dd-btn[aria-current="true"]{position:relative;color:var(--plum);font-weight:600}

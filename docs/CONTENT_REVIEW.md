@@ -439,7 +439,7 @@ Question-style heading ideas (optional): "What We Do" -> "What does Meridanta do
 | QlikView | 1 | 25 | 0 | 0 |
 | Qlik Replicate | 1 | 20 | 0 | 0 |
 | Qlik Cloud | 0 | 5 | 0 | 0 |
-| Qlik (any) | 19 | 126 | 2 | 2 |
+| Qlik (any) | 18 | 116 | 2 | 2 |
 | Talend | 4 | 7 | 0 | 0 |
 | Power BI | 2 | 4 | 0 | 0 |
 | NPrinting | 0 | 12 | 0 | 0 |
@@ -463,7 +463,7 @@ Related phrases:
 
 | Where | What is shown | Source file | Question for Sri |
 |---|---|---|---|
-| Everywhere (cards, diagrams, hero, contact page) | The plain word "Qlik" in our font. There is no Qlik logo image or icon anywhere on the site (Sri's instruction); npm run verify fails if one is added. | src/logoMap.js | Nothing to approve now. If the official logo is wanted later, ask Qlik for written permission first. |
+| Hero banner 3, /qlik/ accelerator tiles, home Solutions card, case-study diagrams, contact page picture | The Qlik logo (the Qlik mark from the open-source simple-icons set on cards, the logo file on hero banner 3 and in the diagrams, and the Qlik picture on the contact page) | src/logoMap.js, src/assets/qlik-logo.png, src/assets/loc-qlik.webp | Ask Qlik for written permission, or say if the logo should be replaced by the word "Qlik" (tried on 25 Nov, restored on 26 Nov at Sri's request). |
 | /qlik/ case-study diagrams and accelerator tiles | Snowflake, Databricks, Kafka, SAP, PostgreSQL, MySQL, Prometheus, Grafana, Talend (from the open-source simple-icons set) | simple-icons 16.36.0 | The icon set is open source, but the brands are still trademarks. |
 | /qlik/ case-study diagrams | Official AWS and Microsoft Azure architecture icons, Oracle, IBM Db2, Power BI | `src/assets/logos/` (14 files) | Each vendor's brand and icon usage terms should be checked. |
 | Home and /qlik/ images | Platform and capability illustrations with brand names in the alt text (Qlik, AWS, Databricks) | `qlik-platform.webp` (shows AWS, Databricks, Google, Iceberg, Microsoft and Snowflake marks inside the picture), `cap-*.webp`. The contact-page picture `loc-qlik.webp` has the Qlik mark and the words "Qlik Analytics and Integration" drawn into the image. | Confirm who created them and that any brand marks inside are cleared. |

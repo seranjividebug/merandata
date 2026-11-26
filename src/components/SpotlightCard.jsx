@@ -12,9 +12,9 @@ export function LogoTile({ item, size = 52 }) {
   const src = item.key ? logoSource(item.key, "card") : null;
   return (
     <span className="spot-tile" style={{ width: size, height: size }} aria-hidden="true">
-      {src && src.type === "icon" && <svg viewBox="0 0 24 24" width={size * 0.55} height={size * 0.55}><path d={src.path} fill={src.hex} /></svg>}
-      {src && src.type === "text" && <span className="tile-word">{src.name}</span>}
-      {!src && <CIcon name={item.kind || "server"} size={size * 0.46} />}
+      {src && src.type === "icon"
+        ? <svg viewBox="0 0 24 24" width={size * 0.55} height={size * 0.55}><path d={src.path} fill={src.hex} /></svg>
+        : <CIcon name={item.kind || "server"} size={size * 0.46} />}
     </span>
   );
 }

@@ -1,4 +1,4 @@
-import { siApachekafka, siDatabricks, siGrafana, siMysql, siPostgresql, siPrometheus, siSap, siSnowflake, siTalend } from "simple-icons";
+import { siApachekafka, siDatabricks, siGrafana, siMysql, siPostgresql, siPrometheus, siQlik, siSap, siSnowflake, siTalend } from "simple-icons";
 
 /**
  * Technology logos for the case study diagram.
@@ -14,8 +14,6 @@ import { siApachekafka, siDatabricks, siGrafana, siMysql, siPostgresql, siPromet
  * case study detail diagram only: anywhere else call logoSource(key, "card"), which uses
  * simple-icons brands only and a generic icon for everything else.
  *
- * There is no Qlik logo anywhere on the site: "qlik" has no icon or file, so it is drawn as the plain word "Qlik".
- *
  * `match` is tested against the diagram label (case-insensitive); a label can hit several brands.
  * `kind` picks the generic icon for the text badge.
  */
@@ -26,6 +24,7 @@ const fileFor = (key) => {
 };
 
 const ICONS = {
+  qlik: siQlik,
   prometheus: siPrometheus,
   grafana: siGrafana,
   sap: siSap,
