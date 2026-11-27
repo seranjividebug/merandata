@@ -1,6 +1,6 @@
 import { useCallback, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { go, scrollToEl } from "./utils";
+import { go, isPlainClick, scrollToEl } from "./utils";
 import { interestForServicePath } from "./services";
 
 /** The service of interest implied by the page a contact link sits on (null on pages with no single service). */
@@ -24,7 +24,7 @@ export function useSectionLink() {
         href: `/contact/${search}`,
         onClick: (e) => {
           if (after) after();
-          if (e.defaultPrevented || e.metaKey || e.ctrlKey || e.shiftKey || e.button > 0) return;
+          if (!isPlainClick(e)) return;
           e.preventDefault();
           navigate({ pathname: "/contact/", search });
         },
@@ -34,7 +34,7 @@ export function useSectionLink() {
       href: id === "home" ? "/" : `/#${id}`,
       onClick: (e) => {
         if (after) after();
-        if (e.defaultPrevented || e.metaKey || e.ctrlKey || e.shiftKey || e.button > 0) return;
+        if (!isPlainClick(e)) return;
         if (pathname === "/") { go(id, e); return; }
         e.preventDefault();
         navigate({ pathname: "/", hash: id === "home" ? "" : "#" + id });

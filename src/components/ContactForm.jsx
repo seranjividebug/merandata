@@ -47,14 +47,19 @@ function validate(d) {
 }
 
 /** The enquiry form. Shown only when the contact form is switched on (see src/contactConfig.js). */
+/** The service named in ?interest= (an own key of INTEREST_KEYS), or "". */
+const interestFromSearch = (search) => {
+  const key = new URLSearchParams(search).get("interest");
+  return Object.prototype.hasOwnProperty.call(INTEREST_KEYS, key) ? INTEREST_KEYS[key] : "";
+};
+
 export default function ContactForm() {
   const [v, setV] = useState(EMPTY);
   const resultRef = useRef(null);
   const { search } = useLocation();
   // /?interest=qlik#contact pre-selects the service, unless the visitor already chose one.
   useEffect(() => {
-    const key = new URLSearchParams(search).get("interest");
-    const chosen = Object.prototype.hasOwnProperty.call(INTEREST_KEYS, key) ? INTEREST_KEYS[key] : undefined;
+    const chosen = interestFromSearch(search);
     if (chosen) setV((cur) => (cur.interest ? cur : { ...cur, interest: chosen }));
   }, [search]);
   const [errs, setErrs] = useState({});
@@ -82,7 +87,7 @@ export default function ContactForm() {
     setStatus("sending");
     const res = await sendInquiry(v, token);
     if (res.ok) { setStatus("sent"); return; }
-    if (res.status === 422 && res.errors) setErrs(res.errors);
+    if (res.status === 422 && res.errors) setErrs(Object.fromEntries(Object.entries(res.errors).filter(([k]) => ["name", "email", "message"].includes(k)))); // other fields: the general message below
     setToken("");
     setResetKey((k) => k + 1); // a Turnstile token can be used once; ask for a new one
     setStatus(res.status === 429 ? "limited" : "error");
@@ -90,7 +95,7 @@ export default function ContactForm() {
 
   const fieldErr = (k) => errs[k] && <span className="err" id={k + "-err"}>{I.alert}{errs[k]}</span>;
   const count = Object.keys(errs).length;
-  const reset = () => { setV(EMPTY); setErrs({}); setTouched(false); setStatus("idle"); };
+  const reset = () => { setV({ ...EMPTY, interest: interestFromSearch(search) }); setErrs({}); setTouched(false); setStatus("idle"); };
 
   return (
     <div className="form-card">

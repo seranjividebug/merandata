@@ -11,7 +11,7 @@
 
 /* Panels */
 .sj-panels{display:grid;gap:20px;min-width:0}
-.sj-panel{position:relative;padding:28px 28px 28px 32px;border-radius:18px;background:var(--paper);border:1px solid var(--line);transition:opacity .3s ease}
+.sj-panel{position:relative;padding:28px 28px 28px 32px;border-radius:18px;background:var(--paper);border:1px solid var(--line);transition:background-color .3s ease,border-color .3s ease}
 .sj-accent{position:absolute;left:0;top:18px;bottom:18px;width:4px;border-radius:4px;background:var(--line);transition:background .3s}
 .sj-panel.is-active .sj-accent{background:var(--grad)}
 .sj-eyebrow{font-size:12.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--plum)}
@@ -38,7 +38,9 @@
   .sj-left{display:block;position:sticky;top:calc(var(--sj-top) + 32px);container-type:inline-size;min-width:0}
   .sj-panels{gap:0}
   .sj-panel{min-height:70vh;display:flex;flex-direction:column;justify-content:center;margin-bottom:24px}
-  .sj-panel.is-dim{opacity:.35}
+  /* Steps that are not the active one are calmer (grey card, muted headings) but keep full text contrast */
+  .sj-panel.is-dim{background:var(--mist);border-color:transparent}
+  .sj-panel.is-dim h3,.sj-panel.is-dim .sj-eyebrow,.sj-panel.is-dim .sj-checks svg{color:var(--muted)}
 
   /* The wheel: sized in em so it scales with its column (and shrinks on short screens) */
   .sj-wheel{position:relative;width:32.5em;height:28.5em;max-width:100%;margin:0 auto;font-size:min(calc(100cqw / 32.5), calc((100vh - var(--header-h) - var(--subnav-h, 0px) - 96px) / 28.5))}

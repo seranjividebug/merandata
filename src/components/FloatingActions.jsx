@@ -12,9 +12,7 @@ export default function FloatingActions() {
   const { pathname } = useLocation();
   const [scrolled, setScrolled] = useState(false);
   const [atContact, setAtContact] = useState(false);
-  const [atHero, setAtHero] = useState(false);
-  const [atCases, setAtCases] = useState(false);
-  const [atCaps, setAtCaps] = useState(false);
+  const [atOther, setAtOther] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > SHOW_TOP_AFTER);
@@ -33,38 +31,21 @@ export default function FloatingActions() {
     return () => io.disconnect();
   }, [pathname]);
 
-  // The hero already has its own buttons: keep the floating one out of the way until it scrolls past.
+  // Keep the button out of the way while the hero (it has its own buttons), the Proven Outcomes panel or a card section
+  // (Qlik Capabilities, home Solutions) is on screen.
   useEffect(() => {
-    setAtHero(false);
-    const el = document.querySelector("[data-hero]");
-    if (!el) return undefined;
-    const io = new IntersectionObserver(([en]) => setAtHero(en.isIntersecting));
-    io.observe(el);
-    return () => io.disconnect();
-  }, [pathname]);
-  // Keep the button off the Proven Outcomes panel while that section is on screen.
-  useEffect(() => {
-    setAtCases(false);
-    const el = document.getElementById("case-studies");
-    if (!el) return undefined;
-    const io = new IntersectionObserver(([en]) => setAtCases(en.isIntersecting));
-    io.observe(el);
-    return () => io.disconnect();
-  }, [pathname]);
-  // Keep the button off the card sections (Qlik Capabilities, home Solutions) while they are on screen.
-  useEffect(() => {
-    setAtCaps(false);
-    const els = ["capabilities", "solutions"].map((id) => document.getElementById(id)).filter(Boolean);
+    setAtOther(false);
+    const els = [document.querySelector("[data-hero]"), ...["case-studies", "capabilities", "solutions"].map((id) => document.getElementById(id))].filter(Boolean);
     if (!els.length) return undefined;
     const on = new Set();
     const io = new IntersectionObserver((entries) => {
       entries.forEach((en) => (en.isIntersecting ? on.add(en.target) : on.delete(en.target)));
-      setAtCaps(on.size > 0);
+      setAtOther(on.size > 0);
     });
     els.forEach((el) => io.observe(el));
     return () => io.disconnect();
   }, [pathname]);
-  const wanted = atContact || atHero || atCases || atCaps;
+  const wanted = atContact || atOther;
   // The "Talk to an Expert" button keeps its state while a link scrolls the page, then follows the sections after a short
   // pause, so it never flickers. (Right after the page loads it follows at once.)
   const [hidden, setHidden] = useState(false);

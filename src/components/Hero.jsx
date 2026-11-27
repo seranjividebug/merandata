@@ -3,7 +3,7 @@ import { HERO_SLIDES } from "../data";
 import { useNavigate } from "react-router-dom";
 import { useSectionLink } from "../nav";
 import { Head } from "vite-react-ssg";
-import { REDUCED, useReducedMotion } from "../utils";
+import { isPlainClick, REDUCED, useReducedMotion } from "../utils";
 import { responsiveImage } from "../images";
 import Picture from "./Picture";
 import QlikLogo from "./QlikLogo";
@@ -74,11 +74,12 @@ export default function Hero() {
       onTouchStart={onTouchStart}
       onTouchEnd={onTouchEnd}
     >
+      {/* The page heading stays available to screen readers while banners 2 and 3 are showing (inactive banners are hidden from them). */}
+      <h1 className="sr">{HERO_SLIDES[0].title}</h1>
       <div className="hs-track" aria-live={playing ? "off" : "polite"}>
         {HERO_SLIDES.map((s, i) => {
           const active = i === index;
-          const Title = i === 0 ? "h1" : "h2";
-          const link = s.to ? { href: s.to, onClick: (e) => { if (e.defaultPrevented || e.metaKey || e.ctrlKey || e.shiftKey || e.button > 0) return; e.preventDefault(); navigate(s.to); } } : sectionLink(s.section);
+          const link = s.to ? { href: s.to, onClick: (e) => { if (!isPlainClick(e)) return; e.preventDefault(); navigate(s.to); } } : sectionLink(s.section);
           return (
             <div
               key={s.key}
@@ -105,7 +106,7 @@ export default function Hero() {
               <div className="wrap hs-copy">
                 <div className="hs-l">
                   {s.logo && <QlikLogo className="hs-logo" decorative />}
-                  <Title className="hs-title">{s.title}</Title>
+                  <h2 className="hs-title">{s.title}</h2>
                   <p className="hs-tag">{s.tagline}</p>
                 </div>
                 <div className="hs-r">

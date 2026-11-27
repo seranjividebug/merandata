@@ -28,9 +28,9 @@ export default function ContactPage() {
           <div className="contact">
             {CONTACT_FORM_ENABLED ? <ContactForm /> : <ContactCard />}
 
-            <aside className="loc" aria-label="Qlik Analytics and Integration">
+            <div className="loc">
               <img className="loc-img" src={locImg} width="971" height="1188" alt="Qlik Analytics and Integration: end-to-end data integration, analytics, and operational insights with Qlik, shown as a dashboard with data sources, insights found and replication health" loading="lazy" decoding="async" />
-            </aside>
+            </div>
 
           </div>
         </div>

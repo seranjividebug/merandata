@@ -16,7 +16,6 @@ export const I = {
   report: <svg width="26" height="26" viewBox="0 0 24 24" strokeWidth="1.7" {...line}><path d="M7 3h7l4 4v14H7z" /><path d="M14 3v4h4M10 12h5M10 15.5h5M10 9h2" /></svg>,
   automation: <svg width="26" height="26" viewBox="0 0 24 24" strokeWidth="1.7" {...line}><path d="M13 3L5 13.5h6L10 21l8-10.5h-6z" /></svg>,
   go: <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M6 3l5 5-5 5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" /></svg>,
-  chev: <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M3 5l4 4 4-4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" /></svg>,
   check: <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5l3.2 3L13 4.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>,
   alert: <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="7" stroke="currentColor" strokeWidth="1.6" /><path d="M8 4.5v4.2M8 11v.3" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" /></svg>,
   challenge: <svg width="22" height="22" viewBox="0 0 24 24" strokeWidth="1.8" {...line}><path d="M12 3l9 16H3z" /><path d="M12 10v4M12 17v.2" /></svg>,

@@ -92,7 +92,7 @@
   .ck-discuss{width:100%;margin-top:16px}
 }
 @media (prefers-reduced-motion:reduce){
-  .ck-slide,.ck-panel,.ck-progress span,.ck-pill,.ck-sbtn,.ck-arrow{animation:none;transition:none}
+  .ck-slide,.ck-panel,.ck-pill,.ck-sbtn,.ck-arrow{animation:none;transition:none}
   .ck-slide.is-out{transform:none}
   .cd-flow,.cd-ring{animation:none}
 }

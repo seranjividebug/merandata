@@ -259,7 +259,8 @@ function validate_input(array $input): array
     if ($clean['name'] === '' || char_count($clean['name']) > 100) {
         $errors['name'] = 'Enter your name (up to 100 characters).';
     }
-    if ($clean['email'] === '' || strlen($clean['email']) > 254 || !filter_var($clean['email'], FILTER_VALIDATE_EMAIL)) {
+    // Plain addresses only: quoted local parts ("a b"@x.com) are valid for PHP but never needed here.
+    if ($clean['email'] === '' || strlen($clean['email']) > 254 || strpbrk($clean['email'], "\"'") !== false || !filter_var($clean['email'], FILTER_VALIDATE_EMAIL)) {
         $errors['email'] = 'Enter an email in the format name@company.com.';
     }
     if (char_count($clean['company']) > 150) {
@@ -375,7 +376,10 @@ function send_enquiry(array $clean, array $config): bool
         'User-Agent: meridanta-contact/1.0',
     ], (string) $payload);
     if ($status < 200 || $status >= 300) {
-        log_event('ERROR', 'resend_failed', ['status' => $status, 'response' => substr($body, 0, 300)], $config['data_dir']);
+        // Log the status and the error name only: Resend's reply can repeat the visitor's address.
+        $reply = json_decode($body, true);
+        $errorName = is_array($reply) && isset($reply['name']) && is_string($reply['name']) ? substr($reply['name'], 0, 60) : '';
+        log_event('ERROR', 'resend_failed', ['status' => $status, 'error' => $errorName], $config['data_dir']);
         return false;
     }
     return true;

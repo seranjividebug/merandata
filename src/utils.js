@@ -7,6 +7,9 @@ export const REDUCED =
   window.matchMedia &&
   window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+/** True for an ordinary left click (no modifier key, not already handled): the cases where a link is handled in the page. */
+export const isPlainClick = (e) => !(e.defaultPrevented || e.metaKey || e.ctrlKey || e.shiftKey || e.button > 0);
+
 let auto = false; // true while a scroll started by scrollToEl is running
 let current = 0; // the latest scrollToEl call; an older one stops quietly when a newer one starts
 /** True while the page is scrolling because a link asked for it (the header highlight and the floating button wait for it). */

@@ -41,8 +41,6 @@ section.about-light::before{content:"";position:absolute;inset:0;z-index:-1;poin
 .vn-item-ic{display:grid;place-items:center;width:30px;height:30px;border-radius:9px;color:var(--c);background:rgba(66,17,111,.07)}
 .vn-item-ic svg{width:18px;height:18px}
 .vn-item h3{font-size:14px;font-weight:700;line-height:1.2;color:#0C1230}
-.vn-btn{all:unset;cursor:pointer;display:block}
-.vn-btn:focus-visible{outline:2px solid var(--rose);outline-offset:3px;border-radius:4px}
 .vn-item p{grid-column:1/-1;margin-top:6px;font-size:13px;line-height:1.45;color:#4A4D63}
 
 @media (max-width:1023px){

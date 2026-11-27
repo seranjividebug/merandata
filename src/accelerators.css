@@ -1,5 +1,5 @@
 /* Qlik Accelerators card: inline tabs and panel. Uses tokens from styles.css. */
-.prods .prod.acc-card,.prod.acc-card{grid-column:1/-1;scroll-margin-top:calc(var(--header-h) + 16px)}
+.prod.acc-card{grid-column:1/-1;scroll-margin-top:calc(var(--header-h) + 16px)}
 .prod.acc-card>*{position:relative}
 .prod.acc-card{padding:28px}
 .prod.acc-card h3{margin-top:16px;font-size:28px}

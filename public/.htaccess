@@ -77,6 +77,10 @@ ErrorDocument 404 /404.html
   # Browser features the site never uses stay switched off; HTTPS only (the site already redirects to https).
   Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=()"
   Header always set Strict-Transport-Security "max-age=31536000"
+  # Content-Security-Policy in REPORT-ONLY mode: browsers list anything it would block in the console but block nothing.
+  # After a week of normal use (and a test with the contact form and Turnstile switched on) change the header name to
+  # "Content-Security-Policy" to enforce it. 'unsafe-inline' is needed because the page loader script and the JSON-LD are inline.
+  Header always set Content-Security-Policy-Report-Only "default-src 'self'; script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com; frame-src https://challenges.cloudflare.com; connect-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; font-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; object-src 'none'"
 </IfModule>
 
 # ---- 5. Compression for text files (smaller downloads) ----

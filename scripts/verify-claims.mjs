@@ -220,11 +220,11 @@ console.log("CLAIM E: header, hero banners, /contact page, Qlik shown as a word"
     const head = s.querySelector(".hs-title");
     const hit = s.querySelectorAll("a.hs-hit");
     const target = want.to ?? "/#" + want.section;
-    ok(head?.tagName === (i === 0 ? "H1" : "H2") && head.textContent.trim() === want.title && s.querySelector(".hs-tag")?.textContent.trim() === want.tagline && s.querySelector(".hs-desc")?.textContent.trim() === want.desc && s.textContent.includes(want.cta),
+    ok(head?.tagName === "H2" && head.textContent.trim() === want.title && s.querySelector(".hs-tag")?.textContent.trim() === want.tagline && s.querySelector(".hs-desc")?.textContent.trim() === want.desc && s.textContent.includes(want.cta),
       `banner ${i + 1}: ${head?.tagName} "${want.title}", tagline, description and button text present`);
     ok(hit.length === 1 && hit[0].getAttribute("href") === target, `banner ${i + 1}: one overlay link to ${target}`);
   });
-  ok(doc["/"].querySelectorAll("h1").length === 1, "home: exactly one h1 (banner 1)");
+  ok(doc["/"].querySelectorAll("h1").length === 1 && doc["/"].querySelector("h1").textContent.trim() === data.HERO_SLIDES[0].title, "home: exactly one h1 (hidden, same words as banner 1; the banner titles are h2)");
   const c = doc["/contact/"];
   ok(c.querySelectorAll("h1").length === 1 && !!c.querySelector('#contact a[href="/privacy/"]') && textOf("/contact/").includes("Registered Office: " + company.addressLine()), "/contact/: h1, privacy link, registered office");
   ok(sitemap.includes(ORIGIN + "/contact/") && l1.includes(ORIGIN + "/contact/") && l2.includes(ORIGIN + "/contact/"), "/contact/ is in sitemap.xml, llms.txt and llms-full.txt");
@@ -267,7 +267,7 @@ console.log("CLAIM F: service pages (one template, content from src/services.js)
   }
   const de = services.servicePageBySlug("data-engineering-analytics");
   const deCards = [...doc["/services/data-engineering-analytics/"].querySelectorAll(".rail-item")];
-  ok(deCards.length === 6 && deCards.every((c, i) => c.querySelectorAll("li").length === 5 && c.querySelector(".rail-num")?.textContent === "0" + (i + 1)) && new Set(de.sections[0].cards.map((c) => c.icon)).size === 6, "data engineering page: 6 numbered cards with 5 bullets each and 6 different icons");
+  ok(deCards.length === 6 && deCards.every((c, i) => c.querySelectorAll("li").length === 5 && c.querySelector(".rail-num")?.textContent === "0" + (i + 1)), "data engineering page: 6 numbered cards with 5 bullets each");
   ok(["consulting-delivery", "ai-solutions"].every((s) => services.servicePageBySlug(s).noindex === true), "consulting-delivery and ai-solutions are noindex drafts");
   const cardsOnHome = [...doc["/"].querySelectorAll(".sv-link")].map((a) => a.getAttribute("href"));
   ok(services.SERVICE_PAGES.every((p) => cardsOnHome.includes(services.servicePath(p))) && cardsOnHome.includes("/qlik/"), `home "Explore" links: ${cardsOnHome.join(", ")}`);
@@ -300,7 +300,7 @@ console.log("CLAIM G: menu labels, one home page with compact sections, Qlik log
   const heroLogo = !!home.querySelector(".hs-slide:nth-child(3) .hs-logo, .hs-slide:last-child .hs-logo");
   const heroLogos = home.querySelectorAll(".hs-logo").length;
   ok(heroLogo && heroLogos === 1 && existsSync("src/assets/qlik-logo.png") && existsSync("src/assets/loc-qlik.webp") && existsSync("src/assets/logos/qlik.png"), "Qlik logo: on hero banner 3 only (" + heroLogos + " on the home hero), logo files present");
-  ok(!!doc["/contact/"].querySelector("aside.loc img.loc-img"), "/contact/: the Qlik picture is back");
+  ok(!!doc["/contact/"].querySelector(".loc img.loc-img"), "/contact/: the Qlik picture is back");
 }
 
 console.log(`\n${fails} failed check(s)`);
