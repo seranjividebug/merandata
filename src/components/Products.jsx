@@ -73,7 +73,7 @@ function PlatformsCard() {
 
 export function Products() {
   return (
-    <section id="solutions" className="block alt cv" aria-labelledby="prod-h">
+    <section id="solutions" className="block alt" aria-labelledby="prod-h">
       <div className="wrap">
         <SectionHead id="prod-h" title="Solutions" intro="Explore Meridanta’s solutions for turning complex data into useful insight and accelerating the delivery of business intelligence." />
         <div className="spot-grid">

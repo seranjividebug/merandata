@@ -34,7 +34,7 @@ export default function About() {
   const phase = useRunOnce(vennRef);
   const [lead, accent] = COMPANY.slogan.split(". ");
   return (
-    <section id="about" className="block about-light cv" aria-labelledby="about-h">
+    <section id="about" className="block about-light" aria-labelledby="about-h">
       <div className="wrap">
         <div className="ab-top">
           <div className="ab-text">

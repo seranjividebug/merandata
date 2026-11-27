@@ -12,6 +12,7 @@
     "qa:serve": "node scripts/qa/serve.mjs dist 8090",
     "qa:routes": "node scripts/qa/routes.mjs",
     "qa:links": "node scripts/qa/links.mjs",
+    "qa:anchors": "node scripts/qa/anchors.mjs",
     "qa:layout": "node scripts/qa/layout.mjs",
     "qa:crawler": "node scripts/qa/crawler.mjs",
     "qa:resilience": "node scripts/qa/resilience.mjs",

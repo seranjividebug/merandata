@@ -7,25 +7,56 @@ export const REDUCED =
   window.matchMedia &&
   window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+let auto = false; // true while a scroll started by scrollToEl is running
+let current = 0; // the latest scrollToEl call; an older one stops quietly when a newer one starts
+/** True while the page is scrolling because a link asked for it (the header highlight and the floating button wait for it). */
+export const isAutoScrolling = () => auto;
+const announce = (type, id) => window.dispatchEvent(new CustomEvent(type, { detail: { id } }));
+
 /**
- * Scrolls an element to the top of the screen (below the header). Long sections that skip rendering until they are
- * near the screen change size while the page scrolls past them, so the position is checked once more at the end and
- * corrected if the element did not land where it should.
+ * Scrolls an element to the top of the screen, below the header (html has scroll-padding-top for that). The sections
+ * have a fixed height before they are reached (nothing renders lazily), so this is one smooth scroll. When it has
+ * stopped, the position is checked once, after the fonts are ready, and corrected without animation if it is more than
+ * 2px off. A visitor who scrolls by hand takes over at once. "mdn:scroll-start" and "mdn:scroll-end" (detail.id is the
+ * element id) are sent on window so other parts of the page can stay still while it runs.
  */
 export function scrollToEl(el) {
-  el.scrollIntoView({ behavior: REDUCED ? "auto" : "smooth", block: "start" });
+  const mine = ++current;
+  const id = el.id || "";
   const pad = parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop) || 0;
-  let cancelled = false;
-  const stop = () => { cancelled = true; };
-  // A visitor who scrolls by hand takes over; we never fight them.
-  ["wheel", "touchstart", "keydown"].forEach((t) => window.addEventListener(t, stop, { once: true, passive: true }));
-  let tries = 0;
-  const settle = () => {
-    if (cancelled || !el.isConnected || ++tries > 8) return;
-    if (Math.abs(el.getBoundingClientRect().top - pad) > 8) el.scrollIntoView({ behavior: "auto", block: "start" });
-    window.setTimeout(settle, 350);
+  const events = ["wheel", "touchstart", "keydown"];
+  let done = false;
+  const release = () => events.forEach((t) => window.removeEventListener(t, onUser));
+  const finish = (correct) => {
+    if (done) return;
+    done = true;
+    release();
+    if (mine !== current) return; // a newer scroll took over
+    const end = () => { if (mine !== current) return; auto = false; announce("mdn:scroll-end", id); };
+    if (!correct || !el.isConnected) { end(); return; }
+    const ready = document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve();
+    ready.then(() => {
+      if (mine === current && el.isConnected && Math.abs(el.getBoundingClientRect().top - pad) > 2) el.scrollIntoView({ behavior: "auto", block: "start" });
+    }).then(end, end);
   };
-  window.setTimeout(settle, REDUCED ? 100 : 1000);
+  const onUser = () => finish(false);
+  events.forEach((t) => window.addEventListener(t, onUser, { once: true, passive: true }));
+  auto = true;
+  announce("mdn:scroll-start", id);
+  el.scrollIntoView({ behavior: REDUCED ? "auto" : "smooth", block: "start" });
+  let last = -1;
+  let still = 0;
+  let n = 0;
+  const tick = () => {
+    if (done) return;
+    if (mine !== current) { done = true; release(); return; }
+    const y = Math.round(window.scrollY);
+    still = y === last ? still + 1 : 0;
+    last = y;
+    if (still >= 3 || ++n > 60) finish(true);
+    else window.setTimeout(tick, 90);
+  };
+  window.setTimeout(tick, REDUCED ? 60 : 150);
 }
 
 /** Smooth-scroll to a section and move keyboard focus to its heading. */

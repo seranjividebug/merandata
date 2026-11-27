@@ -44,7 +44,7 @@ export default function QlikOverview() {
         </button>
       </section>
 
-      <section id="capabilities" className="block cv" aria-labelledby="cap-h">
+      <section id="capabilities" className="block" aria-labelledby="cap-h">
         <div className="wrap">
           <SectionHead id="cap-h" title="Qlik Capabilities" intro="From moving and trusting data to exploring it and acting on it, here is how we help across the Qlik platform." />
           <CapabilityStack />

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { useSectionLink } from "../nav";
-import { REDUCED } from "../utils";
+import { REDUCED, isAutoScrolling } from "../utils";
 import AnimatedButton from "./AnimatedButton";
 
 const SHOW_TOP_AFTER = 400;
@@ -64,7 +64,25 @@ export default function FloatingActions() {
     els.forEach((el) => io.observe(el));
     return () => io.disconnect();
   }, [pathname]);
-  const hidden = atContact || atHero || atCases || atCaps;
+  const wanted = atContact || atHero || atCases || atCaps;
+  // The "Talk to an Expert" button keeps its state while a link scrolls the page, then follows the sections after a short
+  // pause, so it never flickers. (Right after the page loads it follows at once.)
+  const [hidden, setHidden] = useState(false);
+  const [auto, setAuto] = useState(false);
+  useEffect(() => {
+    const on = () => setAuto(true);
+    const off = () => setAuto(false);
+    setAuto(isAutoScrolling());
+    window.addEventListener("mdn:scroll-start", on);
+    window.addEventListener("mdn:scroll-end", off);
+    return () => { window.removeEventListener("mdn:scroll-start", on); window.removeEventListener("mdn:scroll-end", off); };
+  }, []);
+  useEffect(() => {
+    if (auto) return undefined;
+    const settling = typeof performance !== "undefined" && performance.now() < 1500;
+    const t = window.setTimeout(() => setHidden(wanted), settling ? 0 : 200);
+    return () => window.clearTimeout(t);
+  }, [wanted, auto]);
   const label = /^\/qlik(\/|$)/.test(pathname) ? "Talk to a Qlik Expert" : "Talk to an Expert";
 
   const toTop = (e) => {
