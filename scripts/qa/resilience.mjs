@@ -10,7 +10,8 @@ for (const path of PAGES) {
   const ctx = await b.newContext({ javaScriptEnabled: false, viewport: { width: 1280, height: 800 } });
   const p = await ctx.newPage();
   await p.goto(BASE + path, { waitUntil: "load" });
-  const h1 = p.locator("h1").first();
+  // The main heading is the page h1, except on the home page, where the h1 is a hidden line and the visible heading is banner 1's title (an h2).
+  const h1 = p.locator("h1:not(.sr), .hs-slide.is-active h2").first();
   const box = await h1.boundingBox();
   const heroImg = await p.evaluate(() => { const i = document.querySelector(".hs-slide.is-active img, .qhero-img img, .qhero-in svg"); return i ? i.getBoundingClientRect().height : -1; });
   const hscroll = await p.evaluate(() => document.documentElement.scrollWidth - innerWidth);

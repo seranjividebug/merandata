@@ -46,17 +46,24 @@ export function scrollToEl(el) {
   events.forEach((t) => window.addEventListener(t, onUser, { once: true, passive: true }));
   auto = true;
   announce("mdn:scroll-start", id);
+  const startY = Math.round(window.scrollY);
+  const farAway = Math.abs(el.getBoundingClientRect().top - pad) > 4;
   el.scrollIntoView({ behavior: REDUCED ? "auto" : "smooth", block: "start" });
+  // The scroll counts as finished when the position has stayed the same for a moment. A smooth scroll can start late on a
+  // busy device, so while it has not moved at all yet (and has somewhere to go) we keep waiting, for up to ~1.5 s.
   let last = -1;
   let still = 0;
   let n = 0;
+  let moved = false;
   const tick = () => {
     if (done) return;
     if (mine !== current) { done = true; release(); return; }
     const y = Math.round(window.scrollY);
+    if (y !== startY) moved = true;
     still = y === last ? still + 1 : 0;
     last = y;
-    if (still >= 3 || ++n > 60) finish(true);
+    const waitingToStart = farAway && !moved && !REDUCED && n < 16;
+    if ((still >= 3 && !waitingToStart) || ++n > 80) finish(true);
     else window.setTimeout(tick, 90);
   };
   window.setTimeout(tick, REDUCED ? 60 : 150);
